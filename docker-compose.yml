@@ -1,0 +1,45 @@
+services:
+  # Frontend service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  # Backend service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "8080:80"
+    environment:
+      - DB_HOST=127.0.0.1
+      - DB_PORT=27017
+      - DB_NAME=mongodb
+      - DB_USER=root
+      - DB_PASSWORD=BZkJ88UxVoxepS1lXiOhx7hA
+    depends_on:
+      - mongodb
+    volumes:
+      - ./backend:/app
+
+  # Database service
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=BZkJ88UxVoxepS1lXiOhx7hA
+    volumes:
+      - ./data:/data/db
+
+volumes:
+  data:
