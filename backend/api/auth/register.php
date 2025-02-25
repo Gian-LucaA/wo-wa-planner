@@ -2,8 +2,8 @@
 
 function getRequest()
 {
-    http_response_code(404);
-    echo json_encode(['error' => 'GET method is not supported for registration']);
+    http_response_code(400);
+    echo json_encode(['error' => 'Etwas ist schief gelaufen!']);
 }
 
 function postRequest()
@@ -15,7 +15,7 @@ function postRequest()
 
     if (empty($data['username']) || empty($data['password'])) {
         http_response_code(400);
-        echo json_encode(['error' => 'Missing required fields']);
+        echo json_encode(['error' => 'Ein Pflichtfeld wurde nicht ausgefüllt!']);
         return;
     }
 
@@ -30,13 +30,13 @@ function postRequest()
 
     if ($existingUser) {
         http_response_code(409);
-        echo json_encode(['error' => 'User already registered']);
+        echo json_encode(['error' => 'Der Nutzername ist bereits vergeben!']);
         return;
     }
 
     if ($pendingUser) {
         http_response_code(409);
-        echo json_encode(['error' => 'User is already on the waiting list']);
+        echo json_encode(['error' => 'Du bist bereits auf der Warteliste, bitte habe etwas Geduld.']);
         return;
     }
 
@@ -47,9 +47,10 @@ function postRequest()
     ]);
 
     if ($result->getInsertedCount() > 0) {
-        echo json_encode(['message' => 'User added to the waiting list']);
+        http_response_code(200);
+        echo json_encode(['message' => 'Sie wurden erfolgreich der Warteliste hinzugefügt!']);
     } else {
-        http_response_code(500);
-        echo json_encode(['error' => 'Failed to add user to waiting list']);
+        http_response_code(400);
+        echo json_encode(['error' => 'Etwas ist schief gelaufen!']);
     }
 }

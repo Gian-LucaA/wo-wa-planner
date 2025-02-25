@@ -2,8 +2,8 @@
 
 function getRequest()
 {
-    http_response_code(404);
-    echo json_encode(['error' => 'Action is not allowed.']);
+    http_response_code(400);
+    echo json_encode(['error' => 'Etwas ist schief gelaufen!']);
 }
 
 function postRequest()
@@ -16,7 +16,7 @@ function postRequest()
 
     if (empty($data['username']) || empty($data['session_id'])) {
         http_response_code(400);
-        echo json_encode(['error' => 'Missing username or session_id']);
+        echo json_encode(['error' => 'Etwas ist schief gelaufen!']);
         return;
     }
 
@@ -31,7 +31,7 @@ function postRequest()
 
         if ($session['timeout'] < new MongoDB\BSON\UTCDateTime()) {
             http_response_code(401);
-            echo json_encode(['error' => 'Session expired']);
+            echo json_encode(['error' => 'Deine Session ist abgelaufen. Bitte melde dich erneut an.']);
             return;
         }
 
@@ -48,7 +48,7 @@ function postRequest()
         http_response_code(200);
         echo json_encode(['session_id' => $newSessionId]);
     } else {
-        http_response_code(401);
-        echo json_encode(['error' => 'Invalid session']);
+        http_response_code(400);
+        echo json_encode(['error' => 'Etwas ist schief gelaufen!']);
     }
 }

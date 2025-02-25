@@ -1,0 +1,18 @@
+.page {
+    height: 100vh;
+    background-image: url('../../public/Assets/buoy.jpg');
+    background-size: cover;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    margin-left: 50vw;
+}
+
+.header {
+    font-size: 80px;
+    color: white;
+    margin-bottom: -30px !important;
+}

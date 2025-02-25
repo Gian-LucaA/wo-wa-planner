@@ -34,7 +34,7 @@ function postRequest()
 
     if (empty($data['username']) || empty($data['password'])) {
         http_response_code(400);
-        echo json_encode(['error' => 'Missing username or password']);
+        echo json_encode(['error' => 'Passwort oder Nutzername nicht ausgefüllt!']);
         return;
     }
 
@@ -59,6 +59,6 @@ function postRequest()
         echo json_encode(['session_id' => $sessionId, 'username' => $user['username']]);
     } else {
         http_response_code(401);
-        echo json_encode(['error' => 'Invalid credentials']);
+        echo json_encode(['error' => 'Die Zugangsdaten sind nicht gültig!']);
     }
 }
