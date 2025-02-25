@@ -24,9 +24,6 @@ WORKDIR /var/www/html
 # Copy the PHP files to the Apache directory
 COPY . /var/www/html/
 
-# Copy the .env file to the working directory
-COPY .env /var/www/html/.env
-
 # Install PHP dependencies
 RUN composer install
 

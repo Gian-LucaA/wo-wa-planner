@@ -26,7 +26,7 @@ FROM node:latest AS runner
 WORKDIR /wowaplanner
 
 # Copy the built files from the builder stage
-COPY --from=builder /worldgames ./
+COPY --from=builder /wowaplanner ./
 
 # Install only production dependencies
 RUN npm install --only=production
