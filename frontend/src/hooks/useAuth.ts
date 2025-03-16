@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Cookies from "js-cookie";
-import { redirect } from "next/navigation";
 
 export const useAuth = () => {
   const [error, setError] = useState("");
@@ -9,7 +8,8 @@ export const useAuth = () => {
   const authenticate = async (
     isLogin: boolean,
     username: string,
-    password: string
+    password: string,
+    email?: string
   ) => {
     setError("");
     setInfo("");
@@ -21,7 +21,7 @@ export const useAuth = () => {
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, email }),
       });
 
       const data = await res.json();
@@ -32,17 +32,20 @@ export const useAuth = () => {
           expires: 1,
           secure: false,
           sameSite: "Strict",
+          path: "/",
         });
         Cookies.set("username", data.username, {
           expires: 1,
           secure: false,
           sameSite: "Strict",
+          path: "/",
         });
-        redirect("/caravanSelection");
       } else {
         throw new Error(data.error || "Something went wrong");
       }
     } catch (error) {
+      Cookies.remove("session_id");
+      Cookies.remove("username");
       setError(error.message);
     }
   };

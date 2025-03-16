@@ -2,26 +2,9 @@
 
 function getRequest()
 {
-    global $params, $dbClient;
-
-    // Check if username parameter is provided
-    if (empty($params['username'])) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Username is required']);
-        return;
-    }
-
-    // Use the existing MongoDB client
-    $collection = $dbClient->users_data->users;
-    $user = $collection->findOne(['username' => $params['username']]);
-
-    if ($user) {
-        unset($user['_id'], $user['password']);
-        echo json_encode($user);
-    } else {
-        http_response_code(404);
-        echo json_encode(['error' => 'User not found']);
-    }
+    http_response_code(400);
+    echo json_encode(['error' => 'Etwas ist schief gelaufen!']);
+    exit();
 }
 
 function postRequest()
@@ -35,7 +18,7 @@ function postRequest()
     if (empty($data['username']) || empty($data['password'])) {
         http_response_code(400);
         echo json_encode(['error' => 'Passwort oder Nutzername nicht ausgefüllt!']);
-        return;
+        exit();
     }
 
     $collection = $dbClient->users_data->users;
@@ -57,8 +40,10 @@ function postRequest()
 
         http_response_code(200);
         echo json_encode(['session_id' => $sessionId, 'username' => $user['username']]);
+        exit();
     } else {
         http_response_code(401);
         echo json_encode(['error' => 'Die Zugangsdaten sind nicht gültig!']);
+        exit();
     }
 }

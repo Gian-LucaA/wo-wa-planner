@@ -1,14 +1,30 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import styles from "./page.module.css";
-import { useAuth } from "../hooks/useAuth";
-import { Box, Card, Divider } from "@mui/joy";
-import LoginForm from "@/components/loginForm";
-import RegisterForm from "@/components/registerForm";
+import { useEffect, useState } from 'react';
+import styles from './page.module.css';
+import { Box, Card, Divider } from '@mui/joy';
+import LoginForm from '@/components/loginForm';
+import RegisterForm from '@/components/registerForm';
+import { useCheckToken } from '@/hooks/useCheckToken';
 
 export default function Home() {
   const [isLogin, setIsLogin] = useState(true);
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const result = await useCheckToken();
+        console.log('Token is valid', result);
+        if (result) {
+          window.location.href = '/places';
+        }
+      } catch (error) {
+        console.error('Error checking token:', error);
+      }
+    };
+
+    verifyToken();
+  }, []);
 
   return (
     <Box className={styles.page}>
@@ -17,12 +33,12 @@ export default function Home() {
         variant="plain"
         sx={{
           width: {
-            xs: "100vw",
+            xs: '100vw',
             sm: 450,
           },
           height: {
-            xs: "100vh",
-            sm: "auto",
+            xs: '100vh',
+            sm: 'auto',
           },
           borderRadius: {
             xs: 0,
@@ -31,12 +47,8 @@ export default function Home() {
         }}
       >
         <h1 className={styles.logo}>WoWaPlan</h1>
-        <Divider style={{ margin: "5px" }} inset="none" />
-        {isLogin ? (
-          <LoginForm setIsLogin={setIsLogin} />
-        ) : (
-          <RegisterForm setIsLogin={setIsLogin} />
-        )}
+        <Divider style={{ margin: '5px' }} inset="none" />
+        {isLogin ? <LoginForm setIsLogin={setIsLogin} /> : <RegisterForm setIsLogin={setIsLogin} />}
       </Card>
     </Box>
   );

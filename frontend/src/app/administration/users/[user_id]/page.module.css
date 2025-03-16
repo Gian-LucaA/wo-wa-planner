@@ -1,0 +1,10 @@
+.pageContainer {
+    display: flex;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    background-color: #f9f9f9;
+    color: #171717;
+}

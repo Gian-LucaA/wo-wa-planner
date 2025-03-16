@@ -2,6 +2,7 @@ import { Alert, Button, Input, Link, Typography } from "@mui/joy";
 import * as React from "react";
 import PasswordMeterInput from "./passwordInput";
 import PersonIcon from "@mui/icons-material/Person";
+import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import { useAuth } from "../hooks/useAuth";
 
 interface RegisterFormProps {
@@ -10,12 +11,13 @@ interface RegisterFormProps {
 
 export default function RegisterForm({ setIsLogin }: RegisterFormProps) {
   const [username, setUsername] = React.useState("");
+  const [email, setMail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const { authenticate, error, info } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await authenticate(false, username, password);
+    await authenticate(false, username, password, email);
   };
 
   return (
@@ -27,6 +29,13 @@ export default function RegisterForm({ setIsLogin }: RegisterFormProps) {
         startDecorator={<PersonIcon />}
         value={username}
         onChange={(event) => setUsername(event.target.value)}
+      />
+      <Input
+        type="text"
+        placeholder="E-Mail"
+        startDecorator={<EmailRoundedIcon />}
+        value={email}
+        onChange={(event) => setMail(event.target.value)}
       />
       <PasswordMeterInput
         showMeter

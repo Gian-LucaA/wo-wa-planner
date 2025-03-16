@@ -1,0 +1,10 @@
+.container {
+    justify-content: center;
+    margin-top: 10vh !important;
+}
+
+.buttonGroup {
+    display: flex;
+    justify-content: right;
+    margin-top: 1rem;
+}

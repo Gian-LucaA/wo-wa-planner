@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "@typescript-eslint/parser": "^8.26.1",
+    "concurrently": "^9.1.2",
+    "eslint": "^9.22.0",
+    "eslint-plugin-react-hooks": "^5.2.0"
+  },
+  "scripts": {
+    "dev": "concurrently \"cd frontend && npm run dev\" \"php -S localhost:8000 -t /Users/gla/ProgProjects/WoWaPlanner/backend\""
+  }
+}

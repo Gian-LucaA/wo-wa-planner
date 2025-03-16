@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { redirect } from "next/navigation";
 
 export default function SessionChecker() {
   const [isActive, setIsActive] = useState(false);
@@ -14,7 +15,12 @@ export default function SessionChecker() {
     const handleActivity = () => {
       setIsActive(true);
       clearTimeout(activityTimeout);
-      activityTimeout = setTimeout(() => setIsActive(false), 30 * 1000); // 5 Minuten: 5 * 60 * 1000
+      activityTimeout = setTimeout(() => {
+        setIsActive(false);
+        Cookies.remove("session_id");
+        Cookies.remove("username");
+        redirect("/");
+      }, 5 * 60 * 1000); // 5 Minuten: 5 * 60 * 1000
     };
 
     // Attach event listeners
@@ -24,16 +30,11 @@ export default function SessionChecker() {
 
     if (sessionId) {
       interval = setInterval(() => {
-        sessionId = Cookies.get("session_id");
-        const username = Cookies.get("username");
         if (isActive) {
           fetch("http://localhost:8080/api/auth/refreshToken", {
             method: "POST",
-            body: JSON.stringify({
-              username: username,
-              session_id: sessionId,
-            }),
             headers: { "Content-Type": "application/json" },
+            credentials: "include",
           })
             .then((res) => res.json())
             .then((data) => {
@@ -41,11 +42,17 @@ export default function SessionChecker() {
                 expires: 1,
                 secure: false,
                 sameSite: "Strict",
+                path: "/",
               });
             })
-            .catch((err) => console.error("API error:", err));
+            .catch((err) => {
+              console.error(err);
+              Cookies.remove("session_id");
+              Cookies.remove("username");
+              redirect("/");
+            });
         }
-      }, 1 * 60 * 1000); // 10 Minuten 10 * 60 * 1000
+      }, 10 * 60 * 1000); // 10 Minuten 10 * 60 * 1000
     }
 
     return () => {

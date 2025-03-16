@@ -24,8 +24,14 @@ WORKDIR /var/www/html
 # Copy the PHP files to the Apache directory
 COPY . /var/www/html/
 
+RUN composer update
+
 # Install PHP dependencies
 RUN composer install
+
+
+# Install additional Composer packages
+RUN composer require mailgun/mailgun-php symfony/http-client nyholm/psr7
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \

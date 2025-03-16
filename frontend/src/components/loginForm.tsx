@@ -3,6 +3,7 @@ import { Alert, Button, Input, Link, Stack, Typography } from "@mui/joy";
 import PasswordMeterInput from "./passwordInput";
 import PersonIcon from "@mui/icons-material/Person";
 import { useAuth } from "../hooks/useAuth";
+import { redirect } from "next/navigation";
 
 interface LoginFormProps {
   setIsLogin: (isLogin: boolean) => void;
@@ -16,6 +17,7 @@ export default function LoginForm({ setIsLogin }: LoginFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await authenticate(true, username, password);
+    redirect("/places");
   };
 
   return (

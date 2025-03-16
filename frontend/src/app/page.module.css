@@ -1,7 +1,5 @@
 .page {
   height: 100vh;
-  background-image: url('../../public/Assets/Sylt.webp');
-  background-position: left;
   background-size: cover;
   align-content: center;
 }

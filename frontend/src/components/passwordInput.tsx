@@ -22,7 +22,7 @@ export default function PasswordInput({
     <Stack spacing={0.5} sx={{ "--hue": Math.min(password.length * 10, 120) }}>
       <Input
         type="password"
-        placeholder="Password"
+        placeholder="Passwort"
         startDecorator={<Key />}
         value={password}
         onChange={(event) => setPassword(event.target.value)}
