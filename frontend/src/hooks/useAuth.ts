@@ -1,26 +1,19 @@
-import { useState } from "react";
-import Cookies from "js-cookie";
+import { useState } from 'react';
+import Cookies from 'js-cookie';
 
 export const useAuth = () => {
-  const [error, setError] = useState("");
-  const [info, setInfo] = useState("");
+  const [error, setError] = useState('');
+  const [info, setInfo] = useState('');
 
-  const authenticate = async (
-    isLogin: boolean,
-    username: string,
-    password: string,
-    email?: string
-  ) => {
-    setError("");
-    setInfo("");
-    const url = isLogin
-      ? "http://localhost:8080/api/auth/login"
-      : "http://localhost:8080/api/auth/register";
+  const authenticate = async (isLogin: boolean, username: string, password: string, email?: string) => {
+    setError('');
+    setInfo('');
+    const url = isLogin ? 'http://localhost:8080/api/auth/login' : 'http://localhost:8080/api/auth/register';
 
     try {
       const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password, email }),
       });
 
@@ -28,25 +21,31 @@ export const useAuth = () => {
 
       if (res.ok) {
         setInfo(data.message);
-        Cookies.set("session_id", data.session_id, {
+        Cookies.set('session_id', data.session_id, {
           expires: 1,
           secure: false,
-          sameSite: "Strict",
-          path: "/",
+          sameSite: 'Strict',
+          path: '/',
         });
-        Cookies.set("username", data.username, {
+        Cookies.set('username', data.username, {
           expires: 1,
           secure: false,
-          sameSite: "Strict",
-          path: "/",
+          sameSite: 'Strict',
+          path: '/',
         });
+        return true;
       } else {
-        throw new Error(data.error || "Something went wrong");
+        throw new Error(data.error || 'Something went wrong');
       }
     } catch (error) {
-      Cookies.remove("session_id");
-      Cookies.remove("username");
-      setError(error.message);
+      Cookies.remove('session_id');
+      Cookies.remove('username');
+      if (error.message === 'Failed to fetch') {
+        setError('Konnte keine Verbindung zum Server herstellen.');
+      } else {
+        setError(error.message);
+      }
+      return false;
     }
   };
 
