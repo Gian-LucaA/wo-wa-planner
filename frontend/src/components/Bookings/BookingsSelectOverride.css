@@ -1,0 +1,5 @@
+/* Beispiel: Überschreiben eines Stils */
+.calendar__month-arrow-back,
+.calendar__month-arrow-next {
+  color: #000;
+}
