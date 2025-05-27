@@ -19,11 +19,11 @@ services:
     ports:
       - '8080:80'
     environment:
-      - DB_HOST=127.0.0.1
+      - DB_HOST=ip
       - DB_PORT=27017
       - DB_NAME=mongodb
-      - DB_USER=root
-      - DB_PASSWORD=BZkJ88UxVoxepS1lXiOhx7hA
+      - DB_USER=usr
+      - DB_PASSWORD=pswd
     depends_on:
       - mongodb
     volumes:
@@ -36,8 +36,8 @@ services:
     ports:
       - '27017:27017'
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=BZkJ88UxVoxepS1lXiOhx7hA
+      - MONGO_INITDB_ROOT_USERNAME=usr
+      - MONGO_INITDB_ROOT_PASSWORD=pswd
     volumes:
       - ./data:/data/db
 
