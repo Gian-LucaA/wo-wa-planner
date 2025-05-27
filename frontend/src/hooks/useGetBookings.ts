@@ -1,11 +1,14 @@
 import Cookies from 'js-cookie';
 
 export const useGetBookings = (year: number, placeId: string) => {
-  const bookings = fetch(`http://backend:8000/api/places/getBookings?year=${year}&placeId=${placeId}`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-  })
+  const bookings = fetch(
+    `http://general-alcazar.toastylabs.de/api/places/getBookings?year=${year}&placeId=${placeId}`,
+    {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+    },
+  )
     .then((res) => {
       if (!res.ok) {
         if (res.status === 401) {

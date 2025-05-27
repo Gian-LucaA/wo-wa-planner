@@ -2,8 +2,8 @@ import Cookies from 'js-cookie';
 
 export const useGetUsers = (userId?: string) => {
   const url = userId
-    ? `http://backend:8000/api/users/getUsers?userId=${userId}`
-    : 'http://backend:8000/api/users/getUsers';
+    ? `http://general-alcazar.toastylabs.de/api/users/getUsers?userId=${userId}`
+    : 'http://general-alcazar.toastylabs.de/api/users/getUsers';
 
   const users = fetch(url, {
     method: 'GET',

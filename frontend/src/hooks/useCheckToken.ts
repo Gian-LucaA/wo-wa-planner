@@ -11,7 +11,7 @@ export const useCheckToken = async () => {
   let valid = false;
 
   try {
-    const response = await fetch('http://backend:8000/api/auth/checkToken', {
+    const response = await fetch('http://general-alcazar.toastylabs.de/api/auth/checkToken', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

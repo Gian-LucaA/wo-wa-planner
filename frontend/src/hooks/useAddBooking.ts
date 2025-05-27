@@ -2,7 +2,7 @@
 import Cookies from 'js-cookie';
 
 export const useAddBooking = (locationId: string, from: Date, to: Date) => {
-  const result = fetch('http://backend:8000/api/places/createBooking', {
+  const result = fetch('http://general-alcazar.toastylabs.de/api/places/createBooking', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

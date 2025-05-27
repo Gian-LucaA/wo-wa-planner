@@ -7,7 +7,7 @@ export const useUploadImage = (place_id: string, image: File) => {
   formData.append('image', image);
   formData.append('place_id', place_id);
 
-  const success = fetch('http://backend:8000/api/places/addImage', {
+  const success = fetch('http://general-alcazar.toastylabs.de/api/places/addImage', {
     method: 'POST',
     credentials: 'include',
     body: formData,

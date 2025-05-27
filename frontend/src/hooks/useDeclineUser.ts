@@ -2,7 +2,7 @@
 import Cookies from 'js-cookie';
 
 export const useDeclineUser = (id: string) => {
-  const success = fetch('http://backend:8000/api/users/declineUser', {
+  const success = fetch('http://general-alcazar.toastylabs.de/api/users/declineUser', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

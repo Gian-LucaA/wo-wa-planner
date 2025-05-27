@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 
 export const useGetPlaces = () => {
-  const pendingUsers = fetch('http://backend:8000/api/places/getPlaces', {
+  const pendingUsers = fetch('http://general-alcazar.toastylabs.de/api/places/getPlaces', {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
