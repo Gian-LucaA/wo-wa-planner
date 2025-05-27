@@ -51,8 +51,12 @@ export default function Page() {
     },
   ];
 
+  const getPendingUsers = useGetPendingUsers;
+  const acceptUser = useAcceptUser;
+  const declineUser = useDeclineUser;
+
   const fetchPendingUsers = async () => {
-    const users = await useGetPendingUsers();
+    const users = await getPendingUsers();
     setPendingUsers(users);
   };
 
@@ -61,18 +65,19 @@ export default function Page() {
   }, []);
 
   const handleAccept = async (userId: string) => {
-    if (await useAcceptUser(userId)) {
+    try {
+      await acceptUser(userId);
       setSnackText('Nutzer erfolgreich angenommen.');
       setShowSuccessSnack(true);
       fetchPendingUsers();
-    } else {
+    } catch (error) {
       setSnackText('Fehler beim Annehmen des Nutzers.');
       setShowErrorSnack(true);
     }
   };
 
   const handleDecline = async (userId: string) => {
-    if (await useDeclineUser(userId)) {
+    if (await declineUser(userId)) {
       setSnackText('Nutzer erfolgreich abgelehnt.');
       setShowSuccessSnack(true);
       fetchPendingUsers();
