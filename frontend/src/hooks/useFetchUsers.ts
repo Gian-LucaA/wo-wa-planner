@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 
 export const useFetchUsers = (searched?: string) => {
-  const url = `http://localhost:8080/api/users/getUsers?searched=${searched}`;
+  const url = `http://backend:8000/api/users/getUsers?searched=${searched}`;
 
   const users = fetch(url, {
     method: 'GET',

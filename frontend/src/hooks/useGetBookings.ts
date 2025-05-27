@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 
 export const useGetBookings = (year: number, placeId: string) => {
-  const bookings = fetch(`http://localhost:8080/api/places/getBookings?year=${year}&placeId=${placeId}`, {
+  const bookings = fetch(`http://backend:8000/api/places/getBookings?year=${year}&placeId=${placeId}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

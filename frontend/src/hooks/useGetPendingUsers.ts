@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 
 export const useGetPendingUsers = () => {
-  const pendingUsers = fetch('http://localhost:8080/api/users/getPendingUsers', {
+  const pendingUsers = fetch('http://backend:8000/api/users/getPendingUsers', {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

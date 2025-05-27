@@ -2,7 +2,7 @@
 import Cookies from 'js-cookie';
 
 export const useDeleteUser = (id: string) => {
-  const success = fetch('http://localhost:8080/api/users/deleteUser', {
+  const success = fetch('http://backend:8000/api/users/deleteUser', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

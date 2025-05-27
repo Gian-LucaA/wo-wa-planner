@@ -11,7 +11,7 @@ export const useCheckToken = async () => {
   let valid = false;
 
   try {
-    const response = await fetch('http://localhost:8080/api/auth/checkToken', {
+    const response = await fetch('http://backend:8000/api/auth/checkToken', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -8,7 +8,7 @@ export const useAuth = () => {
   const authenticate = async (isLogin: boolean, username: string, password: string, email?: string) => {
     setError('');
     setInfo('');
-    const url = isLogin ? 'http://localhost:8080/api/auth/login' : 'http://localhost:8080/api/auth/register';
+    const url = isLogin ? 'http://backend:8000/api/auth/login' : 'http://backend:8000/api/auth/register';
 
     try {
       const res = await fetch(url, {

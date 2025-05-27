@@ -31,7 +31,7 @@ export default function SessionChecker() {
     if (sessionId) {
       interval = setInterval(() => {
         if (isActive) {
-          fetch('http://localhost:8080/api/auth/refreshToken', {
+          fetch('http://backend:8000/api/auth/refreshToken', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',

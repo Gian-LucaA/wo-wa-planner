@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { redirect } from 'next/navigation';
 
 export const useAcceptUser = (id: string) => {
-  const success = fetch('http://localhost:8080/api/users/acceptUser', {
+  const success = fetch('http://backend:8000/api/users/acceptUser', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -35,5 +35,4 @@ export const useAcceptUser = (id: string) => {
       window.location.href = '/';
       return false;
     });
-
 };
