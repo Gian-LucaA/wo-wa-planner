@@ -1,14 +1,8 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import {
-  AspectRatio,
-  Card,
-  CardContent,
-  CardOverflow,
-  Typography,
-} from "@mui/joy";
-import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import * as React from 'react';
+import { AspectRatio, Card, CardContent, CardOverflow, Typography } from '@mui/joy';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 
 interface PlaceCardProps {
   add?: boolean;
@@ -24,7 +18,7 @@ export default function PlaceCard({
   add,
   name,
   location,
-  img,
+  // img,
   id,
   currentlyOccupied,
   onClick,
@@ -35,9 +29,9 @@ export default function PlaceCard({
       variant="plain"
       color="neutral"
       sx={{
-        backgroundColor: "rgba(255, 255, 255, 0.5)",
-        backdropFilter: "blur(10px)",
-        cursor: "pointer",
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        backdropFilter: 'blur(10px)',
+        cursor: 'pointer',
         width: 260,
       }}
       onClick={onClick}
@@ -64,10 +58,10 @@ export default function PlaceCard({
 
       <CardContent
         style={{
-          background: "rgba(0,0,0,0)",
+          background: 'rgba(0,0,0,0)',
         }}
       >
-        <Typography sx={{ fontWeight: "md" }}>{name}</Typography>
+        <Typography sx={{ fontWeight: 'md' }}>{name}</Typography>
         <Typography level="body-sm" style={{ lineHeight: 1 }}>
           {location}
         </Typography>
@@ -79,14 +73,14 @@ export default function PlaceCard({
             color="danger"
             sx={{
               px: 0.2,
-              writingMode: "vertical-rl",
-              justifyContent: "center",
-              fontSize: "xs",
-              fontWeight: "xl",
-              letterSpacing: "1px",
-              textTransform: "uppercase",
-              borderLeft: "1px solid",
-              borderColor: "divider",
+              writingMode: 'vertical-rl',
+              justifyContent: 'center',
+              fontSize: 'xs',
+              fontWeight: 'xl',
+              letterSpacing: '1px',
+              textTransform: 'uppercase',
+              borderLeft: '1px solid',
+              borderColor: 'divider',
             }}
           >
             Belegt
@@ -97,14 +91,14 @@ export default function PlaceCard({
             color="success"
             sx={{
               px: 0.2,
-              writingMode: "vertical-rl",
-              justifyContent: "center",
-              fontSize: "xs",
-              fontWeight: "xl",
-              letterSpacing: "1px",
-              textTransform: "uppercase",
-              borderLeft: "1px solid",
-              borderColor: "divider",
+              writingMode: 'vertical-rl',
+              justifyContent: 'center',
+              fontSize: 'xs',
+              fontWeight: 'xl',
+              letterSpacing: '1px',
+              textTransform: 'uppercase',
+              borderLeft: '1px solid',
+              borderColor: 'divider',
             }}
           >
             Frei

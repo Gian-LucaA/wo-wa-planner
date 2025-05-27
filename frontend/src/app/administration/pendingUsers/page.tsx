@@ -1,55 +1,53 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import SideBar from "@/components/sideBar";
-import styles from "./page.module.css";
-import SingleBedRoundedIcon from "@mui/icons-material/SingleBedRounded";
-import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
-import { useEffect } from "react";
-import { useGetPendingUsers } from "@/hooks/useGetPendingUsers";
-import {
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
-import { IconButton, Snackbar, Table } from "@mui/joy";
-import DoneIcon from "@mui/icons-material/Done";
-import NotInterestedIcon from "@mui/icons-material/NotInterested";
-import { useAcceptUser } from "@/hooks/useAcceptUser";
-import { useDeclineUser } from "@/hooks/useDeclineUser";
-import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
+import * as React from 'react';
+import SideBar from '@/components/sideBar';
+import styles from './page.module.css';
+import SingleBedRoundedIcon from '@mui/icons-material/SingleBedRounded';
+import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
+import { useEffect } from 'react';
+import { useGetPendingUsers } from '@/hooks/useGetPendingUsers';
+import { TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { IconButton, Snackbar, Table } from '@mui/joy';
+import DoneIcon from '@mui/icons-material/Done';
+import NotInterestedIcon from '@mui/icons-material/NotInterested';
+import { useAcceptUser } from '@/hooks/useAcceptUser';
+import { useDeclineUser } from '@/hooks/useDeclineUser';
+import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 
 interface User {
-  _id: string;
+  _id: ID;
   username: string;
   user_tag: string;
   email: string;
   created_at: string;
 }
 
+interface ID {
+  $oid: string;
+}
+
 export default function Page() {
   const [pendingUsers, setPendingUsers] = React.useState<User[]>([]);
   const [showSuccessSnack, setShowSuccessSnack] = React.useState(false);
   const [showErrorSnack, setShowErrorSnack] = React.useState(false);
-  const [snackText, setSnackText] = React.useState("");
+  const [snackText, setSnackText] = React.useState('');
 
   const buttons = [
     {
       icon: <GroupRoundedIcon />,
-      label: "Users",
-      link: "/users",
+      label: 'Users',
+      link: '/users',
     },
     {
       icon: <SingleBedRoundedIcon />,
-      label: "Places",
-      link: "/places",
+      label: 'Places',
+      link: '/places',
     },
     {
       icon: <SettingsRoundedIcon />,
-      label: "Settings",
-      link: "/settings",
+      label: 'Settings',
+      link: '/settings',
     },
   ];
 
@@ -64,22 +62,22 @@ export default function Page() {
 
   const handleAccept = async (userId: string) => {
     if (await useAcceptUser(userId)) {
-      setSnackText("Nutzer erfolgreich angenommen.");
+      setSnackText('Nutzer erfolgreich angenommen.');
       setShowSuccessSnack(true);
       fetchPendingUsers();
     } else {
-      setSnackText("Fehler beim Annehmen des Nutzers.");
+      setSnackText('Fehler beim Annehmen des Nutzers.');
       setShowErrorSnack(true);
     }
   };
 
   const handleDecline = async (userId: string) => {
     if (await useDeclineUser(userId)) {
-      setSnackText("Nutzer erfolgreich abgelehnt.");
+      setSnackText('Nutzer erfolgreich abgelehnt.');
       setShowSuccessSnack(true);
       fetchPendingUsers();
     } else {
-      setSnackText("Fehler beim Ablehnen des Nutzers.");
+      setSnackText('Fehler beim Ablehnen des Nutzers.');
       setShowErrorSnack(true);
     }
   };
@@ -107,9 +105,7 @@ export default function Page() {
       </Snackbar>
       <div className={styles.content}>
         <h1>Nutzer auf der Warteliste</h1>
-        <p>
-          Hier kannst du die Nutzer auf der Warteliste annehmen oder ablehnen.
-        </p>
+        <p>Hier kannst du die Nutzer auf der Warteliste annehmen oder ablehnen.</p>
         <TableContainer>
           <Table>
             <TableHead>

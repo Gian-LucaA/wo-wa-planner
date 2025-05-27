@@ -17,16 +17,25 @@ export interface Month {
   index: number;
   short: string;
   full: string;
+  disabled: boolean;
 }
 
-export function getMonths(): Month[] {
-  return monthNames.map(
+export function getMonths(year: number): { months: Month[]; hasDisabledMonth: boolean } {
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth() + 1;
+
+  const months = monthNames.map(
     (name, index): Month => ({
       index: index + 1,
       short: name.substring(0, 3),
       full: name,
+      disabled: year < currentYear || (index + 1 < currentMonth && year === currentYear),
     }),
   );
+
+  const hasDisabledMonth = months.some((month) => month.disabled);
+  return { months, hasDisabledMonth };
 }
 
 export interface Day {

@@ -9,20 +9,29 @@ function getRequest()
 
 function postRequest()
 {
-    global $dbClient;
+    global $dbClient, $sessionId;
 
     $data = json_decode(file_get_contents('php://input'), true);
 
     // Überprüfen, ob alle erforderlichen Felder vorhanden sind
-    if (!isset($data['userId'], $data['placeId'], $data['from'], $data['to'])) {
+    if (!isset($data['locationId'], $data['from'], $data['to'])) {
         http_response_code(400);
         echo json_encode(['error' => 'Fehlende Felder in der Anfrage!']);
         exit();
     }
 
-    $bookingsCollection = $dbClient->selectCollection('bookings', 'places');
     try {
-        $existingBooking = $bookingsCollection->findOne(['placeId' => $data['placeId'], 'from' => $data['from'], 'to' => $data['to']]);
+        $fromDate = new MongoDB\BSON\UTCDateTime(new DateTime($data['from']));
+        $toDate = new MongoDB\BSON\UTCDateTime(new DateTime($data['to']));
+    } catch (Exception $e) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Ungültiges Datumsformat: ' . $e->getMessage()]);
+        exit();
+    }
+
+    $bookingsCollection = $dbClient->selectCollection('place_data', 'bookings');
+    try {
+        $existingBooking = $bookingsCollection->findOne(['placeId' => $data['locationId'], 'from' => $fromDate, 'to' => $toDate]);
         if ($existingBooking) {
             http_response_code(409);
             echo json_encode(['error' => 'Dieser Zeitpunkt ist bereits gebucht!']);
@@ -36,10 +45,10 @@ function postRequest()
 
     // Neues Dokument erstellen
     $newBooking = [
-        'placeId' => $data['placeId'],
-        'userId' => $data['userId'],
-        'from' => $data['from'],
-        'to' => $data['to'],
+        'placeId' => new MongoDB\BSON\ObjectId($data['locationId']),
+        'userId' => $sessionId,
+        'from' => $fromDate,
+        'to' => $toDate,
     ];
 
     // Einfügen des Dokuments in die MongoDB

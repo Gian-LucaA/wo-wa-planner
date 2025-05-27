@@ -84,8 +84,9 @@ if ($functionFile !== 'login' && $functionFile !== 'register' && (empty($data['u
     exit();
 }
 
+$sessionId = null;
 if ($functionFile !== 'login' && $functionFile !== 'register' && $functionFile !== 'sendTestEmail') {
-    checkToken($data['session_id'], $data['username']);
+    $sessionId = checkToken($data['session_id'], $data['username']);
 }
 
 $returnValue = [];
@@ -102,7 +103,7 @@ if (!file_exists($filePath)) {
 
 $requestBody = file_get_contents('php://input');
 
-global $params, $dbClient, $data;
+global $params, $dbClient, $data, $sessionId;
 
 // Schließen Sie die Datei ein, um die Funktion aufzurufen
 include $filePath;

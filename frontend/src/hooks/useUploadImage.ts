@@ -1,34 +1,34 @@
-"use client";
+'use client';
 
-import Cookies from "js-cookie";
-import { redirect } from "next/navigation";
+import Cookies from 'js-cookie';
 
 export const useUploadImage = (place_id: string, image: File) => {
   const formData = new FormData();
-  formData.append("image", image);
-  formData.append("place_id", place_id);
+  formData.append('image', image);
+  formData.append('place_id', place_id);
 
-  const success = fetch("http://localhost:8080/api/places/addImage", {
-    method: "POST",
-    credentials: "include",
+  const success = fetch('http://localhost:8080/api/places/addImage', {
+    method: 'POST',
+    credentials: 'include',
     body: formData,
   })
     .then((res) => {
       if (!res.ok) {
         if (res.status === 401) {
-          Cookies.remove("session_id");
-          Cookies.remove("username");
-          redirect("/");
+          Cookies.remove('session_id');
+          Cookies.remove('username');
+
+          window.location.href = '/';
         }
       }
       return res.json();
     })
     .then((data) => {
-      Cookies.set("session_id", data.session_id, {
+      Cookies.set('session_id', data.session_id, {
         expires: 1,
         secure: false,
-        sameSite: "Strict",
-        path: "/",
+        sameSite: 'Strict',
+        path: '/',
       });
       return true;
     })

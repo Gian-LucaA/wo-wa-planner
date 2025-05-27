@@ -1,4 +1,3 @@
-
 <?php
 
 function getRequest()
@@ -15,11 +14,37 @@ function getRequest()
   }
 
   $bookingsCollection = $dbClient->place_data->bookings;
+  $usersCollection = $dbClient->users_data->users;
+  $placesCollection = $dbClient->place_data->places;
+
+  $startOfYear = new MongoDB\BSON\UTCDateTime(strtotime("$year-01-01T00:00:00Z") * 1000);
+  $endOfYear = new MongoDB\BSON\UTCDateTime(strtotime("$year-12-31T23:59:59Z") * 1000);
 
   $bookings = $bookingsCollection->find([
-    'placeId' => $placeId,
-    'year' => $year,
+    'placeId' => new MongoDB\BSON\ObjectId($placeId),
+    '$or' => [
+      // 'from' liegt im Jahr
+      ['from' => ['$gte' => $startOfYear, '$lte' => $endOfYear]],
+      // 'to' liegt im Jahr
+      ['to' => ['$gte' => $startOfYear, '$lte' => $endOfYear]],
+      // Zeitraum überschneidet sich mit dem Jahr
+      [
+        'from' => ['$lte' => $endOfYear],
+        'to' => ['$gte' => $startOfYear]
+      ]
+    ]
   ])->toArray();
+
+  foreach ($bookings as &$booking) {
+    if (isset($booking['userId'])) {
+      $user = $usersCollection->findOne(['_id' => new MongoDB\BSON\ObjectId($booking['userId'])]);
+      $booking['username'] = $user ? $user['username'] : null;
+      $place = $placesCollection->findOne(['_id' => new MongoDB\BSON\ObjectId($booking['placeId'])]);
+      $booking['placeName'] = $place ? $place['name'] : null;
+      $booking['location'] = $place ? $place['location'] : null;
+      unset($booking['userId'], $booking['placeId'], $booking['_id']);
+    }
+  }
 
   return ["bookings" => $bookings];
 }

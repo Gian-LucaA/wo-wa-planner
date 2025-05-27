@@ -1,8 +1,7 @@
 import Cookies from 'js-cookie';
-import { redirect } from 'next/navigation';
 
 export const useGetBookings = (year: number, placeId: string) => {
-  const bookings = fetch(`http://localhost:8080/api/users/getPlaces?year=${year}&placeId=${placeId}`, {
+  const bookings = fetch(`http://localhost:8080/api/places/getBookings?year=${year}&placeId=${placeId}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -12,14 +11,14 @@ export const useGetBookings = (year: number, placeId: string) => {
         if (res.status === 401) {
           Cookies.remove('session_id');
           Cookies.remove('username');
-          redirect('/');
+          window.location.href = '/';
         }
         throw new Error('API error');
       }
       return res.json();
     })
     .then((data) => {
-      return data.pendingUsers;
+      return data.bookings;
     })
     .catch((err) => {});
   return bookings;

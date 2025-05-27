@@ -19,7 +19,7 @@ function checkToken($currentSessionID, $username)
             exit();
         }
 
-        return;
+        return $session['user_id'];
     } else {
         http_response_code(401);
         echo json_encode(['error' => 'Could not verify token!']);

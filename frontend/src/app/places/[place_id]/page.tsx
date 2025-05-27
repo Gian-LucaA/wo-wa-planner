@@ -13,7 +13,7 @@ export default function Page() {
   return (
     <>
       <Card variant="outlined" size="md" className={styles.card}>
-        <Bookings />
+        <Bookings placeId={place_id} />
       </Card>
     </>
   );

@@ -1,17 +1,45 @@
 'use client';
 
 import { getDaysInMonth, Month } from '@/helpers/calendar/dateUtils';
-import { Box, Card, Grid, Stack, Typography } from '@mui/joy';
+import { Card, Grid, IconButton, Stack, Typography } from '@mui/joy';
 import * as React from 'react';
 import DayCard from './dayCard';
+import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
+import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
 
 interface MonthBarProps {
   month: Month;
   year: number;
+  bookings: any[];
+  switchMonthVisibility: (month: Month) => void;
 }
 
-export default function MonthBar({ month, year }: MonthBarProps) {
+export interface DayWithBookings {
+  date: Date;
+  day: number;
+  weekday: string;
+  weekdayShort: string;
+  isToday?: boolean;
+  isPast?: boolean;
+  booking: any | null;
+}
+
+export default function MonthBar({ month, year, bookings, switchMonthVisibility }: MonthBarProps) {
+  const [animating, setAnimating] = React.useState(false);
   const days = getDaysInMonth(month.index, year);
+
+  const daysWithBookings = React.useMemo(() => {
+    return days.map((day) => {
+      const bookingForDay = bookings.find((booking) => {
+        const bookingStart = new Date(booking.startDate).getTime();
+        const bookingEnd = new Date(booking.endDate).getTime();
+        const dayTime = day.date.getTime();
+        return dayTime >= bookingStart && dayTime <= bookingEnd;
+      });
+
+      return { ...day, booking: bookingForDay || null };
+    });
+  }, [bookings, days]);
 
   return (
     <>
@@ -21,8 +49,10 @@ export default function MonthBar({ month, year }: MonthBarProps) {
         sx={{
           justifyContent: 'flex-start',
           alignItems: 'center',
-          width: '100%',
+          width: !month.disabled ? '100%' : '100px',
+          transition: 'width 0.5s ease-in-out',
         }}
+        onTransitionEnd={() => setAnimating(false)}
       >
         <Card
           variant="plain"
@@ -37,7 +67,7 @@ export default function MonthBar({ month, year }: MonthBarProps) {
           }}
         >
           <Typography level="title-md" sx={{ width: '80px', padding: '2px' }}>
-            {month.full}
+            {!month.disabled ? month.full : month.short}
           </Typography>
 
           <Grid
@@ -49,13 +79,34 @@ export default function MonthBar({ month, year }: MonthBarProps) {
               flexWrap: 'wrap',
               justifyContent: 'flex-end',
               width: '100%',
+              paddingRight: {
+                xs: '0',
+                sm: '40px',
+              },
             }}
           >
-            {days.map((day) => (
-              <Grid key={day.date.toISOString()} sx={{ width: '50px' }}>
-                <DayCard key={String(day.day)} day={day} />
-              </Grid>
-            ))}
+            {!month.disabled &&
+              !animating &&
+              daysWithBookings.map((day) => (
+                <Grid key={day.date.toISOString()} sx={{ width: '50px' }}>
+                  <DayCard key={String(day.day) + 'card'} day={day} />
+                </Grid>
+              ))}
+
+            <IconButton
+              variant="plain"
+              onClick={() => {
+                switchMonthVisibility(month);
+                setAnimating(true);
+              }}
+              sx={{
+                position: 'absolute',
+                top: '8px',
+                right: '8px',
+              }}
+            >
+              {month.disabled ? <VisibilityRoundedIcon /> : <VisibilityOffRoundedIcon />}
+            </IconButton>
           </Grid>
         </Card>
       </Stack>

@@ -14,7 +14,6 @@ export default function Home() {
     const verifyToken = async () => {
       try {
         const result = await useCheckToken();
-        console.log('Token is valid', result);
         if (result) {
           window.location.href = '/places';
         }

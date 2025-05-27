@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Button, Input, SvgIcon } from "@mui/joy";
-import { styled } from "@mui/joy";
-import { useUploadImage } from "../hooks/useUploadImage";
+import * as React from 'react';
+import { Button, Input, SvgIcon } from '@mui/joy';
+import { styled } from '@mui/joy';
+import { useUploadImage } from '../hooks/useUploadImage';
 
 export default function ImageUploader() {
   const [file, setFile] = React.useState<File | null>(null);
@@ -15,13 +15,13 @@ export default function ImageUploader() {
   const handleUpload = async () => {
     if (!file) return;
 
-    const place_id = "id";
+    const place_id = 'id';
     const success = await useUploadImage(place_id, file);
 
     if (success) {
-      console.log("Upload successful");
+      console.log('Upload successful');
     } else {
-      console.error("Upload failed");
+      console.error('Upload failed');
     }
   };
 
@@ -35,7 +35,7 @@ export default function ImageUploader() {
     <>
       <input
         accept="image/*"
-        style={{ display: "none" }}
+        style={{ display: 'none' }}
         id="raised-button-file"
         multiple
         type="file"

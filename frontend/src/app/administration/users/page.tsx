@@ -1,59 +1,57 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import SideBar from "@/components/sideBar";
-import styles from "./page.module.css";
-import SingleBedRoundedIcon from "@mui/icons-material/SingleBedRounded";
-import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
-import GroupAddRoundedIcon from "@mui/icons-material/GroupAddRounded";
-import { useEffect } from "react";
-import { useGetUsers } from "@/hooks/useGetUsers";
-import {
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
-import { IconButton, Snackbar, Table } from "@mui/joy";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded";
-import DeleteDialogModal from "@/components/deleteConfirmation";
-import { useDeleteUser } from "@/hooks/useDeleteUser";
+import * as React from 'react';
+import SideBar from '@/components/sideBar';
+import styles from './page.module.css';
+import SingleBedRoundedIcon from '@mui/icons-material/SingleBedRounded';
+import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
+import GroupAddRoundedIcon from '@mui/icons-material/GroupAddRounded';
+import { useEffect } from 'react';
+import { useGetUsers } from '@/hooks/useGetUsers';
+import { TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { IconButton, Snackbar, Table } from '@mui/joy';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
+import DeleteDialogModal from '@/components/deleteConfirmation';
+import { useDeleteUser } from '@/hooks/useDeleteUser';
 
 interface User {
-  _id: string;
+  _id: ID;
   username: string;
   user_tag: string;
   email: string;
   created_at: string;
 }
 
+interface ID {
+  $oid: string;
+}
+
 export default function Page() {
   const [users, setUsers] = React.useState<User[]>([]);
   const [showSuccessSnack, setShowSuccessSnack] = React.useState(false);
   const [showErrorSnack, setShowErrorSnack] = React.useState(false);
-  const [snackText, setSnackText] = React.useState("");
+  const [snackText, setSnackText] = React.useState('');
 
   const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);
-  const [userTagToDelete, setUserTagToDelete] = React.useState<string>("");
-  const [userToDelete, setUserToDelete] = React.useState<string>("");
+  const [userTagToDelete, setUserTagToDelete] = React.useState<string>('');
+  const [userToDelete, setUserToDelete] = React.useState<string>('');
 
   const buttons = [
     {
       icon: <GroupAddRoundedIcon />,
-      label: "Pending Users",
-      link: "/pendingUsers",
+      label: 'Pending Users',
+      link: '/pendingUsers',
     },
     {
       icon: <SingleBedRoundedIcon />,
-      label: "Places",
-      link: "/places",
+      label: 'Places',
+      link: '/places',
     },
     {
       icon: <SettingsRoundedIcon />,
-      label: "Settings",
-      link: "/settings",
+      label: 'Settings',
+      link: '/settings',
     },
   ];
 
@@ -66,11 +64,11 @@ export default function Page() {
   const handleDeleteConfirmed = (userId: string) => {
     return async () => {
       if (await useDeleteUser(userId)) {
-        setSnackText("Nutzer erfolgreich gelöscht.");
+        setSnackText('Nutzer erfolgreich gelöscht.');
         setShowSuccessSnack(true);
         fetchUsers();
       } else {
-        setSnackText("Fehler beim löschen des Nutzers.");
+        setSnackText('Fehler beim löschen des Nutzers.');
         setShowErrorSnack(true);
       }
     };

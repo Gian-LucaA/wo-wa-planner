@@ -1,5 +1,4 @@
 import Cookies from 'js-cookie';
-import { redirect } from 'next/navigation';
 
 let isChecking = false;
 
@@ -24,7 +23,9 @@ export const useCheckToken = async () => {
       if (response.status === 401) {
         Cookies.remove('session_id');
         Cookies.remove('username');
-        redirect('/');
+        if (window.location.pathname !== '/') {
+          window.location.href = '/';
+        }
       }
       throw new Error('API error');
     }

@@ -40,10 +40,12 @@ export const useAuth = () => {
     } catch (error) {
       Cookies.remove('session_id');
       Cookies.remove('username');
-      if (error.message === 'Failed to fetch') {
+      if (error instanceof Error && error.message === 'Failed to fetch') {
         setError('Konnte keine Verbindung zum Server herstellen.');
-      } else {
+      } else if (error instanceof Error) {
         setError(error.message);
+      } else {
+        setError('Ein unbekannter Fehler ist aufgetreten.');
       }
       return false;
     }
