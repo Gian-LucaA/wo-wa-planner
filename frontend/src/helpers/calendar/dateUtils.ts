@@ -45,6 +45,8 @@ export interface Day {
   weekdayShort: string;
   isToday?: boolean;
   isPast?: boolean;
+  startDate?: Date;
+  endDate?: Date;
 }
 
 export function getDaysInMonth(monthIndex: number, year: number): Day[] {

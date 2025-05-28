@@ -13,6 +13,7 @@ import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
 import KeyboardDoubleArrowDownRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowDownRounded';
 import Loader from '../loader';
+import { Booking } from '@/types/Booking';
 
 interface BookingsProps {
   placeId?: string;
@@ -34,7 +35,10 @@ export default function Bookings({ placeId }: BookingsProps) {
       }
 
       const bookingsData = await useGetBookings(year, placeId);
-      bookingsData.map((booking: any) => {
+
+      bookingsData.map((booking: Booking) => {
+        if (!booking?.from?.$date || !booking?.to?.$date) return;
+
         const startDate = new Date(parseInt(booking.from.$date.$numberLong, 10));
         const endDate = new Date(parseInt(booking.to.$date.$numberLong, 10));
         booking.startDate = startDate;
