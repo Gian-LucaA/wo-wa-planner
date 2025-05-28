@@ -8,7 +8,7 @@ import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
 import NavigateBeforeRoundedIcon from '@mui/icons-material/NavigateBeforeRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import AddBookingModal from './addBookingModal';
-import { useGetBookings } from '@/hooks/useGetBookings';
+import { useGetBookings } from '@/services/useGetBookings';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
 import KeyboardDoubleArrowDownRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowDownRounded';

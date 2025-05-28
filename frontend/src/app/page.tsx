@@ -5,7 +5,7 @@ import styles from './page.module.css';
 import { Box, Card, Divider } from '@mui/joy';
 import LoginForm from '@/components/loginForm';
 import RegisterForm from '@/components/registerForm';
-import { useCheckToken } from '@/hooks/useCheckToken';
+import { useCheckToken } from '@/services/useCheckToken';
 
 export default function Home() {
   const [isLogin, setIsLogin] = useState(true);

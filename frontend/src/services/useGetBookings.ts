@@ -1,7 +1,9 @@
 import Cookies from 'js-cookie';
+import { ApiError } from 'next/dist/server/api-utils';
+import { ApiPaths } from '../../paths';
 
-export const useGetPlaces = () => {
-  const pendingUsers = fetch('https://general-alcazar.toastylabs.de/api/places/getPlaces', {
+export const useGetBookings = (year: number, placeId: string) => {
+  const bookings = fetch(ApiPaths.GET_BOOKINGS(year, placeId), {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -18,14 +20,8 @@ export const useGetPlaces = () => {
       return res.json();
     })
     .then((data) => {
-      return data.places;
+      return data.bookings;
     })
-    .catch((err) => {
-      if (err.status === 401) {
-        Cookies.remove('session_id');
-        Cookies.remove('username');
-        window.location.href = '/';
-      }
-    });
-  return pendingUsers;
+    .catch((err) => {});
+  return bookings;
 };

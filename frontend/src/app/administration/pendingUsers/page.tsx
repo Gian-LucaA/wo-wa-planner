@@ -6,13 +6,13 @@ import styles from './page.module.css';
 import SingleBedRoundedIcon from '@mui/icons-material/SingleBedRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import { useEffect } from 'react';
-import { useGetPendingUsers } from '@/hooks/useGetPendingUsers';
+import { useGetPendingUsers } from '@/services/useGetPendingUsers';
 import { TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { IconButton, Snackbar, Table } from '@mui/joy';
 import DoneIcon from '@mui/icons-material/Done';
 import NotInterestedIcon from '@mui/icons-material/NotInterested';
-import { useAcceptUser } from '@/hooks/useAcceptUser';
-import { useDeclineUser } from '@/hooks/useDeclineUser';
+import { useAcceptUser } from '@/services/useAcceptUser';
+import { useDeclineUser } from '@/services/useDeclineUser';
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 
 interface User {

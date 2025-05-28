@@ -1,9 +1,8 @@
 import Cookies from 'js-cookie';
+import { ApiPaths } from '../../paths';
 
 export const useGetUsers = (userId?: string) => {
-  const url = userId
-    ? `https://general-alcazar.toastylabs.de/api/users/getUsers?userId=${userId}`
-    : 'https://general-alcazar.toastylabs.de/api/users/getUsers';
+  const url = userId ? ApiPaths.GET_USERS_BY_ID(userId) : ApiPaths.GET_USERS;
 
   const users = fetch(url, {
     method: 'GET',

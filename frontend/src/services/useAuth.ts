@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Cookies from 'js-cookie';
+import { ApiPaths } from '../../paths';
 
 export const useAuth = () => {
   const [error, setError] = useState('');
@@ -8,9 +9,7 @@ export const useAuth = () => {
   const authenticate = async (isLogin: boolean, username: string, password: string, email?: string) => {
     setError('');
     setInfo('');
-    const url = isLogin
-      ? 'https://general-alcazar.toastylabs.de/api/auth/login'
-      : 'https://general-alcazar.toastylabs.de/api/auth/register';
+    const url = isLogin ? ApiPaths.AUTH_LOGIN : ApiPaths.AUTH_REGISTER;
 
     try {
       const res = await fetch(url, {

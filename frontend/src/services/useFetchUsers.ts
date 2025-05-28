@@ -1,19 +1,20 @@
 import Cookies from 'js-cookie';
+import { ApiPaths } from '../../paths';
 
-export const useGetBookings = (year: number, placeId: string) => {
-  const bookings = fetch(
-    `https://general-alcazar.toastylabs.de/api/places/getBookings?year=${year}&placeId=${placeId}`,
-    {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-    },
-  )
+export const useFetchUsers = (searched?: string) => {
+  const url = ApiPaths.GET_USERS_BY_NAME(searched ? searched : '');
+
+  const users = fetch(url, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  })
     .then((res) => {
       if (!res.ok) {
         if (res.status === 401) {
           Cookies.remove('session_id');
           Cookies.remove('username');
+
           window.location.href = '/';
         }
         throw new Error('API error');
@@ -21,8 +22,8 @@ export const useGetBookings = (year: number, placeId: string) => {
       return res.json();
     })
     .then((data) => {
-      return data.bookings;
+      return data.users;
     })
     .catch((err) => {});
-  return bookings;
+  return users;
 };

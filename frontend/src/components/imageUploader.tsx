@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button, Input, SvgIcon } from '@mui/joy';
 import { styled } from '@mui/joy';
-import { useUploadImage } from '../hooks/useUploadImage';
+import { useUploadImage } from '../services/useUploadImage';
 
 export default function ImageUploader() {
   const [file, setFile] = React.useState<File | null>(null);

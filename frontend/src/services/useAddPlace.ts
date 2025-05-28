@@ -1,12 +1,15 @@
 'use client';
 import Cookies from 'js-cookie';
+import { ApiPaths } from '../../paths';
 
-export const useAddBooking = (locationId: string, from: Date, to: Date) => {
-  const result = fetch('https://general-alcazar.toastylabs.de/api/places/createBooking', {
+export const useCreatePlace = (name: string, location: string, imgPath: string, users: { user_tag: string }[]) => {
+  const userTags = users.map((user) => user.user_tag);
+
+  const result = fetch(ApiPaths.CREATE_PLACE, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify({ locationId, from, to }),
+    body: JSON.stringify({ name, location, imgPath, users: userTags }),
   })
     .then((res) => {
       console.log(res);
@@ -19,7 +22,7 @@ export const useAddBooking = (locationId: string, from: Date, to: Date) => {
           case 409:
             return {
               success: false,
-              error: 'Dieser Zeitraum ist bereits verbucht.',
+              error: 'Dieser Ort existiert bereits! Bitte wähle einen anderen Namen.',
             };
           default:
             return { success: false, error: `API error: ${res.status}` };

@@ -7,13 +7,13 @@ import SingleBedRoundedIcon from '@mui/icons-material/SingleBedRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import GroupAddRoundedIcon from '@mui/icons-material/GroupAddRounded';
 import { useEffect } from 'react';
-import { useGetUsers } from '@/hooks/useGetUsers';
+import { useGetUsers } from '@/services/useGetUsers';
 import { TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { IconButton, Snackbar, Table } from '@mui/joy';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import DeleteDialogModal from '@/components/deleteConfirmation';
-import { useDeleteUser } from '@/hooks/useDeleteUser';
+import { useDeleteUser } from '@/services/useDeleteUser';
 
 interface User {
   _id: ID;

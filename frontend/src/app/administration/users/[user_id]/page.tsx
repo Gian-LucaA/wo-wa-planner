@@ -2,11 +2,11 @@
 
 import * as React from 'react';
 import { usePathname } from 'next/navigation';
-import { useGetUsers } from '@/hooks/useGetUsers';
+import { useGetUsers } from '@/services/useGetUsers';
 import SideBar from '@/components/sideBar';
 import UserEditor from '@/components/UserEditor';
 import styles from './page.module.css';
-import { useUpdateUser } from '@/hooks/useUpdateUser';
+import { useUpdateUser } from '@/services/useUpdateUser';
 import { Snackbar } from '@mui/joy';
 
 interface User {

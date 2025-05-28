@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Button, Modal, ModalClose, ModalDialog, Snackbar, Typography } from '@mui/joy';
 import BookingsSelect from './bookingsSelect';
-import { useAddBooking } from '@/hooks/useAddBooking';
+import { useAddBooking } from '@/services/useAddBooking';
 
 interface AddBookingModalProps {
   placeId?: string;
@@ -20,7 +20,7 @@ export default function AddBookingModal({ placeId, open, setOpen, bookings, upda
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [snackbarSuccess, setSnackbarSuccess] = React.useState(false);
 
-  const location = 'Wohn Wagen';
+  const location = 'ufo';
 
   const createBooking = async () => {
     if (!placeId) {

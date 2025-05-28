@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Alert, Button, Input, Link, Stack, Typography } from '@mui/joy';
 import PasswordMeterInput from './passwordInput';
 import PersonIcon from '@mui/icons-material/Person';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../services/useAuth';
 import { redirect } from 'next/navigation';
 
 interface LoginFormProps {

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { redirect } from 'next/navigation';
+import { ApiPaths } from '../../paths';
 
 export default function SessionChecker() {
   const [isActive, setIsActive] = useState(false);
@@ -31,7 +32,7 @@ export default function SessionChecker() {
     if (sessionId) {
       interval = setInterval(() => {
         if (isActive) {
-          fetch('https://general-alcazar.toastylabs.de/api/auth/refreshToken', {
+          fetch(ApiPaths.REFRESH_TOKEN, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',

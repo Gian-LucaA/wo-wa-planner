@@ -18,12 +18,12 @@ import {
 } from '@mui/joy';
 import styles from './page.module.css';
 import UsersSelector from '@/components/usersSelector';
-import { useCreatePlace } from '@/hooks/useAddPlace';
-import { useGetPlaces } from '@/hooks/useGetPlaces';
+import { useCreatePlace } from '@/services/useAddPlace';
+import { useGetPlaces } from '@/services/useGetPlaces';
 import Loader from '@/components/loader';
 import ImageUploader from '@/components/imageUploader';
 import { redirect } from 'next/navigation';
-import { useGetBookings } from '@/hooks/useGetBookings';
+import { useGetBookings } from '@/services/useGetBookings';
 
 export default function Page() {
   const [open, setOpen] = React.useState<boolean>(false);

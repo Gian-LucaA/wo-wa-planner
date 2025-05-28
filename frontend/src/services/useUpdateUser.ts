@@ -1,12 +1,13 @@
 'use client';
 import Cookies from 'js-cookie';
+import { ApiPaths } from '../../paths';
 
-export const useDeleteUser = (id: string) => {
-  const success = fetch('https://general-alcazar.toastylabs.de/api/users/deleteUser', {
+export const useUpdateUser = (id: string, username: string, user_tag: string, email: string) => {
+  const success = fetch(ApiPaths.UPDATE_USERS, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify({ id }),
+    body: JSON.stringify({ id, username, user_tag, email }),
   })
     .then((res) => {
       if (!res.ok) {

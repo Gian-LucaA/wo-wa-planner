@@ -1,20 +1,21 @@
 'use client';
 import Cookies from 'js-cookie';
+import { redirect } from 'next/navigation';
+import { ApiPaths } from '../../paths';
 
-export const useUpdateUser = (id: string, username: string, user_tag: string, email: string) => {
-  const success = fetch('https://general-alcazar.toastylabs.de/api/users/updateUser', {
+export const useAcceptUser = (id: string) => {
+  const response = fetch(ApiPaths.ACCEPT_USERS, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify({ id, username, user_tag, email }),
+    body: JSON.stringify({ id }),
   })
     .then((res) => {
       if (!res.ok) {
         if (res.status === 401) {
           Cookies.remove('session_id');
           Cookies.remove('username');
-
-          window.location.href = '/';
+          redirect('/');
         }
         throw new Error('API error');
       }
@@ -30,8 +31,9 @@ export const useUpdateUser = (id: string, username: string, user_tag: string, em
       return true;
     })
     .catch((err) => {
+      Cookies.remove('session_id');
+      Cookies.remove('username');
+      window.location.href = '/';
       return false;
     });
-
-  return success;
 };

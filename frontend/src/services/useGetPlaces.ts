@@ -1,19 +1,17 @@
-'use client';
 import Cookies from 'js-cookie';
+import { ApiPaths } from '../../paths';
 
-export const useDeclineUser = (id: string) => {
-  const success = fetch('https://general-alcazar.toastylabs.de/api/users/declineUser', {
-    method: 'POST',
+export const useGetPlaces = () => {
+  const pendingUsers = fetch(ApiPaths.GET_PLACES, {
+    method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify({ id }),
   })
     .then((res) => {
       if (!res.ok) {
         if (res.status === 401) {
           Cookies.remove('session_id');
           Cookies.remove('username');
-
           window.location.href = '/';
         }
         throw new Error('API error');
@@ -21,17 +19,14 @@ export const useDeclineUser = (id: string) => {
       return res.json();
     })
     .then((data) => {
-      Cookies.set('session_id', data.session_id, {
-        expires: 1,
-        secure: false,
-        sameSite: 'Strict',
-        path: '/',
-      });
-      return true;
+      return data.places;
     })
     .catch((err) => {
-      return false;
+      if (err.status === 401) {
+        Cookies.remove('session_id');
+        Cookies.remove('username');
+        window.location.href = '/';
+      }
     });
-
-  return success;
+  return pendingUsers;
 };

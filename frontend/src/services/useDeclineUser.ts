@@ -1,16 +1,13 @@
 'use client';
-
 import Cookies from 'js-cookie';
+import { ApiPaths } from '../../paths';
 
-export const useUploadImage = (place_id: string, image: File) => {
-  const formData = new FormData();
-  formData.append('image', image);
-  formData.append('place_id', place_id);
-
-  const success = fetch('https://general-alcazar.toastylabs.de/api/places/addImage', {
+export const useDeclineUser = (id: string) => {
+  const success = fetch(ApiPaths.DECLINE_USERS, {
     method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: formData,
+    body: JSON.stringify({ id }),
   })
     .then((res) => {
       if (!res.ok) {
@@ -20,6 +17,7 @@ export const useUploadImage = (place_id: string, image: File) => {
 
           window.location.href = '/';
         }
+        throw new Error('API error');
       }
       return res.json();
     })

@@ -1,7 +1,8 @@
 import Cookies from 'js-cookie';
+import { ApiPaths } from '../../paths';
 
 export const useGetPendingUsers = () => {
-  const pendingUsers = fetch('https://general-alcazar.toastylabs.de/api/users/getPendingUsers', {
+  const pendingUsers = fetch(ApiPaths.GET_PENDING_USERS, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
