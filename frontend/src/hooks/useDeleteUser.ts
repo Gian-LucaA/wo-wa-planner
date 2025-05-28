@@ -2,7 +2,7 @@
 import Cookies from 'js-cookie';
 
 export const useDeleteUser = (id: string) => {
-  const success = fetch('http://general-alcazar.toastylabs.de/api/users/deleteUser', {
+  const success = fetch('https://general-alcazar.toastylabs.de/api/users/deleteUser', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

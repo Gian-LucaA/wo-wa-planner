@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 export const useCreatePlace = (name: string, location: string, imgPath: string, users: { user_tag: string }[]) => {
   const userTags = users.map((user) => user.user_tag);
 
-  const result = fetch('http://general-alcazar.toastylabs.de/api/places/createPlace', {
+  const result = fetch('https://general-alcazar.toastylabs.de/api/places/createPlace', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

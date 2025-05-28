@@ -9,8 +9,8 @@ export const useAuth = () => {
     setError('');
     setInfo('');
     const url = isLogin
-      ? 'http://general-alcazar.toastylabs.de/api/auth/login'
-      : 'http://general-alcazar.toastylabs.de/api/auth/register';
+      ? 'https://general-alcazar.toastylabs.de/api/auth/login'
+      : 'https://general-alcazar.toastylabs.de/api/auth/register';
 
     try {
       const res = await fetch(url, {

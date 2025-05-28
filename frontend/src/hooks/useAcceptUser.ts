@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { redirect } from 'next/navigation';
 
 export const useAcceptUser = (id: string) => {
-  const success = fetch('http://general-alcazar.toastylabs.de/api/users/acceptUser', {
+  const success = fetch('https://general-alcazar.toastylabs.de/api/users/acceptUser', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

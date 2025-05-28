@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 
 export const useGetBookings = (year: number, placeId: string) => {
   const bookings = fetch(
-    `http://general-alcazar.toastylabs.de/api/places/getBookings?year=${year}&placeId=${placeId}`,
+    `https://general-alcazar.toastylabs.de/api/places/getBookings?year=${year}&placeId=${placeId}`,
     {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },

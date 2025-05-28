@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 
 export const useGetPendingUsers = () => {
-  const pendingUsers = fetch('http://general-alcazar.toastylabs.de/api/users/getPendingUsers', {
+  const pendingUsers = fetch('https://general-alcazar.toastylabs.de/api/users/getPendingUsers', {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

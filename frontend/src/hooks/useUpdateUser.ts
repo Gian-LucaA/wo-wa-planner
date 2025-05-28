@@ -2,7 +2,7 @@
 import Cookies from 'js-cookie';
 
 export const useUpdateUser = (id: string, username: string, user_tag: string, email: string) => {
-  const success = fetch('http://general-alcazar.toastylabs.de/api/users/updateUser', {
+  const success = fetch('https://general-alcazar.toastylabs.de/api/users/updateUser', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

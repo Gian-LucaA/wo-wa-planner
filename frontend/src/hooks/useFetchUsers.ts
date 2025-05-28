@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 
 export const useFetchUsers = (searched?: string) => {
-  const url = `http://general-alcazar.toastylabs.de/api/users/getUsers?searched=${searched}`;
+  const url = `https://general-alcazar.toastylabs.de/api/users/getUsers?searched=${searched}`;
 
   const users = fetch(url, {
     method: 'GET',
