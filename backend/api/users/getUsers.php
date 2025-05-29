@@ -16,7 +16,11 @@ function getRequest()
     $pendingUsersArray = iterator_to_array($pendingUsers);
 
     $pendingUsersArray = array_map(function ($user) {
-        $user['created_at'] = $user['created_at']->toDateTime()->format('H:i d.m.Y');
+        if (isset($user['created_at']) && $user['created_at'] instanceof MongoDB\BSON\UTCDateTime) {
+            $user['created_at'] = $user['created_at']->toDateTime()->format('H:i d.m.Y');
+        } else {
+            $user['created_at'] = "Unbekannt";
+        }
         unset($user['password']);
         return $user;
     }, $pendingUsersArray);
