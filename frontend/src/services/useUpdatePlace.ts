@@ -1,9 +1,9 @@
 'use client';
 import Cookies from 'js-cookie';
 import { ApiPaths } from '../../paths';
-import { User } from '@/types/User';
+import { PlaceUser } from '@/types/PlaceUser';
 
-export const useUpdatePlace = (id: string, name: string, location: string, users: User[]) => {
+export const useUpdatePlace = (id: string, name: string, location: string, users: PlaceUser[]) => {
   const formatedUsers = users.map((user) => user.user_tag);
   console.log(users, formatedUsers);
   const success = fetch(ApiPaths.UPDATE_PLACE, {

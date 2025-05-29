@@ -10,6 +10,7 @@ import { User } from '@/types/User';
 import SideBar from '@/components/sideBar';
 import styles from './page.module.css';
 import { useUpdatePlace } from '@/services/useUpdatePlace';
+import { PlaceUser } from '@/types/PlaceUser';
 
 export default function AssignedUsersPage() {
   const pathname = usePathname();
@@ -17,8 +18,8 @@ export default function AssignedUsersPage() {
 
   const [isLoading, setIsLoading] = React.useState(true);
   const [place, setPlace] = React.useState<Place | null>(null);
-  const [selectedUsers, setSelectedUsers] = React.useState<User[] | null>(null);
-  const [unselectedUsers, setUnselectedUsers] = React.useState<User[] | null>(null);
+  const [selectedUsers, setSelectedUsers] = React.useState<PlaceUser[] | undefined>(undefined);
+  const [unselectedUsers, setUnselectedUsers] = React.useState<PlaceUser[] | undefined>(undefined);
   const [showSnack, setShowSnack] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
   const [success, setSuccess] = React.useState(true);
@@ -90,9 +91,7 @@ export default function AssignedUsersPage() {
         </Table>
 
         <Box mt={4}>
-          <Typography level="h5" mb={1}>
-            Nutzer hinzufügen
-          </Typography>
+          <Typography mb={1}>Nutzer hinzufügen</Typography>
           <Select
             placeholder="Nutzer auswählen"
             onChange={(_, newValue) => {
