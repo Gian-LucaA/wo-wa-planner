@@ -2,13 +2,14 @@
 
 function getRequest()
 {
-    global $data, $dbClient;
+    global $data, $dbClient, $params;
 
     $sessionsCollection = $dbClient->users_data->sessions;
     $usersCollection = $dbClient->users_data->users;
     $placesCollection = $dbClient->place_data->places;
 
     $session = $sessionsCollection->findOne(['session_id' => $data['session_id']]);
+
     if (!$session) {
         http_response_code(401);
         echo json_encode(['error' => 'Session ungültig.']);
@@ -22,18 +23,26 @@ function getRequest()
         exit();
     }
 
-    $places = $placesCollection->aggregate([
-        [
-            '$match' => [
-                'users' => $user['user_tag']
+    $places = null;
+
+    if (isset($params['placeId'])) {
+        $places = $placesCollection->find(["_id" => new MongoDB\BSON\ObjectId($params['placeId'])]);
+    } else {
+        $places = $placesCollection->aggregate([
+            [
+                '$match' => [
+                    'users' => $user['user_tag']
+                ]
             ]
-        ]
-    ]);
+        ]);
+    }
 
     $places = iterator_to_array($places);
 
-    foreach ($places as &$place) {
-        unset($place['users']);
+    if (!isset($params['placeId'])) {
+        foreach ($places as &$place) {
+            unset($place['users']);
+        };
     };
 
     return ["places" => $places];

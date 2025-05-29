@@ -105,7 +105,7 @@ if (!file_exists($filePath)) {
     // Geben Sie eine 404-Fehlermeldung zurück, wenn die Datei nicht gefunden wurde
     $logger->warning("Es wurde versucht eine nicht existierende Datei auszuführen: " . $filePath);
     http_response_code(404);
-    echo json_encode(['error' => 'Datei nicht gefunden']);
+    echo json_encode(['error' => 'Interner Fehler!']);
 }
 
 $requestBody = file_get_contents('php://input');

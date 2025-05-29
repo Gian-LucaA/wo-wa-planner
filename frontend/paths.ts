@@ -10,16 +10,17 @@ export class ApiPaths {
   public static readonly UPDATE_USERS = `${this.USERS}/updateUser`;
   public static readonly GET_PENDING_USERS = `${this.USERS}/getPendingUsers`;
   public static readonly GET_USERS = `${this.USERS}/getUsers`;
-  public static readonly GET_USERS_BY_NAME = (searched: string) =>
-    `${this.USERS}${this.GET_USERS}?searched=${searched}`;
-  public static readonly GET_USERS_BY_ID = (userId: string) => `${this.USERS}${this.GET_USERS}?userId=${userId}`;
+  public static readonly GET_USERS_BY_NAME = (searched: string) => `${this.GET_USERS}?searched=${searched}`;
+  public static readonly GET_USERS_BY_ID = (userId: string) => `${this.GET_USERS}?userId=${userId}`;
 
   // Place API paths
   public static readonly PLACES = `${this.BASE_PATH}/places`;
   public static readonly CREATE_BOOKING = `${this.PLACES}/createBooking`;
   public static readonly CREATE_PLACE = `${this.PLACES}/createBooking`;
   public static readonly PLACE_ADD_IMAGE = `${this.PLACES}/addImage`;
+  public static readonly UPDATE_PLACE = `${this.PLACES}/updatePlace`;
   public static readonly GET_PLACES = `${this.PLACES}/getPlaces`;
+  public static readonly GET_PLACES_BY_ID = (placeId: string) => `${this.PLACES}/getPlaces?placeId=${placeId}`;
   public static readonly GET_BOOKINGS = (year: number, placeId: string) =>
     `${this.PLACES}/getBookings?year=${year}&placeId=${placeId}`;
 

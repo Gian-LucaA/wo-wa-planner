@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie';
 import { ApiPaths } from '../../paths';
 
-export const useGetPlaces = () => {
-  const pendingUsers = fetch(ApiPaths.GET_PLACES, {
+export const useGetPlaces = (placeId?: string) => {
+  const pendingUsers = fetch(placeId ? ApiPaths.GET_PLACES_BY_ID(placeId) : ApiPaths.GET_PLACES, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
