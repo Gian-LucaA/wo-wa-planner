@@ -12,6 +12,11 @@ require_once __DIR__ . '/logging/logger.php';
 
 $logger = new Logger();
 
+ini_set('error_reporting', E_ALL);
+ini_set('log_errors', 'On');
+ini_set('display_errors', 'Off');
+ini_set('error_log', '/var/www/html/logging/logs/php-error.log');
+
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
