@@ -3,12 +3,12 @@ import Cookies from 'js-cookie';
 import { redirect } from 'next/navigation';
 import { ApiPaths } from '../../paths';
 
-export const useAcceptUser = (id: string) => {
-  const response = fetch(ApiPaths.ACCEPT_USERS, {
+export const useAcceptUser = (_id: string) => {
+  fetch(ApiPaths.ACCEPT_USERS, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify({ id }),
+    body: JSON.stringify({ _id }),
   })
     .then((res) => {
       if (!res.ok) {

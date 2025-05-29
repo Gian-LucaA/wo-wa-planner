@@ -18,6 +18,7 @@ function postRequest()
     if (!isset($requestingUser['isAdmin']) || !$requestingUser['isAdmin']) {
         http_response_code(401);
         echo json_encode(['error' => 'Du hast nicht das Recht für diese Operation!']);
+        exit();
     };
 
     $data = json_decode(file_get_contents('php://input'), true);

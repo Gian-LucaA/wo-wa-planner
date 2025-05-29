@@ -14,7 +14,7 @@ function postRequest()
     global $dbClient, $sessionId, $logger;
 
     $data = json_decode(file_get_contents('php://input'), true);
-    if (!isset($data['id'])) {
+    if (!isset($data['_id']) || !$data['_id']) {
         http_response_code(400);
         echo json_encode(['error' => 'Benutzer-ID fehlt!']);
         exit();
@@ -28,11 +28,20 @@ function postRequest()
     if (!isset($requestingUser['isAdmin']) || !$requestingUser['isAdmin']) {
         http_response_code(401);
         echo json_encode(['error' => 'Du hast nicht das Recht für diese Operation!']);
+        exit();
     };
 
-    $user = $pendingUsersCollection->findOne(['_id' => new MongoDB\BSON\ObjectId($data['id'])]);
+    try {
+        $objectId = new MongoDB\BSON\ObjectId($data['_id']);
+    } catch (Exception $e) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Ungültige Benutzer-ID!']);
+        exit();
+    }
 
-    $logger->info("Trying to accept user:" . $user);
+    $user = $pendingUsersCollection->findOne(['_id' => $objectId]);
+
+    $logger->info("Trying to accept user:" . json_encode($user));
 
     acceptedRegistrationMail($user['username'], $user['email']);
 
@@ -41,7 +50,7 @@ function postRequest()
         $user['created_at'] = new MongoDB\BSON\UTCDateTime((new DateTime())->getTimestamp() * 1000);
         $result = $usersCollection->insertOne($user);
         if ($result->getInsertedCount() == 1) {
-            $pendingUsersCollection->deleteOne(['_id' => new MongoDB\BSON\ObjectId($data['id'])]);
+            $pendingUsersCollection->deleteOne(['_id' => $objectId]);
             http_response_code(200);
             return ['success' => 'Benutzer erfolgreich akzeptiert!'];
         } else {

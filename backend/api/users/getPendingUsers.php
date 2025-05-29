@@ -11,6 +11,7 @@ function getRequest()
     if (!isset($requestingUser['isAdmin']) || !$requestingUser['isAdmin']) {
         http_response_code(401);
         echo json_encode(['error' => 'Du hast nicht das Recht für diese Operation!']);
+        exit();
     };
 
     $pendingUsersCollection = $dbClient->users_data->pending_users;
