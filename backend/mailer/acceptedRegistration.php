@@ -12,7 +12,7 @@ function acceptedRegistrationMail($name, $mailAddress)
 
     $mg = Mailgun::create($_ENV['MAILGUN_API_KEY'] ?: 'MAILGUN_API_KEY');
 
-    $logger->info("Sende mail an " . $name . "(" . $emailAddress . ")");
+    $logger->info("Sende mail an " . $name . "(" . $mailAddress . ")");
 
     $result = $mg->messages()->send(
         'wowaplan.toastylabs.de',

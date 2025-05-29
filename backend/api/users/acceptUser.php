@@ -11,7 +11,7 @@ function getRequest()
 
 function postRequest()
 {
-    global $dbClient, $sessionId;
+    global $dbClient, $sessionId, $logger;
 
     $data = json_decode(file_get_contents('php://input'), true);
     if (!isset($data['id'])) {
@@ -31,6 +31,8 @@ function postRequest()
     };
 
     $user = $pendingUsersCollection->findOne(['_id' => new MongoDB\BSON\ObjectId($data['id'])]);
+
+    $logger->info("Trying to accept user:" . $user);
 
     acceptedRegistrationMail($user['username'], $user['email']);
 
