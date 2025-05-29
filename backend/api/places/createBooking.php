@@ -11,7 +11,7 @@ function getRequest()
 
 function postRequest()
 {
-    global $dbClient, $sessionId;
+    global $dbClient, $sessionId, $logger;
 
     $data = json_decode(file_get_contents('php://input'), true);
 
@@ -51,15 +51,19 @@ function postRequest()
     $placesCollection = $dbClient->selectCollection('place_data', 'places');
     $place = $placesCollection->findOne(['_id' => new MongoDB\BSON\ObjectId($data['locationId'])]);
 
-    sendBookedMail(
-        $user['username'],
-        $user['email'],
-        'Buchung ' . $place['name'],
-        'Buchung des WoWas über WoWaPlanner',
-        $place['location'],
-        new DateTime($data['from'], new DateTimeZone('UTC')),
-        new DateTime($data['to'], new DateTimeZone('UTC'))
-    );
+    if (!$user['email']) {
+        $logger->warning("Benutzer E-Mail ist nicht definiert!", $user);
+    } else {
+        sendBookedMail(
+            $user['username'],
+            $user['email'],
+            'Buchung ' . $place['name'],
+            'Buchung des WoWas über WoWaPlanner',
+            $place['location'],
+            new DateTime($data['from'], new DateTimeZone('UTC')),
+            new DateTime($data['to'], new DateTimeZone('UTC'))
+        );
+    }
 
     // Neues Dokument erstellen
     $newBooking = [
