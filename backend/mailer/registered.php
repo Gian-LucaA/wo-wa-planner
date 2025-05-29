@@ -10,7 +10,7 @@ function sendRegisteredMail($name, $mailAddress)
 {
     global $logger;
 
-    $logger->info("Sende Wartelisten E-Mail: " . $name . -"(" . $mailAddress . ")");
+    $logger->info("Sende Wartelisten E-Mail: " . $name . "(" . $mailAddress . ")");
 
     $mg = Mailgun::create($_ENV['MAILGUN_API_KEY'] ?: 'MAILGUN_API_KEY');
 

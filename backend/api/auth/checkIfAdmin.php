@@ -11,19 +11,10 @@ function getRequest()
     if (!isset($requestingUser['isAdmin']) || !$requestingUser['isAdmin']) {
         http_response_code(401);
         echo json_encode(['error' => 'Du hast nicht das Recht für diese Operation!']);
+        exit();
     };
 
-    $pendingUsersCollection = $dbClient->users_data->pending_users;
-    $pendingUsers = $pendingUsersCollection->find([]);
-    $pendingUsersArray = iterator_to_array($pendingUsers);
-
-    $pendingUsersArray = array_map(function ($user) {
-        $user['created_at'] = $user['created_at']->toDateTime()->format('H:i d.m.Y');
-        unset($user['password']);
-        return $user;
-    }, $pendingUsersArray);
-
-    return ["pendingUsers" => $pendingUsersArray];
+    return [];
 }
 
 function postRequest()

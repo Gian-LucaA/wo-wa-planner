@@ -276,15 +276,13 @@ class Watch implements Executable, /* @internal */ CommandSubscriber
     {
         return new ChangeStream(
             $this->createChangeStreamIterator($server),
-            fn ($resumeToken, $hasAdvanced): ChangeStreamIterator => $this->resume($resumeToken, $hasAdvanced),
+            fn($resumeToken, $hasAdvanced): ChangeStreamIterator => $this->resume($resumeToken, $hasAdvanced),
             $this->codec,
         );
     }
 
     /** @internal */
-    final public function commandFailed(CommandFailedEvent $event): void
-    {
-    }
+    final public function commandFailed(CommandFailedEvent $event): void {}
 
     /** @internal */
     final public function commandStarted(CommandStartedEvent $event): void

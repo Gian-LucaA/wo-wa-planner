@@ -28,5 +28,6 @@ export class ApiPaths {
   public static readonly AUTH_LOGIN = `${this.AUTH}/login`;
   public static readonly AUTH_REGISTER = `${this.AUTH}/register`;
   public static readonly AUTH_TOKEN_CHECK = `${this.AUTH}/checkToken`;
+  public static readonly AUTH_TOKEN_IS_ADMIN = `${this.AUTH}/checkIfAdmin`;
   public static readonly REFRESH_TOKEN = `${this.AUTH}/refreshToken`;
 }

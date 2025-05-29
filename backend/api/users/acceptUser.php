@@ -11,7 +11,7 @@ function getRequest()
 
 function postRequest()
 {
-    global $dbClient;
+    global $dbClient, $sessionId;
 
     $data = json_decode(file_get_contents('php://input'), true);
     if (!isset($data['id'])) {
@@ -22,6 +22,13 @@ function postRequest()
 
     $pendingUsersCollection = $dbClient->users_data->pending_users;
     $usersCollection = $dbClient->users_data->users;
+
+    $requestingUser = $usersCollection->findOne(['_id' => $sessionId]);
+
+    if (!isset($requestingUser['isAdmin']) || !$requestingUser['isAdmin']) {
+        http_response_code(401);
+        echo json_encode(['error' => 'Du hast nicht das Recht für diese Operation!']);
+    };
 
     $user = $pendingUsersCollection->findOne(['_id' => new MongoDB\BSON\ObjectId($data['id'])]);
 
