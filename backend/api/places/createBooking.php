@@ -51,7 +51,7 @@ function postRequest()
     $placesCollection = $dbClient->selectCollection('place_data', 'places');
     $place = $placesCollection->findOne(['_id' => new MongoDB\BSON\ObjectId($data['locationId'])]);
 
-    if (!$user['email']) {
+    if (!isset($user['email']) || !$user['email']) {
         $logger->warning("Benutzer E-Mail ist nicht definiert!", $user);
     } else {
         sendBookedMail(
