@@ -4,7 +4,7 @@ class Logger
 {
     private string $logFile;
 
-    public function __construct(string $logFile = __DIR__ . '/app.log')
+    public function __construct(string $logFile = __DIR__ . '/logs/app.log')
     {
         $this->logFile = $logFile;
     }
@@ -17,8 +17,6 @@ class Logger
         $result = file_put_contents($this->logFile, $logEntry, FILE_APPEND);
         if ($result === false) {
             error_log("❌ Konnte nicht in Logdatei schreiben: {$this->logFile}");
-        } else {
-            error_log("✅ Log geschrieben: {$logEntry}");
         }
     }
 
