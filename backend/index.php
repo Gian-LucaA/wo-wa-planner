@@ -8,6 +8,9 @@ header('Access-Control-Allow-Credentials: true');
 require 'vendor/autoload.php';
 require './helpers/generateNewToken.php';
 require './helpers/checkToken.php';
+require_once __DIR__ . '/logging/logger.php';
+
+$logger = new Logger();
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -26,13 +29,16 @@ if ($method === 'OPTIONS') {
     exit();
 }
 
+$logger->info("Neue API Request: " . $uri, $method, $requestBody, $data);
+
 // Verbindung zu MongoDB herstellen
 try {
     $dbClient = new MongoDB\Client($_ENV['MONGODB_URI']);
     $collection = $dbClient->game_data->countries;
 } catch (Exception $e) {
+    $logger->error("Verbindung zu MongoDB konnte nicht hergestellt werden!" . $e->getMessage());
     http_response_code(500);
-    echo json_encode(['error' => 'Datenbank Verbindung konnte nicht hergestellt werden.', 'message' => $e->getMessage()]);
+    echo json_encode(['error' => 'Datenbank Verbindung konnte nicht hergestellt werden.', 'message' => "Interner Fehler!"]);
     exit();
 }
 
@@ -97,13 +103,14 @@ $filePath = __DIR__ . "/$apiFolder/$dataFolder/$functionFile.php";
 // Überprüfen Sie, ob die Datei existiert
 if (!file_exists($filePath)) {
     // Geben Sie eine 404-Fehlermeldung zurück, wenn die Datei nicht gefunden wurde
+    $logger->warning("Es wurde versucht eine nicht existierende Datei auszuführen: " . $filePath);
     http_response_code(404);
     echo json_encode(['error' => 'Datei nicht gefunden']);
 }
 
 $requestBody = file_get_contents('php://input');
 
-global $params, $dbClient, $data, $sessionId;
+global $params, $dbClient, $data, $sessionId, $logger;
 
 // Schließen Sie die Datei ein, um die Funktion aufzurufen
 include $filePath;
@@ -119,6 +126,7 @@ switch ($method) {
         }
         break;
     default:
+        $logger->warning("Es wurde eine unerlaubte Methode benutzt! " . $method);
         http_response_code(405);
         echo json_encode(['error' => 'Methode nicht erlaubt']);
         break;
@@ -127,5 +135,6 @@ switch ($method) {
 if (!empty($returnValue)) {
     http_response_code(200);
     echo json_encode($returnValue);
+    $logger->info("Ende des API Calls: " . $uri . " \n Ergebnis: " . json_encode($returnValue));
 }
 exit();

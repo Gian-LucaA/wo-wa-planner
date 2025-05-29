@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../../mailer/acceptedRegistration.php';
+
 function getRequest()
 {
     http_response_code(400);
@@ -22,6 +24,8 @@ function postRequest()
     $usersCollection = $dbClient->users_data->users;
 
     $user = $pendingUsersCollection->findOne(['_id' => new MongoDB\BSON\ObjectId($data['id'])]);
+
+    acceptedRegistrationMail($user['username'], $user['email']);
 
     if ($user) {
         unset($user['_id']);

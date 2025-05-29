@@ -30,10 +30,5 @@ export const useAcceptUser = (id: string) => {
       });
       return true;
     })
-    .catch((err) => {
-      Cookies.remove('session_id');
-      Cookies.remove('username');
-      window.location.href = '/';
-      return false;
-    });
+    .catch((err) => {});
 };

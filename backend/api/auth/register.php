@@ -1,5 +1,8 @@
 <?php
 
+require_once __DIR__ . '/../../mailer/registered.php';
+require_once __DIR__ . '/../../mailer/newRegistration.php';
+
 function getRequest()
 {
   http_response_code(400);
@@ -42,8 +45,8 @@ function postRequest()
   $usersCollection = $dbClient->users_data->users;
   $pendingCollection = $dbClient->users_data->pending_users;
 
-  $existingUser = $usersCollection->findOne(['username' => $username]);
-  $pendingUser = $pendingCollection->findOne(['username' => $username]);
+  $existingUser = $usersCollection->findOne(['username' => $username]) ?: $usersCollection->findOne(['email' => $email]);
+  $pendingUser = $pendingCollection->findOne(['username' => $username]) ?: $pendingCollection->findOne(['email' => $email]);
   $existingUserTag = $usersCollection->findOne(['user_tag' => $userTag]);
   $pendingUserTag = $pendingCollection->findOne(['user_tag' => $userTag]);
 
@@ -64,6 +67,9 @@ function postRequest()
     echo json_encode(['error' => 'Der Nutzername ist bereits vergeben!']);
     exit();
   }
+
+  sendRegisteredMail($username, $email);
+  sendRegistrationReminderMail($username, $email);
 
   $result = $pendingCollection->insertOne([
     'username' => $username,
