@@ -73,7 +73,7 @@ function acceptedRegistrationMail($name, $mailAddress)
                        Deine Registrierung wurde erfolgreich akzeptiert.<br>
                        Du kannst dich jetzt mit deinen Zugangsdaten anmelden und den Service nutzen.
                    </p>
-                   <a href="https://general-alcazar.toastylabs.de/" class="button">Zur Website</a>
+                   <a href="https://wowaplanner.toastylabs.de/" class="button">Zur Website</a>
                     <p>
                        Solltest du fragen oder Probleme haben melde dich gerne bei mir! :D
                    </p>
@@ -84,7 +84,7 @@ function acceptedRegistrationMail($name, $mailAddress)
             </body>
             </html>
         ',
-            'text' => 'Herzlich willkommen bei WoWaPlan! Deine Registrierung wurde erfolgreich akzeptiert. Du kannst dich jetzt anmelden unter https://general-alcazar.toastylabs.de/.'
+            'text' => 'Herzlich willkommen bei WoWaPlan! Deine Registrierung wurde erfolgreich akzeptiert. Du kannst dich jetzt anmelden unter https://wowaplanner.toastylabs.de/.'
         ]
     );
 

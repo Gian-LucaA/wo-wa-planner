@@ -73,7 +73,7 @@ function sendRegisteredMail($name, $mailAddress)
                         Wir freuen uns, dass du dich bei <strong>WoWaPlan</strong> registriert hast.<br>
                         Du wirst benachrichtigt, sobald deine Registrierung akzeptiert wurde.
                     </p>
-                    <a href="https://general-alcazar.toastylabs.de/" class="button">Zur Website</a>
+                    <a href="https://wowaplanner.toastylabs.de/" class="button">Zur Website</a>
                     <div class="footer">
                         © ' . date("Y") . ' WoWaPlanner – Smarte Planung
                     </div>

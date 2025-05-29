@@ -20,7 +20,7 @@ function sendRegistrationReminderMail($name, $mailAddress)
             'from' => 'WoWaPlanner <postmaster@wowaplan.toastylabs.de>',
             'to' => 'Gian-Luca Afting <gianlucaafting@gmail.com>',
             'subject' => 'Neue Registrierung auf WoWaPlan!' . $mailAddress,
-            'text' => 'Es gibt eine neue Registrierung auf WoWaPlan: ' . $name . '(' . $mailAddress . ') general-alcazar.toastylabs.de/'
+            'text' => 'Es gibt eine neue Registrierung auf WoWaPlan: ' . $name . '(' . $mailAddress . ') wowaplanner.toastylabs.de/'
         ]
     );
 
