@@ -12,7 +12,7 @@ function sendRegistrationReminderMail($name, $mailAddress)
 
     $logger->info("Sende Erinnerung für neue Regristration E-Mail: Gian-Luca Afting (gianlucaafting@gmail.com)");
 
-    $mg = Mailgun::create($_ENV['MAILGUN_API_KEY'] ?: 'MAILGUN_API_KEY');
+    $mg = Mailgun::create($_ENV['MAILGUN_API_KEY'] ?: 'MAILGUN_API_KEY', 'https://api.eu.mailgun.net');
 
     $result = $result = $mg->messages()->send(
         'wowaplan.toastylabs.de',

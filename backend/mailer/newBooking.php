@@ -15,7 +15,7 @@ function sendBookedMail(
 ) {
     global $logger;
 
-    $mg = Mailgun::create($_ENV['MAILGUN_API_KEY'] ?? 'MAILGUN_API_KEY');
+    $mg = Mailgun::create($_ENV['MAILGUN_API_KEY'] ?? 'MAILGUN_API_KEY', 'https://api.eu.mailgun.net');
 
     $logger->info("Sende buchungs E-Mail: " . $name . "(" . $mailAddress . ")");
 

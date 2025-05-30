@@ -12,7 +12,7 @@ function sendRegisteredMail($name, $mailAddress)
 
     $logger->info("Sende Wartelisten E-Mail: " . $name . "(" . $mailAddress . ")");
 
-    $mg = Mailgun::create($_ENV['MAILGUN_API_KEY'] ?: 'MAILGUN_API_KEY');
+    $mg = Mailgun::create($_ENV['MAILGUN_API_KEY'] ?: 'MAILGUN_API_KEY', 'https://api.eu.mailgun.net');
 
     $result = $mg->messages()->send(
         'wowaplan.toastylabs.de',
