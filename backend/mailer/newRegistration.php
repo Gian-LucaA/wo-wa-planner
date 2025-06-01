@@ -1,29 +1,35 @@
 <?php
 
-// Include the Autoloader (see "Libraries" for install instructions)
-require 'vendor/autoload.php';
-
-// Use the Mailgun class from mailgun/mailgun-php v4.2
-use Mailgun\Mailgun;
+require_once __DIR__ . '/sendMail.php';
 
 function sendRegistrationReminderMail($name, $mailAddress)
 {
     global $logger;
 
-    $logger->info("Sende Erinnerung für neue Regristration E-Mail: Gian-Luca Afting (gianlucaafting@gmail.com)");
+    $logger->info("Sende Erinnerung für neue Registrierung E-Mail: Gian-Luca Afting (gianlucaafting@gmail.com)");
 
-    $mg = Mailgun::create($_ENV['MAILGUN_API_KEY'] ?: 'MAILGUN_API_KEY', 'https://api.eu.mailgun.net');
+    $toEmail = 'gianlucaafting@gmail.com';
+    $toName = 'Gian-Luca Afting';
+    $subject = 'Neue Registrierung auf WoWaPlan! ' . $mailAddress;
 
-    $result = $result = $mg->messages()->send(
-        'wowaplan.toastylabs.de',
-        [
-            'from' => 'WoWaPlanner <postmaster@wowaplan.toastylabs.de>',
-            'to' => 'Gian-Luca Afting <gianlucaafting@gmail.com>',
-            'subject' => 'Neue Registrierung auf WoWaPlan!' . $mailAddress,
-            'text' => 'Es gibt eine neue Registrierung auf WoWaPlan: ' . $name . '(' . $mailAddress . ') wowaplanner.toastylabs.de/'
-        ]
+    $htmlMessage = "<p>Es gibt eine neue Registrierung auf WoWaPlan:</p>
+                    <p><strong>Name:</strong> " . htmlspecialchars($name) . "<br>
+                    <strong>Email:</strong> " . htmlspecialchars($mailAddress) . "</p>
+                    <p>Besuche <a href='https://wowaplanner.toastylabs.de/'>wowaplanner.toastylabs.de</a> für Details.</p>";
+
+    $plainTextMessage = "Es gibt eine neue Registrierung auf WoWaPlan:\n"
+        . "Name: $name\n"
+        . "Email: $mailAddress\n"
+        . "Besuche wowaplanner.toastylabs.de für Details.";
+
+    sendEmailWithInlineCalendar(
+        $toEmail,
+        $toName,
+        $subject,
+        $htmlMessage,
+        $plainTextMessage,
+        null // no ICS calendar invite
     );
 
-
-    $logger->info("Email Versand Ergebniss: " . $result->getMessage());
+    $logger->info("E-Mail mit PHPMailer an {$toEmail} gesendet.");
 }

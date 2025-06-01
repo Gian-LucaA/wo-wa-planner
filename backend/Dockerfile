@@ -33,6 +33,8 @@ RUN composer install
 # Install additional Composer packages
 RUN composer require mailgun/mailgun-php symfony/http-client nyholm/psr7
 
+RUN composer require phpmailer/phpmailer
+
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
