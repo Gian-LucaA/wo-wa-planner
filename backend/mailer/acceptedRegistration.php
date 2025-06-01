@@ -57,12 +57,12 @@ function acceptedRegistrationMail($name, $mailAddress)
                    Deine Registrierung wurde erfolgreich akzeptiert.<br>
                    Du kannst dich jetzt mit deinen Zugangsdaten anmelden und den Service nutzen.
                </p>
-               <a href="https://wowaplanner.toastylabs.de/" class="button">Zur Website</a>
                 <p>
                    Solltest du fragen oder Probleme haben melde dich gerne bei mir! :D
                </p>
+               <a href="https://wowaplanner.toastylabs.de/" class="button">Zur Website</a>
                <div class="footer">
-                   © ' . date("Y") . ' WoWaPlanner – Smarte Planung
+                    © ' . date("Y") . ' WoWaPlanner - Smarte Planung
                </div>
             </div>
         </body>

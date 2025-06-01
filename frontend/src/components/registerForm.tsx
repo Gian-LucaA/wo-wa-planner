@@ -13,11 +13,15 @@ export default function RegisterForm({ setIsLogin }: RegisterFormProps) {
   const [username, setUsername] = React.useState('');
   const [email, setMail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLocked, setIsLocked] = React.useState(false);
   const { authenticate, error, info } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await authenticate(false, username, password, email);
+    setIsLoading(false);
+    setIsLocked(true);
   };
 
   return (
@@ -40,7 +44,16 @@ export default function RegisterForm({ setIsLogin }: RegisterFormProps) {
       <PasswordMeterInput showMeter password={password} setPassword={setPassword} />
       {info && <Alert color="success">{info}</Alert>}
       {error && <Alert color="danger">{error}</Alert>}
-      <Button onClick={handleSubmit}>Warteliste beitreten</Button>
+      <Button
+        loading={isLoading}
+        disabled={isLocked}
+        onClick={(evt) => {
+          setIsLoading(true);
+          handleSubmit(evt);
+        }}
+      >
+        Warteliste beitreten
+      </Button>
       <Typography
         level="body-sm"
         style={{ paddingBottom: '10px' }}
