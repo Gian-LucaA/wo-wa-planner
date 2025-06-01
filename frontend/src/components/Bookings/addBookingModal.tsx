@@ -19,6 +19,7 @@ export default function AddBookingModal({ placeId, open, setOpen, bookings, upda
   const [snackbarMessage, setSnackbarMessage] = React.useState<string | null>(null);
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [snackbarSuccess, setSnackbarSuccess] = React.useState(false);
+  const [loading, isLoading] = React.useState(false);
 
   const location = 'ufo';
 
@@ -35,12 +36,15 @@ export default function AddBookingModal({ placeId, open, setOpen, bookings, upda
       setSnackbarSuccess(true);
       setSnackbarOpen(true);
       updateIdx();
+      setSelectedDates([]);
       setOpen(false);
+      isLoading(false);
     } catch (error) {
       console.error('Fehler beim Hinzufügen der Buchung:', error);
       setSnackbarMessage('Fehler beim Hinzufügen der Buchung.');
       setSnackbarSuccess(false);
       setSnackbarOpen(true);
+      isLoading(false);
     }
   };
 
@@ -59,7 +63,14 @@ export default function AddBookingModal({ placeId, open, setOpen, bookings, upda
           >
             <BookingsSelect bookings={bookings} selectedDates={selectedDates} setSelectedDates={setSelectedDates} />
           </div>
-          <Button onClick={() => createBooking()} disabled={selectedDates.length === 0}>
+          <Button
+            loading={loading}
+            onClick={() => {
+              isLoading(true);
+              createBooking();
+            }}
+            disabled={selectedDates.length === 0}
+          >
             Buchen
           </Button>
         </ModalDialog>
