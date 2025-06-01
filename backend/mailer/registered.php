@@ -58,14 +58,14 @@ function sendRegisteredMail($name, $mailAddress)
         </head>
         <body>
             <div class="email-container">
-                <h1>Danke für deine Registrierung!</h1>
+                <h1>Danke fuer deine Registrierung!</h1>
                 <p>
                     Wir freuen uns, dass du dich bei <strong>WoWaPlan</strong> registriert hast.<br>
                     Du wirst benachrichtigt, sobald deine Registrierung akzeptiert wurde.
                 </p>
                 <a href="https://wowaplanner.toastylabs.de/" class="button">Zur Website</a>
                 <div class="footer">
-                    © ' . date("Y") . ' WoWaPlanner – Smarte Planung
+                    © ' . date("Y") . ' WoWaPlanner - Smarte Planung
                 </div>
             </div>
         </body>

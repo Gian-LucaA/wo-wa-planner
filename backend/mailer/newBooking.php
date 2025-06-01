@@ -85,7 +85,7 @@ ICS;
                 deine Buchung wurde erfolgreich erstellt.</p>
                 <p>Der Termin wurde deinem Kalender hinzugefügt (sofern unterstützt).</p>
                 <div class="footer">
-                    © ' . date("Y") . ' WoWaPlanner – Smarte Planung
+                    © ' . date("Y") . ' WoWaPlanner - Smarte Planung
                 </div>
             </div>
         </body>
