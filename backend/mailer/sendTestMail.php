@@ -38,6 +38,5 @@ function sendEmail(string $toEmail, string $toName, string $subject, string $mes
     } catch (Exception $e) {
         $logger->error("Fehler beim E-Mail-Versand an {$toEmail}: " . $e->getMessage());
         $logger->error("Mailer ErrorInfo: " . $mail->ErrorInfo);
-        echo "Email sending failed!";
     }
 }
