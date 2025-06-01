@@ -38,9 +38,8 @@ function sendEmailWithInlineCalendar(
         $mail->Body = $htmlMessage;
         $mail->AltBody = $altBody ?? strip_tags($htmlMessage);
 
-        // Add calendar event inline
         if ($icsContent) {
-            $mail->addAlternativePart($icsContent, 'text/calendar; method=REQUEST; charset=UTF-8');
+            $mail->addAttachment($icsContent, 'text/calendar; method=REQUEST; charset=UTF-8');
             $logger->info("ICS-Inhalt als Inline-Kalender hinzugefügt.");
         }
 
@@ -51,6 +50,5 @@ function sendEmailWithInlineCalendar(
     } catch (Exception $e) {
         $logger->error("Fehler beim E-Mail-Versand an {$toEmail}: " . $e->getMessage());
         $logger->error("Mailer ErrorInfo: " . $mail->ErrorInfo);
-        echo "Email sending failed!";
     }
 }
