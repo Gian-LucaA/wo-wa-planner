@@ -9,7 +9,7 @@ function getRequest()
 
 function postRequest()
 {
-    global $dbClient, $sessionId;
+    global $dbClient, $sessionId, $logger;
 
     $usersCollection = $dbClient->users_data->users;
 
@@ -44,10 +44,18 @@ function postRequest()
             exit();
         }
 
+        if (isset($logger)) {
+            $logger->info("Pending user deleted", ['user_id' => $data['id'], 'admin_id' => (string)$sessionId]);
+        }
+
         http_response_code(200);
         return ['success' => 'Benutzer erfolgreich abgelehnt!'];
     } catch (Exception $e) {
+        if (isset($logger)) {
+            $logger->error("Error deleting pending user: " . $e->getMessage(), ['user_id' => $data['id']]);
+        }
         http_response_code(500);
         echo json_encode(['error' => 'Interner Serverfehler: ' . $e->getMessage()]);
+        exit();
     }
 }

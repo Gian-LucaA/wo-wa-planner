@@ -39,7 +39,7 @@ function sendEmailWithInlineCalendar(
         $mail->AltBody = $altBody ?? strip_tags($htmlMessage);
 
         if ($icsContent) {
-            $mail->addAttachment($icsContent, 'text/calendar; method=REQUEST; charset=UTF-8');
+            $mail->addStringAttachment($icsContent, 'invite.ics', 'base64', 'text/calendar; method=REQUEST');
             $logger->info("ICS-Inhalt als Inline-Kalender hinzugefügt.");
         }
 

@@ -2,7 +2,7 @@
 
 function getRequest()
 {
-    global $dbClient, $sessionId;
+    global $dbClient, $sessionId, $logger;
 
     $usersCollection = $dbClient->users_data->users;
 
@@ -10,6 +10,7 @@ function getRequest()
 
     if (!isset($requestingUser['isAdmin']) || !$requestingUser['isAdmin']) {
         http_response_code(401);
+        $logger->warning("Unauthorized access attempt by user {$sessionId} to pending users list.");
         echo json_encode(['error' => 'Du hast nicht das Recht für diese Operation!']);
         exit();
     };
@@ -23,6 +24,8 @@ function getRequest()
         unset($user['password']);
         return $user;
     }, $pendingUsersArray);
+
+    $logger->info("User {$sessionId} requested pending users list. Found " . count($pendingUsersArray) . " entries.");
 
     return ["pendingUsers" => $pendingUsersArray];
 }

@@ -13,9 +13,14 @@ function sendBookedMail(
 ): void {
     global $logger;
 
-    // 1. ICS-Content vorbereiten
-    $dtStart = $eventStart->format('Ymd\THis\Z');
-    $dtEnd = $eventEnd->format('Ymd\THis\Z');
+    // 1. ICS-Content vorbereiten (for all-day event)
+    $dtStart = $eventStart->format('Ymd');
+
+    // Add 1 day to $eventEnd for all-day DTEND
+    $eventEndPlusOne = clone $eventEnd;
+    $eventEndPlusOne->modify('+1 day');
+    $dtEnd = $eventEndPlusOne->format('Ymd');
+
     $dtStamp = (new DateTime('now', new DateTimeZone('UTC')))->format('Ymd\THis\Z');
     $uid = uniqid() . '@wowaplan.toastylabs.de';
 
@@ -27,8 +32,8 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:$uid
 DTSTAMP:$dtStamp
-DTSTART:$dtStart
-DTEND:$dtEnd
+DTSTART;VALUE=DATE:$dtStart
+DTEND;VALUE=DATE:$dtEnd
 SUMMARY:$eventSummary
 DESCRIPTION:$eventDescription
 LOCATION:$eventLocation
@@ -97,8 +102,8 @@ ICS;
         "Titel: {$eventSummary}\n" .
         "Beschreibung: {$eventDescription}\n" .
         "Ort: {$eventLocation}\n" .
-        "Start: " . $eventStart->format('d.m.Y H:i') . "\n" .
-        "Ende: " . $eventEnd->format('d.m.Y H:i') . "\n\n" .
+        "Start: " . $eventStart->format('d.m.Y') . "\n" .
+        "Ende: " . $eventEnd->format('d.m.Y') . "\n\n" .
         "WoWaPlanner – Smarte Planung";
 
     // Call the reusable PHPMailer-based function
