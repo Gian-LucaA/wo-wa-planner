@@ -9,11 +9,13 @@ import GroupAddRoundedIcon from '@mui/icons-material/GroupAddRounded';
 import { useEffect } from 'react';
 import { useGetUsers } from '@/services/useGetUsers';
 import { TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { IconButton, Snackbar, Table } from '@mui/joy';
+import { IconButton, Snackbar, Table, useTheme } from '@mui/joy';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import DeleteDialogModal from '@/components/deleteConfirmation';
 import { useDeleteUser } from '@/services/useDeleteUser';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import ResponsiveTableList from '@/components/responsiveTable';
 
 interface User {
   _id: ID;
@@ -36,6 +38,9 @@ export default function Page() {
   const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);
   const [userTagToDelete, setUserTagToDelete] = React.useState<string>('');
   const [userToDelete, setUserToDelete] = React.useState<string>('');
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const buttons = [
     {
@@ -118,57 +123,24 @@ export default function Page() {
       <div className={styles.content}>
         <h1>Akzeptierte Nutzer</h1>
         <p>Hier kannst du die Nutzer akzeptierten Nutzer verwalten.</p>
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Benutzername</TableCell>
-                <TableCell>Nutzertag</TableCell>
-                <TableCell>E-Mail</TableCell>
-                <TableCell>Erstellt am</TableCell>
-                <TableCell>Aktionen</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {!users || users?.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={5} align="center">
-                    Es konnten keine Nutzer gefunden werden.
-                  </TableCell>
-                </TableRow>
-              ) : (
-                users.map((user) => (
-                  <TableRow key={user.username}>
-                    <TableCell>{user.username}</TableCell>
-                    <TableCell>{user.user_tag}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.created_at}</TableCell>
-                    <TableCell>
-                      <IconButton
-                        variant="plain"
-                        color="primary"
-                        onClick={() => {
-                          handleEdit(user._id.$oid);
-                        }}
-                      >
-                        <EditRoundedIcon />
-                      </IconButton>
-                      <IconButton
-                        color="danger"
-                        variant="plain"
-                        onClick={() => {
-                          handleDelete(user._id.$oid, user.user_tag);
-                        }}
-                      >
-                        <DeleteForeverRoundedIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <div className="spacer" />
+        <ResponsiveTableList
+          data={users}
+          headerField={{ label: 'Nutzername', render: (u) => u.username }}
+          infoFields={[
+            { label: 'Nutzertag', render: (u) => u.user_tag, necessary: false },
+            { label: 'E-Mail', render: (u) => u.email, necessary: true },
+          ]}
+          footerField={{ label: 'Erstellt am', render: (u) => `Erstellt am: ${u.created_at}` }}
+          buttons={(u) => [
+            <IconButton color="primary" onClick={() => handleEdit(u._id.$oid)} key={u._id.$oid}>
+              <EditRoundedIcon />
+            </IconButton>,
+            <IconButton color="danger" onClick={() => handleDelete(u._id.$oid, u.user_tag)} key={u._id.$oid}>
+              <DeleteForeverRoundedIcon />
+            </IconButton>,
+          ]}
+        />
       </div>
     </div>
   );

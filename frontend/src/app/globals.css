@@ -18,7 +18,7 @@ body {
 
 body {
   color: var(--foreground);
-  background-image: url("../../public/Assets/Sylt.webp");
+  background-image: url('../../public/Assets/Sylt.webp');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: left;
@@ -48,4 +48,8 @@ a {
 .background {
   background-color: rgba(255, 255, 255, 0.298) !important;
   backdrop-filter: blur(10px);
+}
+
+.spacer {
+  margin: 40px;
 }

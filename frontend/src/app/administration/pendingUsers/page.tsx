@@ -7,13 +7,13 @@ import SingleBedRoundedIcon from '@mui/icons-material/SingleBedRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import { useEffect } from 'react';
 import { useGetPendingUsers } from '@/services/useGetPendingUsers';
-import { TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { IconButton, Snackbar, Table } from '@mui/joy';
+import { IconButton, Snackbar } from '@mui/joy';
 import DoneIcon from '@mui/icons-material/Done';
 import NotInterestedIcon from '@mui/icons-material/NotInterested';
 import { useAcceptUser } from '@/services/useAcceptUser';
 import { useDeclineUser } from '@/services/useDeclineUser';
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
+import ResponsiveTableList from '@/components/responsiveTable';
 
 interface User {
   _id: ID;
@@ -111,57 +111,38 @@ export default function Page() {
       <div className={styles.content}>
         <h1>Nutzer auf der Warteliste</h1>
         <p>Hier kannst du die Nutzer auf der Warteliste annehmen oder ablehnen.</p>
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Benutzername</TableCell>
-                <TableCell>Nutzertag</TableCell>
-                <TableCell>E-Mail</TableCell>
-                <TableCell>Erstellt am</TableCell>
-                <TableCell>Aktionen</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {!pendingUsers || pendingUsers?.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={5} align="center">
-                    Keine Nutzer auf der Warteliste.
-                  </TableCell>
-                </TableRow>
-              ) : (
-                pendingUsers.map((user) => (
-                  <TableRow key={user.user_tag}>
-                    <TableCell>{user.username}</TableCell>
-                    <TableCell>{user.user_tag}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.created_at}</TableCell>
-                    <TableCell>
-                      <IconButton
-                        variant="plain"
-                        color="success"
-                        onClick={() => {
-                          handleAccept(user._id.$oid);
-                        }}
-                      >
-                        <DoneIcon />
-                      </IconButton>
-                      <IconButton
-                        color="danger"
-                        variant="plain"
-                        onClick={() => {
-                          handleDecline(user._id.$oid);
-                        }}
-                      >
-                        <NotInterestedIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <div className="spacer" />
+        <ResponsiveTableList
+          data={pendingUsers}
+          headerField={{ label: 'Nutzername', render: (u) => u.username }}
+          infoFields={[
+            { label: 'Nutzertag', render: (u) => u.user_tag, necessary: false },
+            { label: 'E-Mail', render: (u) => u.email, necessary: true },
+          ]}
+          footerField={{ label: 'Erstellt am', render: (u) => `Erstellt am: ${u.created_at}` }}
+          buttons={(u) => [
+            <IconButton
+              variant="plain"
+              color="success"
+              key={u._id.$oid}
+              onClick={() => {
+                handleAccept(u._id.$oid);
+              }}
+            >
+              <DoneIcon />
+            </IconButton>,
+            <IconButton
+              color="danger"
+              variant="plain"
+              key={u._id.$oid}
+              onClick={() => {
+                handleDecline(u._id.$oid);
+              }}
+            >
+              <NotInterestedIcon />
+            </IconButton>,
+          ]}
+        />
       </div>
     </div>
   );

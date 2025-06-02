@@ -12,6 +12,7 @@ import GroupAddRoundedIcon from '@mui/icons-material/GroupAddRounded';
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 import { useGetPlaces } from '@/services/useGetPlaces';
 import { Place } from '@/types/Place';
+import ResponsiveTableList from '@/components/responsiveTable';
 
 export default function Page() {
   const [places, setPlaces] = React.useState<Place[]>([]);
@@ -76,44 +77,24 @@ export default function Page() {
       <div className={styles.content}>
         <h1>Orte</h1>
         <p>Hier können Orte verwaltet werden.</p>
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Location</TableCell>
-                <TableCell>Aktionen</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {!places || places?.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={3} align="center">
-                    Keine Nutzer auf der Warteliste.
-                  </TableCell>
-                </TableRow>
-              ) : (
-                places.map((place) => (
-                  <TableRow key={place._id.$oid}>
-                    <TableCell>{place.name}</TableCell>
-                    <TableCell>{place.location}</TableCell>
-                    <TableCell>
-                      <IconButton
-                        variant="plain"
-                        color="primary"
-                        onClick={() => {
-                          handleEdit(place._id.$oid);
-                        }}
-                      >
-                        <EditRoundedIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <div className="spacer" />
+        <ResponsiveTableList
+          data={places}
+          headerField={{ label: 'Nutzername', render: (u) => u.name }}
+          infoFields={[{ label: 'Ort', render: (u) => u.location, necessary: true }]}
+          buttons={(p) => [
+            <IconButton
+              variant="plain"
+              color="primary"
+              key={p._id.$oid}
+              onClick={() => {
+                handleEdit(place._id.$oid);
+              }}
+            >
+              <EditRoundedIcon />
+            </IconButton>,
+          ]}
+        />
       </div>
     </div>
   );
