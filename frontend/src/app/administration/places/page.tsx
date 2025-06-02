@@ -88,7 +88,7 @@ export default function Page() {
               color="primary"
               key={p._id.$oid}
               onClick={() => {
-                handleEdit(place._id.$oid);
+                handleEdit(p._id.$oid);
               }}
             >
               <EditRoundedIcon />
