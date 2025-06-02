@@ -10,6 +10,10 @@
   }
 }
 
+html {
+  transition: none !important;
+}
+
 html,
 body {
   max-width: 100vw;
@@ -26,6 +30,14 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --custom-bg: rgba(255, 255, 255, 0.5);
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-image: url('../../public/Assets/Sylt_dark.jpg');
+    --custom-bg: rgba(0, 0, 0, 0.5);
+  }
 }
 
 * {

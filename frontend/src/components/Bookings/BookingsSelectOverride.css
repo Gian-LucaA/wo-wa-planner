@@ -3,3 +3,38 @@
 .calendar__month-arrow-next {
   color: #000;
 }
+
+.dark-mode .calendar__month-arrow-back,
+.calendar__month-arrow-next {
+  color: #ffffff;
+}
+
+/* BookingsSelectOverride.css */
+
+/* Dark Mode Override */
+.dark-mode .calendar__calendar-container {
+  background-color: #0b0d0e;
+  color: #f0f0f0;
+}
+
+.dark-mode .react-booking-calendar__day--selected {
+  background-color: #3b82f6 !important; /* Blau */
+  color: white !important;
+}
+
+.dark-mode .calendar__day-reservation {
+  background-color: #262626 !important;
+  color: white !important;
+}
+
+.dark-mode .calendar__day-reservation :hover {
+  background-color: #374151 !important;
+}
+
+.dark-mode .calendar__day-selection {
+  background-color: #3b83f69b;
+}
+
+.dark-mode .calendar__day-today {
+  border: 1px solid #3b82f6;
+}

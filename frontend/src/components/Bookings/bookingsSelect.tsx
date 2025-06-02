@@ -1,8 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Day } from '@/helpers/calendar/dateUtils';
-import { Calendar, CalendarDate, CalendarReserved, CalendarSelected } from '@demark-pro/react-booking-calendar';
+import { Calendar, CalendarReserved, CalendarSelected } from '@demark-pro/react-booking-calendar';
 
 import '@demark-pro/react-booking-calendar/dist/react-booking-calendar.css';
 import './BookingsSelectOverride.css';
@@ -15,19 +14,22 @@ interface BookingsSelectProps {
 }
 
 export default function BookingsSelect({ bookings, selectedDates, setSelectedDates }: BookingsSelectProps) {
+  const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const reserved: CalendarReserved[] = bookings.map((booking) => ({
     startDate: booking.startDate!,
     endDate: booking.endDate!,
   }));
 
   return (
-    <Calendar
-      selected={selectedDates}
-      reserved={reserved}
-      onChange={setSelectedDates}
-      options={{ weekStartsOn: 1 }}
-      range={true}
-      protection={true}
-    />
+    <div className={isDarkMode ? 'dark-mode' : ''}>
+      <Calendar
+        selected={selectedDates}
+        reserved={reserved}
+        onChange={setSelectedDates}
+        options={{ weekStartsOn: 1 }}
+        range={true}
+        protection={true}
+      />
+    </div>
   );
 }

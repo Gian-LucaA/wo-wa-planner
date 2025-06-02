@@ -7,7 +7,7 @@
 }
 
 .card {
-  background-color: rgba(255, 255, 255, 0.298) !important;
+  background-color: var(--custom-bg) !important;
   backdrop-filter: blur(10px);
   display: flex;
   justify-self: center;

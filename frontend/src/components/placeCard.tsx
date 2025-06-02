@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { AspectRatio, Card, CardContent, CardOverflow, Typography } from '@mui/joy';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import theme from '@/theme';
 
 interface PlaceCardProps {
   add?: boolean;
@@ -28,8 +29,10 @@ export default function PlaceCard({
       orientation="horizontal"
       variant="plain"
       color="neutral"
+      style={{
+        backgroundColor: 'var(--custom-bg)',
+      }}
       sx={{
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
         backdropFilter: 'blur(10px)',
         cursor: 'pointer',
         width: 260,

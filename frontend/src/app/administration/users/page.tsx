@@ -14,7 +14,6 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import DeleteDialogModal from '@/components/deleteConfirmation';
 import { useDeleteUser } from '@/services/useDeleteUser';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import ResponsiveTableList from '@/components/responsiveTable';
 
 interface User {
@@ -38,9 +37,6 @@ export default function Page() {
   const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);
   const [userTagToDelete, setUserTagToDelete] = React.useState<string>('');
   const [userToDelete, setUserToDelete] = React.useState<string>('');
-
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const buttons = [
     {
