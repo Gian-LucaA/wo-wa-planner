@@ -93,7 +93,6 @@ function ResponsiveTableList<T>({
             <Box
               key={index}
               sx={{
-                border: '1px solid #ccc',
                 borderRadius: 10,
                 p: 2,
                 mb: 2,
@@ -101,6 +100,7 @@ function ResponsiveTableList<T>({
                 justifyContent: 'space-between',
                 alignItems: 'stretch',
                 gap: 2,
+                backgroundColor: 'var(--background)',
               }}
             >
               <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -147,17 +147,17 @@ function ResponsiveTableList<T>({
     <Table hoverRow>
       <thead>
         <tr>
-          <th>{headerField.label}</th>
+          <th style={{ alignContent: 'center' }}>{headerField.label}</th>
           {infoFields.map((field, idx) => (
-            <th key={idx} style={{ cursor: field.key && onSort ? 'pointer' : 'default' }}>
+            <th key={idx} style={{ cursor: field.key && onSort ? 'pointer' : 'default', alignContent: 'center' }}>
               <Box display="flex" alignItems="center">
                 {field.label}
                 {field.key && renderSortLabel(field.key)}
               </Box>
             </th>
           ))}
-          {footerField && <th>{footerField.label}</th>}
-          {buttons && <th>Aktionen</th>}
+          {footerField && <th style={{ alignContent: 'center' }}>{footerField.label}</th>}
+          {buttons && <th style={{ alignContent: 'center' }}>Aktionen</th>}
         </tr>
       </thead>
       <tbody>
@@ -169,7 +169,7 @@ function ResponsiveTableList<T>({
           </tr>
         ) : (
           data.map((item, idx) => (
-            <tr key={idx}>
+            <tr key={idx} style={{ backgroundColor: 'var(--background)' }}>
               <td>{headerField.render(item)}</td>
               {infoFields.map((field, i) => (
                 <td key={i}>{field.render(item)}</td>
