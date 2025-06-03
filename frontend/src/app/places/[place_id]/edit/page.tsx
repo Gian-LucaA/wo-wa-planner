@@ -7,7 +7,6 @@ import styles from './page.module.css';
 import ResponsiveTableList from '@/components/responsiveTable';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import { Booking } from '@/types/Booking';
-import { useGetBookings } from '@/services/useGetBookings';
 import { useGetUsersBookings } from '@/services/useGetUsersBookings';
 import { useDeleteBooking } from '@/services/useDeleteBooking';
 import DeleteDialogModal from '@/components/deleteConfirmation';

@@ -1,18 +1,12 @@
 import { useFetchUsers } from '@/services/useFetchUsers';
+import { User } from '@/types/User';
 import { Autocomplete } from '@mui/joy';
 import * as React from 'react';
-
-interface User {
-  _id?: string;
-  username: string;
-  user_tag?: string;
-  email?: string;
-}
 
 export default function UsersSelector({ onChange }: { onChange: (users: User[]) => void }) {
   const [searched, setSearched] = React.useState<string>('');
   const [loading, isLoading] = React.useState<boolean>(false);
-  const [users, setUsers] = React.useState<User[]>([{ username: 'Bitte fange an zu tippen.' }]);
+  const [users, setUsers] = React.useState<User[] | any[]>([{ username: 'Bitte fange an zu tippen.' }]);
 
   React.useEffect(() => {
     if (searched === '') {

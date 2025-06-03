@@ -6,6 +6,7 @@ import * as React from 'react';
 import DayCard from './dayCard';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
+import { Booking } from '@/types/Booking';
 
 interface MonthBarProps {
   month: Month;
@@ -21,7 +22,7 @@ export interface DayWithBookings {
   weekdayShort: string;
   isToday?: boolean;
   isPast?: boolean;
-  booking: any | null;
+  booking: Booking | null;
 }
 
 export default function MonthBar({ month, year, bookings, switchMonthVisibility }: MonthBarProps) {
@@ -88,7 +89,7 @@ export default function MonthBar({ month, year, bookings, switchMonthVisibility 
             {!month.disabled &&
               !animating &&
               daysWithBookings.map((day) => (
-                <Grid key={day.date.toISOString()} sx={{ width: '50px' }}>
+                <Grid key={day.date.toISOString()}>
                   <DayCard key={String(day.day) + 'card'} day={day} />
                 </Grid>
               ))}

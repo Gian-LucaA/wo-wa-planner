@@ -15,14 +15,7 @@ import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import DeleteDialogModal from '@/components/deleteConfirmation';
 import { useDeleteUser } from '@/services/useDeleteUser';
 import ResponsiveTableList from '@/components/responsiveTable';
-
-interface User {
-  _id: ID;
-  username: string;
-  user_tag: string;
-  email: string;
-  created_at: string;
-}
+import { User } from '@/types/User';
 
 interface ID {
   $oid: string;

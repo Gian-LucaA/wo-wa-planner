@@ -2,12 +2,12 @@
 import Cookies from 'js-cookie';
 import { ApiPaths } from '../../paths';
 
-export const useUpdateUser = (id: string, username: string, user_tag: string, email: string) => {
+export const useUpdateUser = (id: string, username: string, user_tag: string, email: string, color: number) => {
   const success = fetch(ApiPaths.UPDATE_USERS, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify({ id, username, user_tag, email }),
+    body: JSON.stringify({ id, username, user_tag, email, color }),
   })
     .then((res) => {
       if (!res.ok) {

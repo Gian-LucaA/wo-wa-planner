@@ -8,18 +8,7 @@ import UserEditor from '@/components/UserEditor';
 import styles from './page.module.css';
 import { useUpdateUser } from '@/services/useUpdateUser';
 import { Snackbar } from '@mui/joy';
-
-interface User {
-  _id: ID;
-  username: string;
-  user_tag: string;
-  email: string;
-  created_at: string;
-}
-
-interface ID {
-  $oid: string;
-}
+import { User } from '@/types/User';
 
 export default function Page() {
   const pathname = usePathname();
@@ -46,7 +35,7 @@ export default function Page() {
 
   const handleSave = async () => {
     if (user) {
-      const success = await useUpdateUser(user._id.$oid, user.username, user.user_tag, user.email);
+      const success = await useUpdateUser(user._id.$oid, user.username, user.user_tag, user.email, user.color);
       setSuccess(success);
       if (success) {
         setSnackText('Nutzer erfolgreich aktualisiert.');
@@ -70,16 +59,8 @@ export default function Page() {
       </Snackbar>
       <SideBar showBackButton showSaveButton onSave={handleSave} buttons={[]} />
       <div className={styles.content}>
-        {/* TODO Fix disgusting AI code */}
         <UserEditor
-          user={
-            user
-              ? {
-                  ...user,
-                  _id: user._id.$oid,
-                }
-              : null
-          }
+          user={user}
           setUser={(u) =>
             setUser(
               u

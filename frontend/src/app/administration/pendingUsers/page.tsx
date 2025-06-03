@@ -14,14 +14,7 @@ import { useAcceptUser } from '@/services/useAcceptUser';
 import { useDeclineUser } from '@/services/useDeclineUser';
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 import ResponsiveTableList from '@/components/responsiveTable';
-
-interface User {
-  _id: ID;
-  username: string;
-  user_tag: string;
-  email: string;
-  created_at: string;
-}
+import { User } from '@/types/User';
 
 interface ID {
   $oid: string;
@@ -124,9 +117,9 @@ export default function Page() {
             <IconButton
               variant="plain"
               color="success"
-              key={u._id.$oid}
+              key={u?._id?.$oid ?? ''}
               onClick={() => {
-                handleAccept(u._id.$oid);
+                handleAccept(u?._id?.$oid ?? '');
               }}
             >
               <DoneIcon />
@@ -134,9 +127,9 @@ export default function Page() {
             <IconButton
               color="danger"
               variant="plain"
-              key={u._id.$oid}
+              key={u?._id?.$oid ?? ''}
               onClick={() => {
-                handleDecline(u._id.$oid);
+                handleDecline(u?._id?.$oid ?? '');
               }}
             >
               <NotInterestedIcon />

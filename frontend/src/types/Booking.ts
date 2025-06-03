@@ -10,4 +10,5 @@ export interface Booking {
   username?: string;
   from?: MongoDbDate;
   to?: MongoDbDate;
+  user_color: number;
 }

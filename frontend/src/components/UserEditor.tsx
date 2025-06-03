@@ -1,14 +1,9 @@
 import * as React from 'react';
 import { Alert, Card, CardContent, CardOverflow, Divider, Grid, Input, Typography } from '@mui/joy';
 import Loader from './loader';
-
-interface User {
-  _id: string;
-  username: string;
-  user_tag: string;
-  email: string;
-  created_at: string;
-}
+import Circle from '@uiw/react-color-circle';
+import { getColorByIndex, getColorIndexFromHex, getColorsByType } from '@/types/Colors';
+import { User } from '@/types/User';
 
 interface UserEditorProps {
   user: User | null;
@@ -28,6 +23,7 @@ export default function UserEditor({ user, setUser, isLoading = true }: UserEdit
   const [username, setUsername] = React.useState(user ? user.username : '');
   const [user_tag, setUserTag] = React.useState(user ? user.user_tag : '');
   const [email, setEmail] = React.useState(user ? user.email : '');
+  const [hex, setHex] = React.useState<string>(user ? getColorByIndex(user.color, 'hex') ?? '' : '');
 
   const generateUserTag = (username: string): string => {
     let userTag = username.replace(/ /g, '_');
@@ -42,9 +38,9 @@ export default function UserEditor({ user, setUser, isLoading = true }: UserEdit
 
   React.useEffect(() => {
     if (user) {
-      setUser({ ...user, username, user_tag, email });
+      setUser({ ...user, username, user_tag, email, color: getColorIndexFromHex(hex) });
     }
-  }, [username, user_tag, email]);
+  }, [username, user_tag, email, hex]);
 
   return (
     <div>
@@ -87,6 +83,16 @@ export default function UserEditor({ user, setUser, isLoading = true }: UserEdit
                 placeholder="Nicht gesetzt!"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+              />
+            </Grid>
+            <Grid xs={6}>
+              <p>Farbe</p>
+              <Circle
+                colors={getColorsByType('hex')}
+                color={hex}
+                onChange={(color) => {
+                  setHex(color.hex);
+                }}
               />
             </Grid>
           </Grid>
