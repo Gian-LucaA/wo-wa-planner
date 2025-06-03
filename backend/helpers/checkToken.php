@@ -36,5 +36,5 @@ function checkIfTokenIsAdmin($userId)
         '_id' => new MongoDB\BSON\ObjectId($userId)
     ], ['projection' => ['isAdmin' => 1, '_id' => 0]]);
 
-    return $result['isAdmin'];
+    return isset($result['isAdmin']) && $result['isAdmin'];
 }
