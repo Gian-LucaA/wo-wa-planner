@@ -1,6 +1,8 @@
 import { MongoDbDate } from './MongoDBDate';
+import { MongoDBID } from './MongoDBID';
 
 export interface Booking {
+  _id?: MongoDBID;
   endDate?: Date;
   startDate?: Date;
   location: string;

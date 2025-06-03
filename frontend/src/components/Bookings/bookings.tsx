@@ -8,12 +8,14 @@ import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
 import NavigateBeforeRoundedIcon from '@mui/icons-material/NavigateBeforeRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import AddBookingModal from './addBookingModal';
+import EditIcon from '@mui/icons-material/Edit';
 import { useGetBookings } from '@/services/useGetBookings';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
 import KeyboardDoubleArrowDownRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowDownRounded';
 import Loader from '../loader';
 import { Booking } from '@/types/Booking';
+import { useRouter, usePathname } from 'next/navigation';
 
 interface BookingsProps {
   placeId?: string;
@@ -26,6 +28,9 @@ export default function Bookings({ placeId }: BookingsProps) {
   const [months, setMonths] = React.useState(() => getMonths(year));
   const [updateIdx, setUpdateIdx] = React.useState(0);
   const [loading, setLoading] = React.useState(true);
+
+  const router = useRouter();
+  const pathname = usePathname();
 
   React.useEffect(() => {
     const fetchBookings = async () => {
@@ -155,6 +160,9 @@ export default function Bookings({ placeId }: BookingsProps) {
             right: 0,
           }}
         >
+          <IconButton onClick={() => router.push(`${pathname}/edit`)} variant="soft" color="primary">
+            <EditIcon />
+          </IconButton>
           <IconButton onClick={() => setAddModalOpen(true)} variant="soft" color="success">
             <AddRoundedIcon />
           </IconButton>

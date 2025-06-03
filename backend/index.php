@@ -100,6 +100,11 @@ $sessionId = null;
 if ($functionFile !== 'login' && $functionFile !== 'register' && $functionFile !== 'sendMail') {
     $sessionId = checkToken($data['session_id'], $data['username']);
     $logger->info("Session validated for user: " . $data['username']);
+
+    $isAdmin = checkIfTokenIsAdmin($sessionId);
+    if ($isAdmin) {
+        $logger->info($data['username'] . " hat ADMIN rechte!");
+    }
 }
 
 $returnValue = [];
@@ -116,7 +121,7 @@ if (!file_exists($filePath)) {
 
 $logger->info("Including API handler: $filePath");
 
-global $params, $dbClient, $data, $sessionId, $logger;
+global $params, $dbClient, $data, $sessionId, $logger, $isAdmin;
 
 include $filePath;
 

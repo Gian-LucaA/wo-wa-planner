@@ -20,7 +20,9 @@ export class ApiPaths {
   public static readonly PLACE_ADD_IMAGE = `${this.PLACES}/addImage`;
   public static readonly UPDATE_PLACE = `${this.PLACES}/updatePlace`;
   public static readonly GET_PLACES = `${this.PLACES}/getPlaces`;
+  public static readonly DELETE_BOOKING = `${this.PLACES}/deleteBooking`;
   public static readonly GET_PLACES_BY_ID = (placeId: string) => `${this.PLACES}/getPlaces?placeId=${placeId}`;
+  public static readonly GET_USERS_BOOKINGS = (placeId: string) => `${this.PLACES}/getUsersBookings?placeId=${placeId}`;
   public static readonly GET_BOOKINGS = (year: number, placeId: string) =>
     `${this.PLACES}/getBookings?year=${year}&placeId=${placeId}`;
 

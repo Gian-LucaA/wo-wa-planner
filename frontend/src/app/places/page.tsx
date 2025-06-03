@@ -22,7 +22,6 @@ import { useCreatePlace } from '@/services/useAddPlace';
 import { useGetPlaces } from '@/services/useGetPlaces';
 import Loader from '@/components/loader';
 import ImageUploader from '@/components/imageUploader';
-import { redirect } from 'next/navigation';
 import { useGetBookings } from '@/services/useGetBookings';
 
 export default function Page() {

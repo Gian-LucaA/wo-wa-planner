@@ -26,3 +26,15 @@ function checkToken($currentSessionID, $username)
         exit();
     }
 }
+
+function checkIfTokenIsAdmin($userId)
+{
+    global $dbClient;
+
+    $usersCollection = $dbClient->users_data->users;
+    $result = $usersCollection->findOne([
+        '_id' => new MongoDB\BSON\ObjectId($userId)
+    ], ['projection' => ['isAdmin' => 1, '_id' => 0]]);
+
+    return $result['isAdmin'];
+}
