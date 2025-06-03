@@ -43,7 +43,7 @@ function getRequest()
         $place = $placesCollection->findOne(['_id' => new MongoDB\BSON\ObjectId($booking['placeId'])]);
 
         $booking['username'] = $user ? $user['username'] : null;
-        $booking['user_color'] = $user ? $user['color'] : null;
+        $booking['user_color'] = ($user && isset($user['color'])) ? $user['color'] : null;
         $booking['placeName'] = $place ? $place['name'] : null;
         $booking['location'] = $place ? $place['location'] : null;
 
