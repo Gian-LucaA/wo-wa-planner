@@ -35,7 +35,7 @@ export default function PlaceCard({
       sx={{
         backdropFilter: 'blur(10px)',
         cursor: 'pointer',
-        width: 260,
+        width: 280,
       }}
       onClick={onClick}
       key={id}
