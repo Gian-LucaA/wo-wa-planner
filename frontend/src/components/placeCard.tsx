@@ -35,7 +35,7 @@ export default function PlaceCard({
       sx={{
         backdropFilter: 'blur(10px)',
         cursor: 'pointer',
-        width: 280,
+        width: 260,
       }}
       onClick={onClick}
       key={id}
@@ -64,7 +64,7 @@ export default function PlaceCard({
           background: 'rgba(0,0,0,0)',
         }}
       >
-        <Typography sx={{ fontWeight: 'md' }}>{name}</Typography>
+        <Typography sx={{ fontWeight: 'md', whiteSpace: 'nowrap', overflow: 'hidden' }}>{name}</Typography>
         <Typography level="body-sm" style={{ lineHeight: 1 }}>
           {location}
         </Typography>
