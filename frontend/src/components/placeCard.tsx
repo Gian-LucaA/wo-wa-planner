@@ -35,7 +35,7 @@ export default function PlaceCard({
       sx={{
         backdropFilter: 'blur(10px)',
         cursor: 'pointer',
-        width: 260,
+        width: 280,
       }}
       onClick={onClick}
       key={id}
@@ -49,12 +49,7 @@ export default function PlaceCard({
       ) : (
         <CardOverflow>
           <AspectRatio ratio="1" sx={{ width: 90 }}>
-            <img
-              src="https://images.unsplash.com/photo-1507833423370-a126b89d394b?auto=format&fit=crop&w=90"
-              srcSet="https://images.unsplash.com/photo-1507833423370-a126b89d394b?auto=format&fit=crop&w=90&dpr=2 2x"
-              loading="lazy"
-              alt=""
-            />
+            <img src="Assets/file.jpeg" srcSet="Assets/file.jpeg" loading="lazy" alt="" />
           </AspectRatio>
         </CardOverflow>
       )}
@@ -64,7 +59,7 @@ export default function PlaceCard({
           background: 'rgba(0,0,0,0)',
         }}
       >
-        <Typography sx={{ fontWeight: 'md', whiteSpace: 'nowrap', overflow: 'hidden' }}>{name}</Typography>
+        <Typography sx={{ fontWeight: 'md' }}>{name}</Typography>
         <Typography level="body-sm" style={{ lineHeight: 1 }}>
           {location}
         </Typography>
