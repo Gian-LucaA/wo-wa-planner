@@ -55,10 +55,26 @@ function postRequest()
         // Optional: decide if you want to fail here or continue
     }
 
-    unset($user['_id']);
-    $user['created_at'] = new MongoDB\BSON\UTCDateTime((new DateTime())->getTimestamp() * 1000);
+    // Filter allowed fields
+    $allowedFields = ['username', 'password', 'user_tag', 'email'];
+    $filteredUser = [];
+    foreach ($allowedFields as $field) {
+        if (isset($user[$field])) {
+            $filteredUser[$field] = $user[$field];
+        } else {
+            $logger->error("Fehler beim Einfügen des Benutzers in die Benutzer-Collection", ['user' => $user['username'], "Das Feld " . $field . "ist nicht gesetzt!"]);
+            http_response_code(500);
+            echo json_encode(['error' => 'Fehler beim Einfügen des Benutzers in die Benutzertabelle!']);
+        }
+    }
 
-    $result = $usersCollection->insertOne($user);
+    // Füge random color zwischen 0 und 14 hinzu
+    $filteredUser['color'] = rand(0, 14);
+
+    // Korrekte Erstellung der created_at Zeit in Millisekunden
+    $filteredUser['created_at'] = new MongoDB\BSON\UTCDateTime((int)(microtime(true) * 1000));
+
+    $result = $usersCollection->insertOne($filteredUser);
     if ($result->getInsertedCount() == 1) {
         $pendingUsersCollection->deleteOne(['_id' => $objectId]);
         $logger->info("Benutzer erfolgreich in Benutzer-Collection eingefügt und aus Warteliste entfernt", ['user' => $user['username']]);

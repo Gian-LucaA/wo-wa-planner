@@ -179,7 +179,7 @@ export function getColorIndexFromHex(hexCode: string | undefined): number {
 }
 
 export function getColorByIndex(index: number | undefined, type: ColorType = 'hex'): string | undefined {
-  if (!index) return undefined;
+  if (index === undefined) return undefined;
 
   const color = ColorPalette[index];
   const darkMode = isDarkMode();
