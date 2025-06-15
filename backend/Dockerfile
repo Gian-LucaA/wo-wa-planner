@@ -1,6 +1,11 @@
 # Select a base image
 FROM php:8.4-apache
 
+RUN apt-get update && apt-get install -y tzdata && \
+    ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime && dpkg-reconfigure -f noninteractive tzdata
+
+RUN apt-get update && apt-get install -y --no-install-recommends gnupg dirmngr ca-certificates
+
 # Installieren Sie die MongoDB PHP-Erweiterung und Composer
 RUN apt-get update && apt-get install -y \
     libpng-dev \
@@ -28,10 +33,6 @@ RUN composer update
 
 # Install PHP dependencies
 RUN composer install
-
-
-# Install additional Composer packages
-RUN composer require mailgun/mailgun-php symfony/http-client nyholm/psr7
 
 RUN composer require phpmailer/phpmailer
 

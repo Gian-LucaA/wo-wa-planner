@@ -20,6 +20,8 @@ function postRequest()
     $requestBody = file_get_contents("php://input");
     $data = json_decode($requestBody, true);
 
+    $usernameInput = isset($data['username']) ? trim($data['username']) : '';
+
     if (empty($data['username']) || empty($data['password'])) {
         $logger->warning("Login attempt with missing credentials: " . json_encode($data));
         http_response_code(400);
@@ -27,11 +29,16 @@ function postRequest()
         exit();
     }
 
-    $logger->info("Attempting login for username: {$data['username']}");
+    $logger->info("Attempting login for username or email: {$usernameInput}");
 
     try {
         $collection = $dbClient->users_data->users;
-        $user = $collection->findOne(['username' => $data['username']]);
+        $user = $collection->findOne([
+            '$or' => [
+                ['username' => $usernameInput],
+                ['email' => $usernameInput]
+            ]
+        ]);
     } catch (Exception $e) {
         $logger->error("Database error during login: " . $e->getMessage());
         http_response_code(500);
@@ -40,7 +47,7 @@ function postRequest()
     }
 
     if ($user && password_verify($data['password'], $user['password'])) {
-        $logger->info("Login successful for user: {$data['username']}");
+        $logger->info("Login successful for user: {$user['username']}");
 
         $sessionId = bin2hex(random_bytes(64));
         $sessionCollection = $dbClient->users_data->sessions;
@@ -55,7 +62,7 @@ function postRequest()
                 'timeout' => $timeout
             ]);
         } catch (Exception $e) {
-            $logger->error("Failed to create session for user {$data['username']}: " . $e->getMessage());
+            $logger->error("Failed to create session for user {$user['username']}: " . $e->getMessage());
             http_response_code(500);
             echo json_encode(['error' => 'Fehler beim Erstellen der Sitzung.']);
             exit();
@@ -65,7 +72,7 @@ function postRequest()
         echo json_encode(['session_id' => $sessionId, 'username' => $user['username']]);
         exit();
     } else {
-        $logger->warning("Login failed for user: {$data['username']}");
+        $logger->warning("Login failed for identifier: {$usernameInput}");
         http_response_code(401);
         echo json_encode(['error' => 'Die Zugangsdaten sind nicht gültig!']);
         exit();
