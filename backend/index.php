@@ -109,6 +109,36 @@ if ($functionFile !== 'login' && $functionFile !== 'register' && $functionFile !
 
 $returnValue = [];
 
+if (!preg_match('/^[a-zA-Z0-9_-]+$/', $dataFolder) || !preg_match('/^[a-zA-Z0-9_-]+$/', $functionFile)) {
+    $logger->warning("Ungültige Zeichen in API-Route: $dataFolder/$functionFile");
+    http_response_code(400);
+    echo json_encode(['error' => 'Ungültige API-Route']);
+    exit();
+}
+
+// Dynamische Whitelist für $dataFolder
+$apiBase = __DIR__ . '/api';
+$dataFolders = array_filter(scandir($apiBase), function ($dir) use ($apiBase) {
+    return is_dir("$apiBase/$dir") && $dir !== '.' && $dir !== '..';
+});
+
+// Dynamische Whitelist für $functionFile im gewählten $dataFolder
+$functionFiles = [];
+if (in_array($dataFolder, $dataFolders)) {
+    $folderPath = "$apiBase/$dataFolder";
+    foreach (glob("$folderPath/*.php") as $file) {
+        $functionFiles[] = basename($file, '.php');
+    }
+}
+
+// Prüfung
+if (!in_array($dataFolder, $dataFolders) || !in_array($functionFile, $functionFiles)) {
+    $logger->warning("API endpoint not found: $dataFolder/$functionFile");
+    http_response_code(404);
+    echo json_encode(['error' => 'API nicht gefunden']);
+    exit();
+}
+
 // Erstellen Sie den Pfad zur entsprechenden Datei
 $filePath = __DIR__ . "/$apiFolder/$dataFolder/$functionFile.php";
 

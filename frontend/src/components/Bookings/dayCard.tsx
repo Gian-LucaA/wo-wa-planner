@@ -53,8 +53,6 @@ export default function DayTooltip({ day }: DayCardProps) {
     </div>
   );
 
-  console.log(day);
-
   return (
     <Tooltip title={dayTooltip} placement="top" enterTouchDelay={0}>
       <div

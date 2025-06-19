@@ -57,7 +57,6 @@ export default function Page() {
   };
 
   const handleDelete = async (booking: Booking | null) => {
-    console.log(booking);
     if (!booking || !booking._id || !booking._id.$oid) {
       setSnackText('Etwas ist beim löschen schief gegangen!.');
       setShowErrorSnack(true);

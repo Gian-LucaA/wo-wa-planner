@@ -97,7 +97,6 @@ export default function AssignedUsersPage() {
             onChange={(_, newValue) => {
               if (!newValue) return;
               const userToAdd = unselectedUsers?.find((u) => u.user_tag === newValue);
-              console.log(newValue);
               if (userToAdd) {
                 setSelectedUsers((prev) => [...(prev || []), userToAdd]);
                 setUnselectedUsers((prev) => prev?.filter((u) => u.user_tag !== userToAdd.user_tag));

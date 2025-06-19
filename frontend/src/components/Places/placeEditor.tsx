@@ -12,20 +12,12 @@ export default function Loader() {
       [field]: value,
     }));
   }
+
   function handleCreateNewPlace(newPlace: { name: string; location: string; users: never[] }) {
-    // Here you would typically send newPlace to your backend or update state
-    // For demonstration, we'll just log it
-    console.log('Creating new place:', newPlace);
-    // Optionally, reset the form or close the dialog
     setNewPlace({ name: '', location: '', users: [] });
-    // If setOpen is defined in the parent, you may want to call setOpen(false) here
   }
-  // In this context, setOpen should likely be passed as a prop from the parent component
-  // For now, provide a no-op implementation to avoid errors
-  function setOpen(_open: boolean): void {
-    // This function should be implemented by the parent component or passed as a prop
-    // Here, we do nothing as a placeholder
-  }
+
+  function setOpen(_open: boolean): void {}
   return (
     <div>
       <DialogTitle id="modal-title">Neuen Ort hinzufügen</DialogTitle>

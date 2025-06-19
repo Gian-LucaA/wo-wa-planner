@@ -14,7 +14,10 @@ function postRequest()
 {
     global $dbClient, $logger;
 
-    $logger->info("POST request received for login.");
+    $currentIp = $_SERVER['REMOTE_ADDR'] ?? '';
+    $currentAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+
+    $logger->info("POST request received for login. FROM: {$currentIp}");
 
     // Read request body
     $requestBody = file_get_contents("php://input");
@@ -53,13 +56,18 @@ function postRequest()
         $sessionCollection = $dbClient->users_data->sessions;
         $timeout = new MongoDB\BSON\UTCDateTime(strtotime('+15 minutes') * 1000);
 
+        $ipHash = hashValue($currentIp);
+        $agentHash = hashValue($currentAgent);
+
         try {
             $sessionCollection->deleteMany(['user_id' => $user['_id']]);
             $sessionCollection->insertOne([
                 'session_id' => $sessionId,
                 'username' => $user['username'],
                 'user_id' => $user['_id'],
-                'timeout' => $timeout
+                'timeout' => $timeout,
+                'ip' => $ipHash,
+                'user_agent' => $agentHash
             ]);
         } catch (Exception $e) {
             $logger->error("Failed to create session for user {$user['username']}: " . $e->getMessage());
