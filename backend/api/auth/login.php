@@ -17,8 +17,6 @@ function postRequest()
     $currentIp = $_SERVER['REMOTE_ADDR'] ?? '';
     $currentAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
 
-    $logger->info("POST request received for login. FROM: {$currentIp}");
-
     // Read request body
     $requestBody = file_get_contents("php://input");
     $data = json_decode($requestBody, true);
