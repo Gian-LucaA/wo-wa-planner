@@ -21,3 +21,4 @@ composer.lock
 
 dist/
 build/
+docker-compose.yml
