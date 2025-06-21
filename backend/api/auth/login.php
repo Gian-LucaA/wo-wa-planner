@@ -70,7 +70,7 @@ function postRequest()
 
     if (
         $user &&
-        $user['otp'] &&
+        isset($user['otp']) && !empty($user['otp']) &&
         password_verify($data['password'], $user['otp'])
     ) {
         $logger->info("User {$user['username']} logging in with OTP.");
@@ -95,10 +95,14 @@ function postRequest()
 
         $successLoggedIn = true;
         $isOtpSession = true;
-    } else if (!$successLoggedIn && $user && password_verify($data['password'], $user['password'])) {
+    } else if (
+        $user &&
+        isset($user['password']) &&
+        password_verify($data['password'], $user['password'])
+    ) {
         $logger->info("Login successful for user: {$user['username']}");
 
-        if ($user['otp']) {
+        if (isset($user['otp']) && !empty($user['otp'])) {
             $logger->warning("User {$user['username']} has an OTP set, but is logging in with password.");
 
             $collection->updateOne(
