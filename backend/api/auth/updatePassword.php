@@ -40,16 +40,24 @@ function postRequest()
         exit();
     }
 
-    $logger->info("User found: " . json_encode($user['_id']));
+    $logger->info("User found: " . json_encode($user['_id'] ?? null));
 
-    if (!$user || $user['email'] !== $data['email']) {
-        $logger->warning("User not found or email does not match: send: {$data['email']} - found: {$user['email']}");
+    if (
+        !$user ||
+        !isset($user['email']) ||
+        $user['email'] !== $data['email']
+    ) {
+        $logger->warning("User not found or email does not match: send: {$data['email']} - found: " . ($user['email'] ?? 'NULL'));
         http_response_code(404);
         echo json_encode(['error' => 'Nutzer Passwort Kombination ist unbekannt!']);
         exit();
     }
 
-    if (!password_verify($data['oldPassword'], $user['otp']) && (!password_verify($data['oldPassword'], $user['password']) && !$user['otp'])) {
+    // Prüfe altes Passwort gegen OTP (falls vorhanden) oder normales Passwort
+    $otpValid = isset($user['otp']) && !empty($user['otp']) && password_verify($data['oldPassword'], $user['otp']);
+    $passwordValid = isset($user['password']) && password_verify($data['oldPassword'], $user['password']);
+
+    if (!$otpValid && !$passwordValid) {
         $logger->warning("Incorrect old password for user: {$data['email']}");
         http_response_code(401);
         echo json_encode(['error' => 'Nutzer Passwort Kombination ist unbekannt!']);
