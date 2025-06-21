@@ -18,6 +18,8 @@ export default function ForgotPasswordForm({ setType }: ForgotPasswordFormProps)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    setInfo('');
     const res = await setOtp(username, email);
     if (res.error) {
       setIsLoading(false);

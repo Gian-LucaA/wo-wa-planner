@@ -14,12 +14,12 @@ export const setOtp = async (username: string, email: string) => {
 
     if (!res.ok) {
       return {
-        error: data.message || 'Ein Fehler ist aufgetreten.',
+        error: data.error || 'Ein Fehler ist aufgetreten.',
       };
     } else {
       console.log('OTP set successfully');
       return {
-        success: data.message || 'Wenn deine E-Mail gefunden wurde, hast du ein neues Passwort per Mail bekommen.',
+        success: data.success || 'Wenn deine E-Mail gefunden wurde, hast du ein neues Passwort per Mail bekommen.',
       };
     }
   } catch {
