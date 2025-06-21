@@ -41,7 +41,7 @@ try {
 } catch (Exception $e) {
     $logger->error("Failed to connect to MongoDB: " . $e->getMessage());
     http_response_code(500);
-    echo json_encode(['error' => 'Datenbank Verbindung konnte nicht hergestellt werden.', 'message' => "Interner Fehler!"]);
+    echo json_encode(['error' => 'Etwas ist schief gelaufen!', 'message' => "Interner Fehler!"]);
     exit();
 }
 
@@ -89,7 +89,7 @@ if ($apiFolder !== 'api') {
     exit();
 }
 
-if ($functionFile !== 'login' && $functionFile !== 'register' && (empty($data['username']) || empty($data['session_id'])) && $functionFile !== 'sendMail') {
+if ($functionFile !== 'login' && $functionFile !== 'register' && (empty($data['username']) || empty($data['session_id'])) && $functionFile !== 'setOtp') {
     $logger->warning("Unauthorized access attempt to $functionFile with missing credentials.");
     http_response_code(401);
     echo json_encode(['error' => 'Fehlende authentifizierungsdaten']);
@@ -97,8 +97,20 @@ if ($functionFile !== 'login' && $functionFile !== 'register' && (empty($data['u
 }
 
 $sessionId = null;
-if ($functionFile !== 'login' && $functionFile !== 'register' && $functionFile !== 'sendMail') {
-    $sessionId = checkToken($data['session_id'], $data['username']);
+if ($functionFile !== 'login' && $functionFile !== 'register' && $functionFile !== 'setOtp') {
+    $tokenResponse = checkToken($data['session_id'], $data['username']);
+    $sessionId = $tokenResponse['session'] ?? null;
+
+    if ($tokenResponse['isOtpSession']) {
+        $logger->info("Session is an OTP session for user: " . $data['username']);
+        if ($dataFolder !== 'auth' || ($functionFile !== 'setOtp' && $functionFile !== 'updatePassword')) {
+            $logger->warning("Unauthorized access for OTP session of user: " . $data['username']);
+            http_response_code(401);
+            echo json_encode(['error' => 'In OTP Session nicht erlaubt!']);
+            exit();
+        }
+    }
+
     $logger->info("Session validated for user: " . $data['username']);
 
     $isAdmin = checkIfTokenIsAdmin($sessionId);
@@ -106,6 +118,8 @@ if ($functionFile !== 'login' && $functionFile !== 'register' && $functionFile !
         $logger->info($data['username'] . " hat ADMIN rechte!");
     }
 }
+
+
 
 $returnValue = [];
 

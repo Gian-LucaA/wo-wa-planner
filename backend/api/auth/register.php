@@ -20,7 +20,6 @@ function postRequest()
 
   $requestBody = file_get_contents("php://input");
   $data = json_decode($requestBody, true);
-  $logger->info("POST data: " . json_encode($data));
 
   if (empty($data['username']) || empty($data['password'])) {
     $logger->warning("Missing required registration fields.");
@@ -85,6 +84,27 @@ function postRequest()
     http_response_code(409);
     echo json_encode(['error' => 'Der Nutzername ist bereits vergeben!']);
     exit();
+  }
+
+  $currentIp = $_SERVER['REMOTE_ADDR'] ?? '';
+  $currentAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+
+  $rateLimitKey = hash('sha256', $currentIp . '|' . $currentAgent);
+  $registerRequestsLimiterCollection = $dbClient->rate_limiter->register_requests;
+
+  $rateLimit = $registerRequestsLimiterCollection->findOne(['_id' => $rateLimitKey]);
+  if ($rateLimit && $rateLimit['count'] >= 2 && $rateLimit['expiry'] > new MongoDB\BSON\UTCDateTime()) {
+    $logger->warning("OTP Rate limit was hit by IP: {$currentIp}");
+    http_response_code(429);
+    echo json_encode(['error' => 'Zu viele Anfragen. Bitte versuche es später erneut.']);
+    exit();
+  } else {
+    $logger->info("Rate limit check passed for IP: {$currentIp}");
+    $registerRequestsLimiterCollection->updateOne(
+      ['_id' => $rateLimitKey],
+      ['$set' => ['count' => ($rateLimit ? $rateLimit['count'] + 1 : 1), 'expiry' => new MongoDB\BSON\UTCDateTime(strtotime('+120 minutes') * 1000)]],
+      ['upsert' => true]
+    );
   }
 
   try {

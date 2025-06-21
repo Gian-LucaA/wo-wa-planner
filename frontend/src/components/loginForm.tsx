@@ -6,10 +6,10 @@ import { useAuth } from '../services/useAuth';
 import { redirect } from 'next/navigation';
 
 interface LoginFormProps {
-  setIsLogin: (isLogin: boolean) => void;
+  setType: (type: 'login' | 'register' | 'resetPassword') => void;
 }
 
-export default function LoginForm({ setIsLogin }: LoginFormProps) {
+export default function LoginForm({ setType }: LoginFormProps) {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const { authenticate, error } = useAuth();
@@ -17,6 +17,11 @@ export default function LoginForm({ setIsLogin }: LoginFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const success = await authenticate(true, username, password);
+    const isOtpSession = localStorage.getItem('is_otp_session');
+    if (isOtpSession === 'true') {
+      redirect('/user');
+      return;
+    }
     if (success) redirect('/places');
   };
 
@@ -30,7 +35,7 @@ export default function LoginForm({ setIsLogin }: LoginFormProps) {
         value={username}
         onChange={(event) => setUsername(event.target.value)}
       />
-      <PasswordMeterInput password={password} setPassword={setPassword} />
+      <PasswordMeterInput password={password} setPassword={setPassword} setType={setType} />
       {error && <Alert color="danger">{error}</Alert>}
       <Button onClick={handleSubmit}>Login</Button>
       <Stack direction="row" justifyContent="center" alignItems="center" style={{ paddingBottom: '10px' }}>
@@ -38,7 +43,7 @@ export default function LoginForm({ setIsLogin }: LoginFormProps) {
           Neu hier?
         </Typography>
 
-        <Link onClick={() => setIsLogin(false)} level="body-sm" style={{ marginLeft: '10px' }}>
+        <Link onClick={() => setType('register')} level="body-sm" style={{ marginLeft: '10px' }}>
           Registriere dich Jetzt!
         </Link>
       </Stack>

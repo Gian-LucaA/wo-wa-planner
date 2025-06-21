@@ -38,7 +38,7 @@ function checkToken($currentSessionID, $username)
         }
 
         $logger->info("Session validated for user: $username");
-        return $session['user_id'];
+        return ["session" => $session['user_id'], "isOtpSession" => $session['is_otp_session']];
     } else {
         $logger->warning("No session found for user: $username with session ID: $currentSessionID");
         http_response_code(401);

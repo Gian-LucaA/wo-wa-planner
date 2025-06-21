@@ -3,30 +3,37 @@ import * as React from 'react';
 import PasswordMeterInput from './passwordInput';
 import PersonIcon from '@mui/icons-material/Person';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
-import { useAuth } from '../services/useAuth';
+import { setOtp } from '@/services/setOtp';
 
-interface RegisterFormProps {
+interface ForgotPasswordFormProps {
   setType: (type: 'login' | 'register' | 'resetPassword') => void;
 }
 
-export default function RegisterForm({ setType }: RegisterFormProps) {
+export default function ForgotPasswordForm({ setType }: ForgotPasswordFormProps) {
   const [username, setUsername] = React.useState('');
   const [email, setMail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [error, setError] = React.useState('');
+  const [info, setInfo] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
-  const [isLocked, setIsLocked] = React.useState(false);
-  const { authenticate, error, info } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await authenticate(false, username, password, email);
+    const res = await setOtp(username, email);
+    if (res.error) {
+      setIsLoading(false);
+      setError(res.error);
+      return;
+    } else if (res.success) {
+      setIsLoading(false);
+      setInfo(res.success);
+      return;
+    }
     setIsLoading(false);
-    setIsLocked(true);
   };
 
   return (
     <>
-      <h2>Registrieren</h2>
+      <h2>Passwort Zurücksetzung</h2>
       <Input
         type="text"
         placeholder="Nutzername"
@@ -34,7 +41,6 @@ export default function RegisterForm({ setType }: RegisterFormProps) {
         value={username}
         onChange={(event) => {
           setUsername(event.target.value);
-          setIsLocked(false);
         }}
       />
       <Input
@@ -44,35 +50,32 @@ export default function RegisterForm({ setType }: RegisterFormProps) {
         value={email}
         onChange={(event) => {
           setMail(event.target.value);
-          setIsLocked(false);
         }}
       />
-      <PasswordMeterInput showMeter password={password} setPassword={setPassword} setType={setType} />
       {info && <Alert color="success">{info}</Alert>}
       {error && <Alert color="danger">{error}</Alert>}
       <Button
         loading={isLoading}
-        disabled={isLocked}
+        disabled={!username || !email}
         onClick={(evt) => {
           setIsLoading(true);
           handleSubmit(evt);
         }}
       >
-        Warteliste beitreten
+        Passwort Zurücksetzten
       </Button>
       <Typography
         level="body-sm"
         style={{ paddingBottom: '10px' }}
         sx={{ alignSelf: 'center', color: 'hsl(var(--hue) 80% 30%)' }}
       >
-        Bereits einen Account?
         <Link
           onClick={() => setType('login')}
           level="body-sm"
           sx={{ alignSelf: 'flex-start' }}
           style={{ marginLeft: '10px' }}
         >
-          Zum Login!
+          Zurück zum Login!
         </Link>
       </Typography>
     </>

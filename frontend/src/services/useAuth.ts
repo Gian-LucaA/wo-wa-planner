@@ -34,6 +34,7 @@ export const useAuth = () => {
           sameSite: 'Strict',
           path: '/',
         });
+        localStorage.setItem('is_otp_session', data.is_otp_session ? 'true' : 'false');
         return true;
       } else {
         throw new Error(data.error || 'Something went wrong');
