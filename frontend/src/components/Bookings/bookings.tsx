@@ -267,6 +267,9 @@ export default function Bookings({ placeId }: BookingsProps) {
             '@media (max-width: 480px)': {
               gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
             },
+            '@media (max-width: 440px)': {
+              gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+            },
             '@media (max-width: 415px)': {
               gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
             },

@@ -106,6 +106,10 @@ export default function MonthBar({ month, year, bookings, switchMonthVisibility 
                 transform: 'scale(0.85)',
                 margin: '-20px',
               },
+              '@media (max-width: 440px)': {
+                transform: 'scale(0.775)',
+                margin: '-30px',
+              },
               '@media (max-width: 415px)': {
                 transform: 'scale(0.7)',
                 margin: '-40px',
