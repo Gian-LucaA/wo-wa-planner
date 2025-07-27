@@ -105,7 +105,9 @@ function postRequest()
         $logger->error("Failed to send registration emails: " . $e->getMessage());
         http_response_code(500);
         echo json_encode(['error' => 'Etwas ist schief gelaufen!']);
+        exit();
     }
     http_response_code(200);
     echo json_encode(['success' => 'Wir haben dir eine E-Mail gesendet, wenn deine E-Mail existiert!']);
+    exit();
 }

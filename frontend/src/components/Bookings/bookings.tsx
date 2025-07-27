@@ -1,7 +1,7 @@
 'use client';
 
 import { getMonths, Month } from '@/helpers/calendar/dateUtils';
-import { Card, IconButton, Stack, Typography } from '@mui/joy';
+import { Card, IconButton, Stack, Typography, Box } from '@mui/joy';
 import * as React from 'react';
 import MonthBar from './monthBar';
 import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
@@ -256,13 +256,20 @@ export default function Bookings({ placeId }: BookingsProps) {
       {loading ? (
         <Loader />
       ) : (
-        <Stack
-          direction="column"
-          spacing={1}
+        <Box
           sx={{
-            justifyContent: 'flex-start',
-            alignItems: 'flex-start',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(430px, 1fr))',
+            gap: 2,
             width: '100%',
+            alignItems: 'stretch',
+            justifyItems: 'stretch',
+            '@media (max-width: 480px)': {
+              gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
+            },
+            '@media (max-width: 415px)': {
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            },
           }}
         >
           {months.months.map(
@@ -277,7 +284,7 @@ export default function Bookings({ placeId }: BookingsProps) {
                 />
               ),
           )}
-        </Stack>
+        </Box>
       )}
     </>
   );

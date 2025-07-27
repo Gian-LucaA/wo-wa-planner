@@ -1,11 +1,11 @@
 'use client';
 
 import { getDaysInMonth, Month } from '@/helpers/calendar/dateUtils';
-import { Card, Grid, IconButton, Stack, Typography } from '@mui/joy';
+import { Card, Grid, IconButton, Stack, Typography, Box } from '@mui/joy';
 import * as React from 'react';
-import DayCard from './dayCard';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
+import DayCard from './dayCard';
 import { Booking } from '@/types/Booking';
 
 interface MonthBarProps {
@@ -42,13 +42,18 @@ export default function MonthBar({ month, year, bookings, switchMonthVisibility 
     });
   }, [bookings, days]);
 
+  const weekdayNames = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+
+  const firstDayIndex = (daysWithBookings[0]?.date.getDay() + 6) % 7;
+
+  const daysGrid = [...Array(firstDayIndex).fill(null), ...daysWithBookings];
+
   return (
     <>
       <Stack
         direction="row"
         spacing={1}
         sx={{
-          justifyContent: 'flex-start',
           alignItems: 'center',
           width: !month.disabled ? '100%' : '100px',
           transition: 'width 0.5s ease-in-out',
@@ -60,55 +65,81 @@ export default function MonthBar({ month, year, bookings, switchMonthVisibility 
           size="sm"
           sx={{
             display: 'flex',
-            flexDirection: {
-              xs: 'column',
-              sm: 'row',
-            },
+            flexDirection: 'column',
+            alignItems: 'center',
             width: '100%',
+            position: 'relative',
           }}
         >
-          <Typography level="title-md" sx={{ width: '80px', padding: '2px' }}>
+          <Typography
+            level="title-md"
+            sx={{
+              width: '100%',
+              padding: '8px',
+              textAlign: 'start',
+              fontWeight: 'bold',
+              zIndex: 2,
+            }}
+          >
             {!month.disabled ? month.full : month.short}
           </Typography>
-
-          <Grid
-            container
-            spacing={1}
+          <IconButton
+            variant="plain"
+            onClick={() => {
+              switchMonthVisibility(month);
+              setAnimating(true);
+            }}
             sx={{
-              height: '100%',
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'flex-end',
-              width: '100%',
-              paddingRight: {
-                xs: '0',
-                sm: '40px',
+              position: 'absolute',
+              top: '8px',
+              right: '8px',
+              zIndex: 2,
+            }}
+          >
+            {month.disabled ? <VisibilityRoundedIcon /> : <VisibilityOffRoundedIcon />}
+          </IconButton>
+          <Box
+            sx={{
+              transition: 'transform 0.2s, width 0.2s',
+              transformOrigin: 'center',
+              '@media (max-width: 480px)': {
+                transform: 'scale(0.85)',
+                margin: '-20px',
+              },
+              '@media (max-width: 415px)': {
+                transform: 'scale(0.7)',
+                margin: '-40px',
               },
             }}
           >
-            {!month.disabled &&
-              !animating &&
-              daysWithBookings.map((day) => (
-                <Grid key={day.date.toISOString()}>
-                  <DayCard key={String(day.day) + 'card'} day={day} />
+            <Grid
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(7, 1fr)',
+                width: '100%',
+                margin: '0 auto',
+                gap: '8px',
+              }}
+            >
+              {weekdayNames.map((name) => (
+                <Grid key={name} sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+                  {name}
                 </Grid>
               ))}
 
-            <IconButton
-              variant="plain"
-              onClick={() => {
-                switchMonthVisibility(month);
-                setAnimating(true);
-              }}
-              sx={{
-                position: 'absolute',
-                top: '8px',
-                right: '8px',
-              }}
-            >
-              {month.disabled ? <VisibilityRoundedIcon /> : <VisibilityOffRoundedIcon />}
-            </IconButton>
-          </Grid>
+              {!month.disabled &&
+                !animating &&
+                daysGrid.map((day, idx) =>
+                  day ? (
+                    <Grid key={day.date.toISOString()}>
+                      <DayCard key={String(day.day) + 'card'} day={day} />
+                    </Grid>
+                  ) : (
+                    <Grid key={'empty-' + idx} />
+                  ),
+                )}
+            </Grid>
+          </Box>
         </Card>
       </Stack>
     </>
