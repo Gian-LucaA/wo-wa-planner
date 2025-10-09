@@ -23,5 +23,7 @@ dist/
 build/
 docker-compose.yml
 docker-compose.yml.save
+docker-compose.yml.backup
 
 .htaccess
+backend/.htaccess.backup
