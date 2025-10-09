@@ -69,7 +69,7 @@ function postRequest()
         exit();
     }
 
-    if ($existingUser['otp_expiry'] && $existingUser['otp_expiry'] > new MongoDB\BSON\UTCDateTime()) {
+    if (isset($existingUser['otp_expiry']) && $existingUser['otp_expiry'] > new MongoDB\BSON\UTCDateTime()) {
         $logger->warning("User tried to generate a OTP, while the old one is still valid: {$username}");
         http_response_code(200);
         echo json_encode(['success' => 'Wir haben dir eine E-Mail gesendet, wenn deine E-Mail existiert!']);

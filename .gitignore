@@ -12,13 +12,16 @@ yarn-error.log*
 .env.*.local
 
 *.log
+logs/
 
 .DS_Store
 
 vendor/
 composer.lock
-*.log
 
 dist/
 build/
 docker-compose.yml
+docker-compose.yml.save
+
+.htaccess

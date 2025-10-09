@@ -48,6 +48,7 @@ function ThemeInitializer({ children }: { children: React.ReactNode }) {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+    <meta name="hibp-verify" content="dweb_w4o0uzmt85vz0417g91yg073" />
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <CssVarsProvider defaultMode="system" modeStorageKey="mui-mode" attribute="data-color-scheme" theme={theme}>
           <ThemeInitializer>

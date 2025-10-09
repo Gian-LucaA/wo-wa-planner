@@ -21,7 +21,7 @@ function postRequest()
     $loginRequestsLimiterCollection = $dbClient->rate_limiter->login_requests;
 
     $rateLimit = $loginRequestsLimiterCollection->findOne(['_id' => $rateLimitKey]);
-    if ($rateLimit && $rateLimit['count'] >= 5 && $rateLimit['expiry'] > new MongoDB\BSON\UTCDateTime()) {
+    if ($rateLimit && $rateLimit['count'] >= 20 && $rateLimit['expiry'] > new MongoDB\BSON\UTCDateTime()) {
         $logger->warning("Rate limit was hit by IP: {$currentIp}");
         http_response_code(429);
         echo json_encode(['error' => 'Zu viele Anfragen. Bitte versuche es später erneut.']);

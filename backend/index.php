@@ -1,6 +1,16 @@
 <?php
 
-header('Access-Control-Allow-Origin: http://localhost:3000');
+$allowed_origins = [
+    'http://localhost:3000',
+    'https://general-alcazar.toastylabs.de',
+];
+
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+
+if (in_array($origin, $allowed_origins)) {
+    header("Access-Control-Allow-Origin: $origin");
+}
+
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, Content-Type, Authorization, X-Requested-With, Accept');
 header('Access-Control-Allow-Credentials: true');
@@ -12,6 +22,23 @@ require_once __DIR__ . '/logging/logger.php';
 
 $logger = new Logger();
 $logger->info("Incoming request: {$_SERVER['REQUEST_METHOD']} {$_SERVER['REQUEST_URI']}");
+
+ini_set('display_errors', 0);
+error_reporting(E_ALL);
+
+set_error_handler(function ($severity, $message, $file, $line) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Interner Serverfehler']);
+    error_log("Error: [$severity] $message in $file on line $line");
+    exit();
+});
+
+set_exception_handler(function ($exception) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Interner Serverfehler']);
+    error_log("Uncaught Exception: " . $exception->getMessage());
+    exit();
+});
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();

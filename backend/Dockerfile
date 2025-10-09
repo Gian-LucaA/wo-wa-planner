@@ -43,5 +43,7 @@ RUN chown -R www-data:www-data /var/www/html \
 # Enable mod_rewrite
 RUN a2enmod rewrite
 
+RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
+
 # Open the port for the Apache server
 EXPOSE 80

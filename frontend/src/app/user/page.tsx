@@ -58,7 +58,7 @@ export default function Page() {
         />
         <Input
           type="password"
-          placeholder="Altes Passwort"
+          placeholder="Altes Passwort / OTP-Code"
           startDecorator={<LockClockRoundedIcon />}
           value={passwordOld}
           onChange={(event) => setPasswordOld(event.target.value)}
