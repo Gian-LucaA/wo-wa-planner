@@ -22,7 +22,7 @@ export interface DayWithBookings {
   weekdayShort: string;
   isToday?: boolean;
   isPast?: boolean;
-  booking: Booking | null;
+  bookings: Booking[];
 }
 
 export default function MonthBar({ month, year, bookings, switchMonthVisibility }: MonthBarProps) {
@@ -31,14 +31,15 @@ export default function MonthBar({ month, year, bookings, switchMonthVisibility 
 
   const daysWithBookings = React.useMemo(() => {
     return days.map((day) => {
-      const bookingForDay = bookings.find((booking) => {
-        const bookingStart = new Date(booking.startDate).getTime();
-        const bookingEnd = new Date(booking.endDate).getTime();
+      const bookingsForDay: Booking[] = (bookings || []).filter((booking) => {
+        const bookingStart = booking.startDate ? new Date(booking.startDate).getTime() : undefined;
+        const bookingEnd = booking.endDate ? new Date(booking.endDate).getTime() : undefined;
+        if (bookingStart === undefined || bookingEnd === undefined) return false;
         const dayTime = day.date.getTime();
         return dayTime >= bookingStart && dayTime <= bookingEnd;
       });
 
-      return { ...day, booking: bookingForDay || null };
+      return { ...day, bookings: bookingsForDay };
     });
   }, [bookings, days]);
 

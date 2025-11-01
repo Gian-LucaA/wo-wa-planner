@@ -32,6 +32,9 @@ export default function Bookings({ placeId }: BookingsProps) {
   const router = useRouter();
   const pathname = usePathname();
 
+  const maxYear = new Date().getFullYear() + 2;
+  const minYear = new Date().getFullYear() - 1;
+
   React.useEffect(() => {
     const fetchBookings = async () => {
       if (!placeId) {
@@ -135,7 +138,7 @@ export default function Bookings({ placeId }: BookingsProps) {
             boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2)',
           }}
         >
-          <IconButton onClick={() => setYear(year - 1)} variant="soft">
+          <IconButton onClick={() => setYear(year - 1)} variant="soft" disabled={year <= minYear}>
             <NavigateBeforeRoundedIcon />
           </IconButton>
           <Typography
@@ -146,7 +149,7 @@ export default function Bookings({ placeId }: BookingsProps) {
           >
             {year}
           </Typography>
-          <IconButton onClick={() => setYear(year + 1)} variant="soft">
+          <IconButton onClick={() => setYear(year + 1)} variant="soft" disabled={year >= maxYear}>
             <NavigateNextRoundedIcon />
           </IconButton>
         </Card>

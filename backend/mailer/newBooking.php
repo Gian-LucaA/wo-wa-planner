@@ -14,12 +14,11 @@ function sendBookedMail(
     global $logger;
 
     // 1. ICS-Content vorbereiten (for all-day event)
-    $dtStart = $eventStart->format('Ymd');
-
-    // Add 1 day to $eventEnd for all-day DTEND
+    $dtStart = $eventStart->setTime(12, 0)->format('Ymd\THis');
+    $eventEnd->setTime(12, 0);
     $eventEndPlusOne = clone $eventEnd;
     $eventEndPlusOne->modify('+1 day');
-    $dtEnd = $eventEndPlusOne->format('Ymd');
+    $dtEnd = $eventEndPlusOne->format('Ymd\THis');
 
     $dtStamp = (new DateTime('now', new DateTimeZone('UTC')))->format('Ymd\THis\Z');
     $uid = uniqid() . '@wowaplan.toastylabs.de';
@@ -32,8 +31,8 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:$uid
 DTSTAMP:$dtStamp
-DTSTART;VALUE=DATE:$dtStart
-DTEND;VALUE=DATE:$dtEnd
+DTSTART;TZID=Europe/Berlin:$dtStart
+DTEND;TZID=Europe/Berlin:$dtEnd
 SUMMARY:$eventSummary
 DESCRIPTION:$eventDescription
 LOCATION:$eventLocation

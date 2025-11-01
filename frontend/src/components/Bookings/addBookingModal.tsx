@@ -14,7 +14,7 @@ interface AddBookingModalProps {
   updateIdx: () => void;
 }
 
-export default function AddBookingModal({ placeId, open, setOpen, bookings, updateIdx }: AddBookingModalProps) {
+export default function AddBookingModal({ placeId, open, setOpen, bookings, updateIdx, year }: AddBookingModalProps) {
   const [selectedDates, setSelectedDates] = React.useState<any[]>([]);
   const [snackbarMessage, setSnackbarMessage] = React.useState<string | null>(null);
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -53,15 +53,20 @@ export default function AddBookingModal({ placeId, open, setOpen, bookings, upda
       <Modal open={open} onClose={() => setOpen(false)}>
         <ModalDialog>
           <ModalClose />
-          <Typography>Buchung Hinzufügen</Typography>
+          <Typography>Buchung für {year} Hinzufügen</Typography>
           Bitte wähle einen Zeitraum in dem du {location} buchen möchtest.
           <div
             style={{
-              height: '520px',
+              height: '600px',
               overflow: 'auto',
             }}
           >
-            <BookingsSelect bookings={bookings} selectedDates={selectedDates} setSelectedDates={setSelectedDates} />
+            <BookingsSelect
+              bookings={bookings}
+              selectedDates={selectedDates}
+              setSelectedDates={setSelectedDates}
+              year={year}
+            />
           </div>
           <Button
             loading={loading}
