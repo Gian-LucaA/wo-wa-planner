@@ -1,11 +1,11 @@
 'use client';
 import Cookies from 'js-cookie';
-import { ApiPaths } from '../../paths';
+import { CREATE_PLACE } from '../../paths';
 
 export const useCreatePlace = (name: string, location: string, imgPath: string, users: { user_tag: string }[]) => {
   const userTags = users.map((user) => user.user_tag);
 
-  const result = fetch(ApiPaths.CREATE_PLACE, {
+  const result = fetch(CREATE_PLACE, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

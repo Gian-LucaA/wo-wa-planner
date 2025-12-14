@@ -20,7 +20,6 @@ export default function LoginForm({ setType }: LoginFormProps) {
     const isOtpSession = localStorage.getItem('is_otp_session');
     if (isOtpSession === 'true') {
       redirect('/user');
-      return;
     }
     if (success) redirect('/places');
   };

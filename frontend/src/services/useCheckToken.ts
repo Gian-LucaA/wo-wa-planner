@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { ApiPaths } from '../../paths';
+import { AUTH_TOKEN_CHECK } from '../../paths';
 
 let isChecking = false;
 
@@ -12,7 +12,7 @@ export const useCheckToken = async () => {
   let valid = false;
 
   try {
-    const response = await fetch(ApiPaths.AUTH_TOKEN_CHECK, {
+    const response = await fetch(AUTH_TOKEN_CHECK, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -1,9 +1,9 @@
 'use client';
 import Cookies from 'js-cookie';
-import { ApiPaths } from '../../paths';
+import { CREATE_BOOKING } from '../../paths';
 
 export const useAddBooking = (locationId: string, from: Date, to: Date) => {
-  const result = fetch(ApiPaths.CREATE_BOOKING, {
+  const result = fetch(CREATE_BOOKING, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie';
-import { ApiPaths } from '../../paths';
+import { GET_PLACES_BY_ID, GET_PLACES } from '../../paths';
 
 export const useGetPlaces = (placeId?: string) => {
-  const pendingUsers = fetch(placeId ? ApiPaths.GET_PLACES_BY_ID(placeId) : ApiPaths.GET_PLACES, {
+  const pendingUsers = fetch(placeId ? GET_PLACES_BY_ID(placeId) : GET_PLACES, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

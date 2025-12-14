@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie';
-import { ApiPaths } from '../../paths';
+import { GET_USERS_BY_ID, GET_USERS } from '../../paths';
 
 export const useGetUsers = (userId?: string) => {
-  const url = userId ? ApiPaths.GET_USERS_BY_ID(userId) : ApiPaths.GET_USERS;
+  const url = userId ? GET_USERS_BY_ID(userId) : GET_USERS;
 
   const users = fetch(url, {
     method: 'GET',

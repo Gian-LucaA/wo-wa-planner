@@ -1,14 +1,14 @@
 'use client';
 
 import Cookies from 'js-cookie';
-import { ApiPaths } from '../../paths';
+import { PLACE_ADD_IMAGE } from '../../paths';
 
 export const useUploadImage = (place_id: string, image: File) => {
   const formData = new FormData();
   formData.append('image', image);
   formData.append('place_id', place_id);
 
-  const success = fetch(ApiPaths.PLACE_ADD_IMAGE, {
+  const success = fetch(PLACE_ADD_IMAGE, {
     method: 'POST',
     credentials: 'include',
     body: formData,

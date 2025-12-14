@@ -1,10 +1,10 @@
 'use client';
 import Cookies from 'js-cookie';
 import { redirect } from 'next/navigation';
-import { ApiPaths } from '../../paths';
+import { ACCEPT_USERS } from '../../paths';
 
 export const useAcceptUser = (_id: string) => {
-  fetch(ApiPaths.ACCEPT_USERS, {
+  fetch(ACCEPT_USERS, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

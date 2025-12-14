@@ -1,4 +1,4 @@
-import { ApiPaths } from '../../paths';
+import { AUTH_TOKEN_IS_ADMIN } from '../../paths';
 
 let isChecking = false;
 
@@ -11,7 +11,7 @@ export const isAdminService = async () => {
   let valid = false;
 
   try {
-    const response = await fetch(ApiPaths.AUTH_TOKEN_IS_ADMIN, {
+    const response = await fetch(AUTH_TOKEN_IS_ADMIN, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

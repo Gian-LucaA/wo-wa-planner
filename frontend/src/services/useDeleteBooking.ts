@@ -1,9 +1,9 @@
 'use client';
 import Cookies from 'js-cookie';
-import { ApiPaths } from '../../paths';
+import { DELETE_BOOKING } from '../../paths';
 
 export const useDeleteBooking = (id: string) => {
-  const success = fetch(ApiPaths.DELETE_BOOKING, {
+  const success = fetch(DELETE_BOOKING, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

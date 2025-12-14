@@ -1,9 +1,9 @@
 'use client';
 import Cookies from 'js-cookie';
-import { ApiPaths } from '../../paths';
+import { DELETE_USERS } from '../../paths';
 
 export const useDeleteUser = (id: string) => {
-  const success = fetch(ApiPaths.DELETE_USERS, {
+  const success = fetch(DELETE_USERS, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

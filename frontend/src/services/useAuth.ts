@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Cookies from 'js-cookie';
-import { ApiPaths } from '../../paths';
+import { AUTH_LOGIN, AUTH_REGISTER } from '../../paths';
 
 export const useAuth = () => {
   const [error, setError] = useState('');
@@ -9,7 +9,7 @@ export const useAuth = () => {
   const authenticate = async (isLogin: boolean, username: string, password: string, email?: string) => {
     setError('');
     setInfo('');
-    const url = isLogin ? ApiPaths.AUTH_LOGIN : ApiPaths.AUTH_REGISTER;
+    const url = isLogin ? AUTH_LOGIN : AUTH_REGISTER;
 
     try {
       const res = await fetch(url, {
@@ -37,7 +37,7 @@ export const useAuth = () => {
         localStorage.setItem('is_otp_session', data.is_otp_session ? 'true' : 'false');
         return true;
       } else {
-        throw new Error(data.error || 'Something went wrong');
+        throw new Error('Something went wrong');
       }
     } catch (error) {
       Cookies.remove('session_id');

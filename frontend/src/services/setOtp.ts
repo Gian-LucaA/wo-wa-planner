@@ -1,9 +1,9 @@
 'use client';
-import { ApiPaths } from '../../paths';
+import { SET_OTP } from '../../paths';
 
 export const setOtp = async (username: string, email: string) => {
   try {
-    const res = await fetch(ApiPaths.SET_OTP, {
+    const res = await fetch(SET_OTP, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',

@@ -1,9 +1,9 @@
 'use client';
 import Cookies from 'js-cookie';
-import { ApiPaths } from '../../paths';
+import { UPDATE_USERS } from '../../paths';
 
 export const useUpdateUser = (id: string, username: string, user_tag: string, email: string, color: number) => {
-  const success = fetch(ApiPaths.UPDATE_USERS, {
+  const success = fetch(UPDATE_USERS, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

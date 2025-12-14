@@ -1,9 +1,9 @@
 'use client';
 import Cookies from 'js-cookie';
-import { ApiPaths } from '../../paths';
+import { UPDATE_PASSWORD } from '../../paths';
 
 export const useUpdatePassword = (email: string, oldPassword: string, newPassword: string) => {
-  const data = fetch(ApiPaths.UPDATE_PASSWORD, {
+  const data = fetch(UPDATE_PASSWORD, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

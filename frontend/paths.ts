@@ -1,38 +1,37 @@
-export class ApiPaths {
-  // Basis-API-Pfad
-  public static readonly BASE_PATH = process.env.NEXT_PUBLIC_API_URL;
-
-  // Users API paths
-  public static readonly USERS = `${this.BASE_PATH}/users`;
-  public static readonly ACCEPT_USERS = `${this.USERS}/acceptUser`;
-  public static readonly DECLINE_USERS = `${this.USERS}/declineUser`;
-  public static readonly DELETE_USERS = `${this.USERS}/deleteUser`;
-  public static readonly UPDATE_USERS = `${this.USERS}/updateUser`;
-  public static readonly GET_PENDING_USERS = `${this.USERS}/getPendingUsers`;
-  public static readonly GET_USERS = `${this.USERS}/getUsers`;
-  public static readonly GET_USERS_BY_NAME = (searched: string) => `${this.GET_USERS}?searched=${searched}`;
-  public static readonly GET_USERS_BY_ID = (userId: string) => `${this.GET_USERS}?userId=${userId}`;
-
-  // Place API paths
-  public static readonly PLACES = `${this.BASE_PATH}/places`;
-  public static readonly CREATE_BOOKING = `${this.PLACES}/createBooking`;
-  public static readonly CREATE_PLACE = `${this.PLACES}/createBooking`;
-  public static readonly PLACE_ADD_IMAGE = `${this.PLACES}/addImage`;
-  public static readonly UPDATE_PLACE = `${this.PLACES}/updatePlace`;
-  public static readonly GET_PLACES = `${this.PLACES}/getPlaces`;
-  public static readonly DELETE_BOOKING = `${this.PLACES}/deleteBooking`;
-  public static readonly GET_PLACES_BY_ID = (placeId: string) => `${this.PLACES}/getPlaces?placeId=${placeId}`;
-  public static readonly GET_USERS_BOOKINGS = (placeId: string) => `${this.PLACES}/getUsersBookings?placeId=${placeId}`;
-  public static readonly GET_BOOKINGS = (year: number, placeId: string) =>
-    `${this.PLACES}/getBookings?year=${year}&placeId=${placeId}`;
-
-  // Auth API paths
-  public static readonly AUTH = `${this.BASE_PATH}/auth`;
-  public static readonly AUTH_LOGIN = `${this.AUTH}/login`;
-  public static readonly AUTH_REGISTER = `${this.AUTH}/register`;
-  public static readonly AUTH_TOKEN_CHECK = `${this.AUTH}/checkToken`;
-  public static readonly AUTH_TOKEN_IS_ADMIN = `${this.AUTH}/checkIfAdmin`;
-  public static readonly REFRESH_TOKEN = `${this.AUTH}/refreshToken`;
-  public static readonly UPDATE_PASSWORD = `${this.AUTH}/updatePassword`;
-  public static readonly SET_OTP = `${this.AUTH}/setOtp`;
+const API_BASE = process.env.NEXT_PUBLIC_API_URL;
+if (!API_BASE) {
+  throw new Error('NEXT_PUBLIC_API_URL is not set');
 }
+
+// Users API paths
+export const USERS = `${API_BASE}/users`;
+export const ACCEPT_USERS = `${API_BASE}/users/acceptUser`;
+export const DECLINE_USERS = `${API_BASE}/users/declineUser`;
+export const DELETE_USERS = `${API_BASE}/users/deleteUser`;
+export const UPDATE_USERS = `${API_BASE}/users/updateUser`;
+export const GET_PENDING_USERS = `${API_BASE}/users/getPendingUsers`;
+export const GET_USERS = `${API_BASE}/users/getUsers`;
+export const GET_USERS_BY_NAME = (searched: string) => `${GET_USERS}?searched=${searched}`;
+export const GET_USERS_BY_ID = (userId: string) => `${GET_USERS}?userId=${userId}`;
+
+// Place API paths
+export const PLACES = `${API_BASE}/places`;
+export const CREATE_BOOKING = `${PLACES}/createBooking`;
+export const CREATE_PLACE = `${PLACES}/createPlace`;
+export const PLACE_ADD_IMAGE = `${PLACES}/addImage`;
+export const UPDATE_PLACE = `${PLACES}/updatePlace`;
+export const GET_PLACES = `${PLACES}/getPlaces`;
+export const DELETE_BOOKING = `${PLACES}/deleteBooking`;
+export const GET_PLACES_BY_ID = (placeId: string) => `${PLACES}/getPlaces?placeId=${placeId}`;
+export const GET_USERS_BOOKINGS = (placeId: string) => `${PLACES}/getUsersBookings?placeId=${placeId}`;
+export const GET_BOOKINGS = (year: number, placeId: string) => `${PLACES}/getBookings?year=${year}&placeId=${placeId}`;
+
+// Auth API paths
+export const AUTH = `${API_BASE}/auth`;
+export const AUTH_LOGIN = `${AUTH}/login`;
+export const AUTH_REGISTER = `${AUTH}/register`;
+export const AUTH_TOKEN_CHECK = `${AUTH}/checkToken`;
+export const AUTH_TOKEN_IS_ADMIN = `${AUTH}/checkIfAdmin`;
+export const REFRESH_TOKEN = `${AUTH}/refreshToken`;
+export const UPDATE_PASSWORD = `${AUTH}/updatePassword`;
+export const SET_OTP = `${AUTH}/setOtp`;

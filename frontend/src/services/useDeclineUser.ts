@@ -1,9 +1,9 @@
 'use client';
 import Cookies from 'js-cookie';
-import { ApiPaths } from '../../paths';
+import { DECLINE_USERS } from '../../paths';
 
 export const useDeclineUser = (id: string) => {
-  const success = fetch(ApiPaths.DECLINE_USERS, {
+  const success = fetch(DECLINE_USERS, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
