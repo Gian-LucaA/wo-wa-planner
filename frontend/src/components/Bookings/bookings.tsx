@@ -103,7 +103,7 @@ export default function Bookings({ placeId }: BookingsProps) {
           alignItems: 'center',
           position: 'sticky',
           top: '10px',
-          zIndex: 1,
+          zIndex: 3,
         }}
       >
         <Card
@@ -142,6 +142,7 @@ export default function Bookings({ placeId }: BookingsProps) {
             <NavigateBeforeRoundedIcon />
           </IconButton>
           <Typography
+            key={`year-${year}`}
             sx={{
               display: 'flex',
               alignItems: 'center',
