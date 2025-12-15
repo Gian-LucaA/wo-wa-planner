@@ -1,38 +1,36 @@
-# Stage-1 & specify a name 'builder'
-FROM node:latest AS builder
+# Stage 1: builder
+FROM node:20-bookworm-slim AS builder
 
-# Create a directory and go to the directory 
 WORKDIR /wowaplanner
 
-# Copy the package.json and package-lock.json files to install the necessary dependencies  
+# Install deps deterministically
 COPY package.json package-lock.json ./
+RUN npm ci
 
-# Install the dependencies
-RUN npm install
-
-# Set the environment variable to fix the OpenSSL issue
+# Build
 ENV NODE_OPTIONS=--openssl-legacy-provider
-
-# Copy other files to my current directory
 COPY . .
-
-# Build the Next.js application
 RUN npm run build
 
-# Stage-2
-FROM node:latest AS runner
+# Stage 2: runner
+FROM node:20-bookworm-slim AS runner
 
-# Set working directory
 WORKDIR /wowaplanner
+ENV NODE_ENV=production
 
-# Copy the built files from the builder stage
-COPY --from=builder /wowaplanner ./
+# Create non-root user
+RUN useradd -m -u 1001 appuser
 
-# Install only production dependencies
-RUN npm install --only=production
+COPY --from=builder /wowaplanner/package.json /wowaplanner/package-lock.json ./
+COPY --from=builder /wowaplanner/.next ./.next
+COPY --from=builder /wowaplanner/public ./public
+COPY --from=builder /wowaplanner/next.config.* ./
 
-# Expose the port the app runs on
+RUN npm ci --omit=dev
+
+# Fix permissions and drop root
+RUN chown -R appuser:appuser /wowaplanner
+USER appuser
+
 EXPOSE 3000
-
-# Start the Next.js application
 CMD ["npm", "start"]
