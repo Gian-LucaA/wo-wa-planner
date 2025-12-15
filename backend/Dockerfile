@@ -1,49 +1,53 @@
-# Select a base image
-FROM php:8.4-apache
+# Pin image versions (consider also pinning digests)
+FROM php:8.4.1-apache
 
-RUN apt-get update && apt-get install -y tzdata && \
-    ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime && dpkg-reconfigure -f noninteractive tzdata
+ENV DEBIAN_FRONTEND=noninteractive \
+    TZ=Europe/Berlin \
+    COMPOSER_ALLOW_SUPERUSER=1
 
-RUN apt-get update && apt-get install -y --no-install-recommends gnupg dirmngr ca-certificates
-
-# Installieren Sie die MongoDB PHP-Erweiterung und Composer
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    libzip-dev \
-    unzip \
-    libssl-dev \
-    pkg-config \
+# System deps (single layer) + cleanup
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      tzdata \
+      ca-certificates \
+      unzip \
+      libpng-dev libjpeg-dev libfreetype6-dev \
+      libzip-dev \
+      libssl-dev pkg-config \
+    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
+    && echo $TZ > /etc/timezone \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd zip \
+    && docker-php-ext-install -j"$(nproc)" gd zip \
     && pecl install mongodb \
-    && docker-php-ext-enable mongodb
+    && docker-php-ext-enable mongodb \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Pin Composer instead of :latest (choose a real version you want)
+COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
-# Set the working directory
 WORKDIR /var/www/html
 
-# Copy the PHP files to the Apache directory
-COPY . /var/www/html/
+# Copy only composer files first for better caching
+COPY composer.json composer.lock ./
 
-RUN composer update
+# Install prod deps only (no update!)
+RUN composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader
 
-# Install PHP dependencies
-RUN composer install
+# Now copy the application code
+COPY . .
 
-RUN composer require phpmailer/phpmailer
-
-# Set permissions
+# Permissions: make code not writable; only allow write where needed (example paths)
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
+    && find /var/www/html -type f -exec chmod 0644 {} \; \
+    && find /var/www/html -type d -exec chmod 0755 {} \;
 
-# Enable mod_rewrite
-RUN a2enmod rewrite
+# Apache: enable rewrite, but don’t globally AllowOverride All
+RUN a2enmod rewrite \
+ && printf '%s\n' \
+    '<Directory /var/www/html>' \
+    '  AllowOverride All' \
+    '  Require all granted' \
+    '</Directory>' \
+    > /etc/apache2/conf-available/app.conf \
+ && a2enconf app
 
-RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
-
-# Open the port for the Apache server
 EXPOSE 80
