@@ -21,10 +21,9 @@ ENV NODE_ENV=production
 # Create non-root user
 RUN useradd -m -u 1001 appuser
 
-COPY --from=builder /wowaplanner/package.json /wowaplanner/package-lock.json ./
-COPY --from=builder /wowaplanner/.next ./.next
+COPY --from=builder /wowaplanner/.next/standalone ./
+COPY --from=builder /wowaplanner/.next/static ./.next/static
 COPY --from=builder /wowaplanner/public ./public
-COPY --from=builder /wowaplanner/next.config.* ./
 
 RUN npm ci --omit=dev
 
