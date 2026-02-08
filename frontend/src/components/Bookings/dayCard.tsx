@@ -1,15 +1,19 @@
 'use client';
 
 import * as React from 'react';
-import { Chip, Tooltip, Typography } from '@mui/joy';
+import { Box, Chip, Tooltip, Typography } from '@mui/joy';
 import { DayWithBookings } from './monthBar';
 import { getColorByIndex, getStandardBackground } from '@/types/Colors';
 
 interface DayCardProps {
   day: DayWithBookings;
+  hasBookedLeft?: boolean;
+  hasBookedRight?: boolean;
+  fadeLeftEdge?: boolean;
+  fadeRightEdge?: boolean;
 }
 
-export default function DayTooltip({ day }: DayCardProps) {
+export default function DayTooltip({ day, hasBookedLeft, hasBookedRight, fadeLeftEdge, fadeRightEdge }: DayCardProps) {
   const isToday = day.isToday;
   const isPast = day.isPast;
   const isBooked = (day.bookings?.length ?? 0) > 0;
@@ -96,16 +100,24 @@ export default function DayTooltip({ day }: DayCardProps) {
     </div>
   );
 
+  const borderRadius = React.useMemo(() => {
+    if (!isBooked) return '8px';
+    const baseRadius = 8;
+    const leftRadius = hasBookedLeft ? 0 : baseRadius;
+    const rightRadius = hasBookedRight ? 0 : baseRadius;
+    return `${leftRadius}px ${rightRadius}px ${rightRadius}px ${leftRadius}px`;
+  }, [isBooked, hasBookedLeft, hasBookedRight]);
+
   return (
     <Tooltip title={dayTooltip} placement="top" enterTouchDelay={0}>
-      <div
-        style={{
+      <Box
+        sx={(theme) => ({
           ...(bookingCount === 2 ? { background: gradientBg } : { backgroundColor: singleBgColor }),
           height: '50px',
-          width: '50px',
+          width: isBooked ? '100%' : '50px',
           color: bookingCount === 1 ? getColorByIndex(day.bookings?.[0]?.user_color, 'hex') : undefined,
           padding: '1rem',
-          borderRadius: '8px',
+          borderRadius,
           transition: 'background-color 0.3s, color 0.3s',
           border: isToday ? '2px solid #1976d2' : 'none',
           opacity: isPast ? 0.5 : 1,
@@ -113,7 +125,34 @@ export default function DayTooltip({ day }: DayCardProps) {
           justifyContent: 'center',
           alignItems: 'center',
           position: 'relative',
-        }}
+          overflow: 'hidden',
+          ...(fadeRightEdge && {
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              width: '16px',
+              height: '100%',
+              pointerEvents: 'none',
+              background: `linear-gradient(to right, rgba(0,0,0,0), ${theme.vars.palette.background.body})`,
+              opacity: 0.8,
+            },
+          }),
+          ...(fadeLeftEdge && {
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '16px',
+              height: '100%',
+              pointerEvents: 'none',
+              background: `linear-gradient(to left, rgba(0,0,0,0), ${theme.vars.palette.background.body})`,
+              opacity: 0.8,
+            },
+          }),
+        })}
       >
         <Typography sx={{ justifyContent: 'flex-start', ...numberSx }}>{day.day}</Typography>
         {bookingCount > 2 ? (
@@ -146,7 +185,7 @@ export default function DayTooltip({ day }: DayCardProps) {
             ) : null}
           </div>
         ) : null}
-      </div>
+      </Box>
     </Tooltip>
   );
 }
