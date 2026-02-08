@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import { AUTH_TOKEN_CHECK } from '../../paths';
 
 let isChecking = false;
@@ -22,8 +21,6 @@ export const useCheckToken = async () => {
 
     if (!response.ok) {
       if (response.status === 401) {
-        Cookies.remove('session_id');
-        Cookies.remove('username');
         if (window.location.pathname !== '/') {
           window.location.href = '/';
         }

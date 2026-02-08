@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import { GET_USERS_BY_NAME } from '../../paths';
 
 export const useFetchUsers = (searched?: string) => {
@@ -12,8 +11,7 @@ export const useFetchUsers = (searched?: string) => {
     .then((res) => {
       if (!res.ok) {
         if (res.status === 401) {
-          Cookies.remove('session_id');
-          Cookies.remove('username');
+          // Session-Cookie wird serverseitig verwaltet
 
           window.location.href = '/';
         }

@@ -1,6 +1,6 @@
 'use client';
 
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 import { PLACE_ADD_IMAGE } from '../../paths';
 
 export const useUploadImage = (place_id: string, image: File) => {
@@ -16,21 +16,12 @@ export const useUploadImage = (place_id: string, image: File) => {
     .then((res) => {
       if (!res.ok) {
         if (res.status === 401) {
-          Cookies.remove('session_id');
-          Cookies.remove('username');
-
           window.location.href = '/';
         }
       }
       return res.json();
     })
     .then((data) => {
-      Cookies.set('session_id', data.session_id, {
-        expires: 1,
-        secure: false,
-        sameSite: 'Strict',
-        path: '/',
-      });
       return true;
     })
     .catch((err) => {

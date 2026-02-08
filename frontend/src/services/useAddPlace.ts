@@ -1,5 +1,4 @@
 'use client';
-import Cookies from 'js-cookie';
 import { CREATE_PLACE } from '../../paths';
 
 export const useCreatePlace = (name: string, location: string, imgPath: string, users: { user_tag: string }[]) => {
@@ -16,8 +15,7 @@ export const useCreatePlace = (name: string, location: string, imgPath: string, 
       if (!res.ok) {
         switch (res.status) {
           case 401:
-            Cookies.remove('session_id');
-            Cookies.remove('username');
+            // Session-Cookie wird serverseitig verwaltet
             window.location.href = '/';
           case 409:
             return {
@@ -32,12 +30,6 @@ export const useCreatePlace = (name: string, location: string, imgPath: string, 
     })
     .then((data) => {
       if (data.success) {
-        Cookies.set('session_id', data.session_id, {
-          expires: 1,
-          secure: false,
-          sameSite: 'Strict',
-          path: '/',
-        });
         return { success: true, error: null };
       } else {
         return { success: false, error: data.error || 'Unknown error' };

@@ -50,7 +50,7 @@ export default function Page() {
       const places = await useGetPlaces();
 
       const updatedPlaces = await Promise.all(
-        places.map(async (place: any) => {
+        places?.map(async (place: any) => {
           const bookingsData = await useGetBookings(new Date().getFullYear(), place._id.$oid);
 
           const currentDate = new Date();

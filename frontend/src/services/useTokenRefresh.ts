@@ -1,13 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
 import { redirect } from 'next/navigation';
 import { REFRESH_TOKEN } from '../../paths';
 
 export default function SessionChecker() {
   const [isActive, setIsActive] = useState(false);
-  const sessionId = Cookies.get('session_id');
 
   useEffect(() => {
     let activityTimeout: NodeJS.Timeout;
@@ -16,12 +14,13 @@ export default function SessionChecker() {
     const handleActivity = () => {
       setIsActive(true);
       clearTimeout(activityTimeout);
-      activityTimeout = setTimeout(() => {
-        setIsActive(false);
-        Cookies.remove('session_id');
-        Cookies.remove('username');
-        redirect('/');
-      }, 5 * 60 * 1000); // 5 Minuten: 5 * 60 * 1000
+      activityTimeout = setTimeout(
+        () => {
+          setIsActive(false);
+          redirect('/');
+        },
+        5 * 60 * 1000,
+      ); // 5 Minuten: 5 * 60 * 1000
     };
 
     // Attach event listeners
@@ -29,32 +28,30 @@ export default function SessionChecker() {
     window.addEventListener('keydown', handleActivity);
     window.addEventListener('click', handleActivity);
 
-    if (sessionId) {
-      interval = setInterval(() => {
-        if (isActive) {
-          fetch(REFRESH_TOKEN, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              Cookies.set('session_id', data.session_id, {
-                expires: 1,
-                secure: false,
-                sameSite: 'Strict',
-                path: '/',
-              });
-            })
-            .catch((err) => {
-              console.error(err);
-              Cookies.remove('session_id');
-              Cookies.remove('username');
+    // Wenn ein Session-Cookie existiert, wird es automatisch mitgeschickt (credentials: 'include')
+    const hasSession = document.cookie.includes('session_id=');
 
-              window.location.href = '/';
-            });
-        }
-      }, 10 * 60 * 1000); // 10 Minuten 10 * 60 * 1000
+    if (hasSession) {
+      interval = setInterval(
+        () => {
+          if (isActive) {
+            fetch(REFRESH_TOKEN, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+            })
+              .then((res) => res.json())
+              .then(() => {
+                // Session-Cookie wird vom Backend per HttpOnly-Cookie aktualisiert
+              })
+              .catch((err) => {
+                console.error(err);
+                window.location.href = '/';
+              });
+          }
+        },
+        10 * 60 * 1000,
+      ); // 10 Minuten 10 * 60 * 1000
     }
 
     return () => {

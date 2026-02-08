@@ -29,6 +29,16 @@ function generateNewToken($currentSessionID, $username)
       ['$set' => ['session_id' => $newSessionId, 'timeout' => $timeout]]
     );
 
+    $isSecure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
+
+    setcookie('session_id', $newSessionId, [
+      'expires' => time() + 60 * 60 * 24,
+      'path' => '/',
+      'secure' => $isSecure,
+      'httponly' => true,
+      'samesite' => 'Strict',
+    ]);
+
     return $newSessionId;
   } else {
     http_response_code(500);

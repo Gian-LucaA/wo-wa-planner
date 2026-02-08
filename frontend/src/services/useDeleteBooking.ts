@@ -1,5 +1,4 @@
 'use client';
-import Cookies from 'js-cookie';
 import { DELETE_BOOKING } from '../../paths';
 
 export const useDeleteBooking = (id: string) => {
@@ -12,8 +11,7 @@ export const useDeleteBooking = (id: string) => {
     .then((res) => {
       if (!res.ok) {
         if (res.status === 401) {
-          Cookies.remove('session_id');
-          Cookies.remove('username');
+          // Session-Cookie wird serverseitig verwaltet
 
           window.location.href = '/';
         }
@@ -22,12 +20,6 @@ export const useDeleteBooking = (id: string) => {
       return res.json();
     })
     .then((data) => {
-      Cookies.set('session_id', data.session_id, {
-        expires: 1,
-        secure: false,
-        sameSite: 'Strict',
-        path: '/',
-      });
       return true;
     })
     .catch((err) => {

@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import { GET_PENDING_USERS } from '../../paths';
 
 export const useGetPendingUsers = () => {
@@ -10,8 +9,7 @@ export const useGetPendingUsers = () => {
     .then((res) => {
       if (!res.ok) {
         if (res.status === 401) {
-          Cookies.remove('session_id');
-          Cookies.remove('username');
+          // Session-Cookie wird serverseitig verwaltet
 
           window.location.href = '/';
         }

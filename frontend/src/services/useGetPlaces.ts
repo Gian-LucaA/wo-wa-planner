@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import { GET_PLACES_BY_ID, GET_PLACES } from '../../paths';
 
 export const useGetPlaces = (placeId?: string) => {
@@ -10,8 +9,7 @@ export const useGetPlaces = (placeId?: string) => {
     .then((res) => {
       if (!res.ok) {
         if (res.status === 401) {
-          Cookies.remove('session_id');
-          Cookies.remove('username');
+          // Session-Cookie wird serverseitig verwaltet
           window.location.href = '/';
         }
         throw new Error('API error');
@@ -23,8 +21,7 @@ export const useGetPlaces = (placeId?: string) => {
     })
     .catch((err) => {
       if (err.status === 401) {
-        Cookies.remove('session_id');
-        Cookies.remove('username');
+        // Session-Cookie wird serverseitig verwaltet
         window.location.href = '/';
       }
     });

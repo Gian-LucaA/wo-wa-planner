@@ -16,8 +16,7 @@ export const useUpdatePassword = (email: string, oldPassword: string, newPasswor
       } else {
         console.log(res);
         console.log('Password updated successfully');
-        Cookies.remove('session_id');
-        Cookies.remove('username');
+        // Session-Cookie wird serverseitig verwaltet
         Cookies.remove('is_otp_session');
         window.location.href = '/';
         return res.json();

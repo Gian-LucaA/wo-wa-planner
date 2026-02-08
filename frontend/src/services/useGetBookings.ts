@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import { GET_BOOKINGS } from '../../paths';
 
 export const useGetBookings = (year: number, placeId: string) => {
@@ -10,8 +9,7 @@ export const useGetBookings = (year: number, placeId: string) => {
     .then((res) => {
       if (!res.ok) {
         if (res.status === 401) {
-          Cookies.remove('session_id');
-          Cookies.remove('username');
+          // Session-Cookie wird serverseitig verwaltet
           window.location.href = '/';
         }
         throw new Error('API error');

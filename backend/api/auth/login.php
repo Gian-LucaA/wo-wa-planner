@@ -158,8 +158,26 @@ function postRequest()
             exit();
         }
 
+        $isSecure = ($_ENV['APP_ENV'] ?? '') === 'production';
+
+        setcookie('session_id', $sessionId, [
+            'expires' => time() + 60 * 60 * 24,
+            'path' => '/',
+            'secure' => $isSecure,
+            'httponly' => true,
+            'samesite' => 'Strict',
+        ]);
+
+        setcookie('username', (string) $user['username'], [
+            'expires' => time() + 60 * 60 * 24,
+            'path' => '/',
+            'secure' => $isSecure,
+            'httponly' => true,
+            'samesite' => 'Strict',
+        ]);
+
         http_response_code(200);
-        echo json_encode(['session_id' => $sessionId, 'username' => $user['username'], 'is_otp_session' => $isOtpSession]);
+        echo json_encode(['username' => $user['username'], 'is_otp_session' => $isOtpSession]);
         exit();
     } else {
         $logger->warning("Login failed for user: {$user['username']}");
