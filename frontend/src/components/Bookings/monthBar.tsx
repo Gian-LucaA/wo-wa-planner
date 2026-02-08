@@ -55,7 +55,7 @@ export default function MonthBar({ month, year, bookings, switchMonthVisibility 
         direction="row"
         spacing={1}
         sx={{
-          alignItems: 'center',
+          alignItems: 'stretch',
           width: !month.disabled ? '100%' : '100px',
           transition: 'width 0.5s ease-in-out',
         }}

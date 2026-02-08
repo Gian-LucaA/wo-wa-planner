@@ -17,7 +17,7 @@ export default function DayTooltip({ day }: DayCardProps) {
 
   const singleBgColor =
     bookingCount === 1
-      ? getColorByIndex(day.bookings?.[0]?.user_color, 'bg') ?? getStandardBackground('bg')
+      ? (getColorByIndex(day.bookings?.[0]?.user_color, 'bg') ?? getStandardBackground('bg'))
       : getStandardBackground('bg');
 
   const gradientBg = React.useMemo(() => {
@@ -69,10 +69,11 @@ export default function DayTooltip({ day }: DayCardProps) {
 
       {isBooked ? (
         <Typography sx={{ color: 'white', fontSize: '14px' }}>
-          <Typography sx={{ fontWeight: '600' }}>Gebucht von:</Typography>
           {(day.bookings || []).map((b, i) => (
             <div key={`${day.date.toISOString()}-${i}`}>
+              <Typography sx={{ fontWeight: '600' }}>Gebucht von: </Typography>
               <Typography sx={{ fontWeight: '500' }}>{b.username ?? ''}</Typography>
+              <br />
               <Typography sx={{ fontWeight: '500' }}>{formatDate(b.startDate)}</Typography>
               {' - '}
               <Typography sx={{ fontWeight: '500' }}>{formatDate(b.endDate)}</Typography>
