@@ -29,7 +29,7 @@ function generateNewToken($currentSessionID, $username)
       ['$set' => ['session_id' => $newSessionId, 'timeout' => $timeout]]
     );
 
-    $isSecure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
+    $isSecure = ($_ENV['APP_ENV'] ?? '') === 'production';
 
     setcookie('session_id', $newSessionId, [
       'expires' => time() + 60 * 60 * 24,
