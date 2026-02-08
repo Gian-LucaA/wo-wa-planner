@@ -13,6 +13,7 @@ function getRequest()
 function postRequest()
 {
     global $dbClient, $logger;
+    $now = new MongoDB\BSON\UTCDateTime();
 
     $currentIp = $_SERVER['REMOTE_ADDR'] ?? '';
     $currentAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
@@ -21,7 +22,13 @@ function postRequest()
     $loginRequestsLimiterCollection = $dbClient->rate_limiter->login_requests;
 
     $rateLimit = $loginRequestsLimiterCollection->findOne(['_id' => $rateLimitKey]);
-    if ($rateLimit && $rateLimit['count'] >= 20 && $rateLimit['expiry'] > new MongoDB\BSON\UTCDateTime()) {
+
+    if ($rateLimit && $rateLimit['expiry'] <= $now) {
+        $loginRequestsLimiterCollection->deleteOne(['_id' => $rateLimitKey]);
+        $rateLimit = null;
+    }
+
+    if ($rateLimit && $rateLimit['count'] >= 20 && $rateLimit['expiry'] > $now) {
         $logger->warning("Rate limit was hit by IP: {$currentIp}");
         http_response_code(429);
         echo json_encode(['error' => 'Zu viele Anfragen. Bitte versuche es später erneut.']);
@@ -30,7 +37,12 @@ function postRequest()
         $logger->info("Rate limit check passed for IP: {$currentIp}");
         $loginRequestsLimiterCollection->updateOne(
             ['_id' => $rateLimitKey],
-            ['$set' => ['count' => ($rateLimit ? $rateLimit['count'] + 1 : 1), 'expiry' => new MongoDB\BSON\UTCDateTime(strtotime('+15 minutes') * 1000)]],
+            [
+                '$set' => [
+                    'count'  => $rateLimit ? $rateLimit['count'] + 1 : 1,
+                    'expiry' => new MongoDB\BSON\UTCDateTime(strtotime('+15 minutes') * 1000),
+                ]
+            ],
             ['upsert' => true]
         );
     }
