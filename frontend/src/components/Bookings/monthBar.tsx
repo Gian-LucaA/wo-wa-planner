@@ -140,6 +140,8 @@ export default function MonthBar({ month, year, bookings, switchMonthVisibility 
   const firstDayOfMonth = daysWithMeta[0]?.date;
   const lastDayOfMonth = daysWithMeta[daysWithMeta.length - 1]?.date;
 
+  const normalizeDate = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+
   return (
     <>
       <Stack
@@ -253,7 +255,7 @@ export default function MonthBar({ month, year, bookings, switchMonthVisibility 
                       if (!b.startDate) return false;
                       const start = new Date(b.startDate);
                       if (Number.isNaN(start.getTime())) return false;
-                      return start.getTime() < current.date.getTime();
+                      return normalizeDate(start).getTime() < normalizeDate(current.date).getTime();
                     });
                     fadeLeftEdge = fadeLeftEdge || hasBookingFromPreviousMonth;
                   }
@@ -263,7 +265,7 @@ export default function MonthBar({ month, year, bookings, switchMonthVisibility 
                       if (!b.endDate) return false;
                       const end = new Date(b.endDate);
                       if (Number.isNaN(end.getTime())) return false;
-                      return end.getTime() > current.date.getTime();
+                      return normalizeDate(end).getTime() > normalizeDate(current.date).getTime();
                     });
                     fadeRightEdge = fadeRightEdge || hasBookingIntoNextMonth;
                   }
