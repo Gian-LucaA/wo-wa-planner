@@ -34,7 +34,7 @@ function postRequest()
         echo json_encode(['error' => 'Zu viele Anfragen. Bitte versuche es später erneut.']);
         exit();
     } else {
-        $logger->info("Rate limit check passed for IP: {$currentIp}");
+        $logger->info("Rate limit check passed for IP: {$currentIp} - Count: " . ($rateLimit ? $rateLimit['count'] : 0));
         $loginRequestsLimiterCollection->updateOne(
             ['_id' => $rateLimitKey],
             [
