@@ -21,7 +21,7 @@ function postRequest()
     $data = json_decode(file_get_contents('php://input'), true);
     $logger->info("POST data: " . json_encode($data));
 
-    if (!isset($data['locationId'], $data['from'], $data['to'])) {
+    if (!isset($data['locationId'], $data['from'])) {
         $logger->warning("Missing fields in booking request.");
         http_response_code(400);
         echo json_encode(['error' => 'Fehlende Felder in der Anfrage!']);
@@ -30,7 +30,11 @@ function postRequest()
 
     try {
         $fromDate = new MongoDB\BSON\UTCDateTime(new DateTime($data['from']));
-        $toDate = new MongoDB\BSON\UTCDateTime(new DateTime($data['to']));
+        if (isset($data['to'])) {
+            $toDate = new MongoDB\BSON\UTCDateTime(new DateTime($data['to']));
+        } else {
+            $toDate = new MongoDB\BSON\UTCDateTime(new DateTime($data['from'])); // Default to same day if 'to' is not provided
+        }
     } catch (Exception $e) {
         $logger->error("Invalid date format in booking request: " . $e->getMessage());
         http_response_code(400);
@@ -47,7 +51,7 @@ function postRequest()
         ]);
 
         if ($existingBooking) {
-            $logger->info("Booking conflict detected for placeId {$data['locationId']} between {$data['from']} and {$data['to']}.");
+            $logger->info("Booking conflict detected for placeId {$data['locationId']} between {$data['from']} and " . ($data['to'] ?? $data['from']) . ".");
             http_response_code(409);
             echo json_encode(['error' => 'Dieser Zeitpunkt ist bereits gebucht!']);
             exit();
@@ -84,7 +88,7 @@ function postRequest()
                 'Buchung des WoWas über WoWaPlanner',
                 $place['location'],
                 new DateTime($data['from'], new DateTimeZone('UTC')),
-                new DateTime($data['to'], new DateTimeZone('UTC'))
+                new DateTime($data['to'] ?? $data['from'], new DateTimeZone('UTC'))
             );
             $logger->info("Booking confirmation mail sent to " . $user['email']);
         } catch (Exception $e) {
