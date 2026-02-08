@@ -137,6 +137,9 @@ export default function MonthBar({ month, year, bookings, switchMonthVisibility 
 
   const daysGrid = [...Array(firstDayIndex).fill(null), ...daysWithMeta];
 
+  const firstDayOfMonth = daysWithMeta[0]?.date;
+  const lastDayOfMonth = daysWithMeta[daysWithMeta.length - 1]?.date;
+
   return (
     <>
       <Stack
@@ -237,8 +240,33 @@ export default function MonthBar({ month, year, bookings, switchMonthVisibility 
                   const hasBookedRight = isBooked && !!(next && (next.bookings?.length ?? 0) > 0);
 
                   const colIndex = idx % 7;
-                  const fadeRightEdge = colIndex === 6 && isBooked && !!(next && (next.bookings?.length ?? 0) > 0);
-                  const fadeLeftEdge = colIndex === 0 && isBooked && !!(prev && (prev.bookings?.length ?? 0) > 0);
+                  let fadeRightEdge = colIndex === 6 && isBooked && !!(next && (next.bookings?.length ?? 0) > 0);
+                  let fadeLeftEdge = colIndex === 0 && isBooked && !!(prev && (prev.bookings?.length ?? 0) > 0);
+
+                  const isFirstOfMonth =
+                    !!firstDayOfMonth && current.date.toDateString() === firstDayOfMonth.toDateString();
+                  const isLastOfMonth =
+                    !!lastDayOfMonth && current.date.toDateString() === lastDayOfMonth.toDateString();
+
+                  if (isFirstOfMonth && isBooked) {
+                    const hasBookingFromPreviousMonth = (current.bookings || []).some((b) => {
+                      if (!b.startDate) return false;
+                      const start = new Date(b.startDate);
+                      if (Number.isNaN(start.getTime())) return false;
+                      return start.getTime() < current.date.getTime();
+                    });
+                    fadeLeftEdge = fadeLeftEdge || hasBookingFromPreviousMonth;
+                  }
+
+                  if (isLastOfMonth && isBooked) {
+                    const hasBookingIntoNextMonth = (current.bookings || []).some((b) => {
+                      if (!b.endDate) return false;
+                      const end = new Date(b.endDate);
+                      if (Number.isNaN(end.getTime())) return false;
+                      return end.getTime() > current.date.getTime();
+                    });
+                    fadeRightEdge = fadeRightEdge || hasBookingIntoNextMonth;
+                  }
 
                   return (
                     <Grid
