@@ -24,6 +24,7 @@ function postRequest()
     $rateLimit = $loginRequestsLimiterCollection->findOne(['_id' => $rateLimitKey]);
 
     if ($rateLimit && $rateLimit['expiry'] <= $now) {
+        $logger->info("Rate limit expired for IP: {$currentIp}. Resetting count.");
         $loginRequestsLimiterCollection->deleteOne(['_id' => $rateLimitKey]);
         $rateLimit = null;
     }
