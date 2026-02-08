@@ -37,7 +37,10 @@ export const useAuth = () => {
         localStorage.setItem('is_otp_session', data.is_otp_session ? 'true' : 'false');
         return true;
       } else {
-        throw new Error('Something went wrong');
+        Cookies.remove('session_id');
+        Cookies.remove('username');
+        setError(data.error || 'Ein unbekannter Fehler ist aufgetreten.');
+        return false;
       }
     } catch (error) {
       Cookies.remove('session_id');
