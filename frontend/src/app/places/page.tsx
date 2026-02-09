@@ -71,6 +71,16 @@ export default function Page() {
 
       setPlaces(updatedPlaces);
       setIsLoading(false);
+
+      if (updatedPlaces.length === 0) {
+        setSnackbarMessage('Es wurden keine Orte gefunden.');
+        setSnackbarSeverity('danger');
+        setSnackbarOpen(true);
+      }
+
+      if (updatedPlaces.length == 1) {
+        window.location.href = `/places/${updatedPlaces[0]._id.$oid}`;
+      }
     };
 
     fetchPlaces();
