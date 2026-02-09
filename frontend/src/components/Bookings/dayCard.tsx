@@ -74,14 +74,15 @@ export default function DayTooltip({ day, hasBookedLeft, hasBookedRight, fadeLef
       {isBooked ? (
         <Typography sx={{ color: 'white', fontSize: '14px' }}>
           {(day.bookings || []).map((b, i) => (
-            <div key={`${day.date.toISOString()}-${i}`}>
+            <span key={`${day.date.toISOString()}-${i}`}>
               <Typography sx={{ fontWeight: '600' }}>Gebucht von: </Typography>
               <Typography sx={{ fontWeight: '500' }}>{b.username ?? ''}</Typography>
               <br />
               <Typography sx={{ fontWeight: '500' }}>{formatDate(b.startDate)}</Typography>
               {' - '}
               <Typography sx={{ fontWeight: '500' }}>{formatDate(b.endDate)}</Typography>
-            </div>
+              <br />
+            </span>
           ))}
         </Typography>
       ) : null}
@@ -156,7 +157,7 @@ export default function DayTooltip({ day, hasBookedLeft, hasBookedRight, fadeLef
       >
         <Typography sx={{ justifyContent: 'flex-start', ...numberSx }}>{day.day}</Typography>
         {bookingCount > 2 ? (
-          <div
+          <span
             style={{
               position: 'absolute',
               bottom: 4,
@@ -183,7 +184,7 @@ export default function DayTooltip({ day, hasBookedLeft, hasBookedRight, fadeLef
             {bookingCount > 4 ? (
               <span style={{ fontSize: 10, color: 'rgba(0,0,0,0.6)' }}>+{bookingCount - 4}</span>
             ) : null}
-          </div>
+          </span>
         ) : null}
       </Box>
     </Tooltip>
