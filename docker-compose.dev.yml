@@ -1,25 +1,63 @@
 services:
   backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - '8080:80'
+    environment:
+      - DB_HOST=localhost
+      - DB_PORT=27017
+      - DB_NAME=mongodb
+      - DB_USER=usr
+      - DB_PASSWORD=pswd
+      - APP_ENV=dev
+    depends_on:
+      - mongodb
     volumes:
       - ./backend:/var/www/html
       - backend_vendor:/var/www/html/vendor
       - /Users/gla/ProgProjects/WoWaPlanner/logs/backend:/var/www/html/logging/logs
-    environment:
-      - APP_ENV=dev
-      - DB_HOST=mongodb
-  frontend:
+
+  frontend-vue-dev:
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
+    ports:
+      - '5173:5173'
     volumes:
       - ./frontend:/app
-      - frontend_node_modules:/app/node_modules
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+
+  frontend-next:
+    build:
+      context: ./frontend-next
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./frontend-next:/app
+      - frontend_next_node_modules:/app/node_modules
     environment:
       - NODE_ENV=development
     ports:
       - '3000:3000'
 
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=usr
+      - MONGO_INITDB_ROOT_PASSWORD=pswd
+    volumes:
+      - ./data:/data/db
+
 volumes:
   frontend_node_modules:
   backend_logs:
   backend_vendor:
+  frontend_next_node_modules:
